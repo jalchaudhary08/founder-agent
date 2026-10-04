@@ -52,3 +52,16 @@ If the preferred tool fails, do not silently substitute a different behavior. Ch
 - verification: mandatory read-back after writes
 - current status: LIMITED
 - reason: model/orchestrator tool-calling integration is not yet connected
+
+### Public web research adapter
+- category: web research
+- capabilities: public web discovery; direct public page inspection
+- required inputs: focused search query or public HTTP(S) URL
+- authentication: none in fallback mode
+- read actions: available
+- write actions: unavailable
+- destructive actions: unavailable
+- verification: search results are discovery only; material claims require opening the source page
+- cost/limits: fallback search depends on public search endpoint availability and may be rate-limited
+- current status: LIMITED
+- reason: bounded DuckDuckGo discovery + direct page fetch; dedicated search API can be added later for higher reliability
