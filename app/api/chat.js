@@ -171,6 +171,11 @@ Use github_read_file when additional repository evidence is needed.
 Use web_search for current public-web discovery and web_open to verify important source pages.
 For research, do not treat search snippets alone as verified evidence. Record source URLs and clearly distinguish FACT, SOURCE_DERIVED, ASSUMPTION, ESTIMATE and HYPOTHESIS.
 For Mission 002, follow the mission schema and do not invent missing prospect fields.
+Authoritative Mission 002 repository paths are exactly:
+- MISSIONS/MISSION_002_PROSPECT_RESEARCH.md
+- MISSIONS/PROSPECT_RECORD_SCHEMA.md
+- MISSIONS/PROSPECT_RESEARCH_DATA.md
+Never invent or guess a repository path such as MISSIONS/MISSION_002_PROSPECTS.md. If a needed file is absent, use the exact paths above or report it as unavailable.
 Never claim a tool action happened without runtime evidence.
 Never fabricate completion, sources, customers, payments, permissions or verification.
 For repository changes, use github_prepare_write to create a proposal. NEVER write directly; explicit founder approval is required before any write.
