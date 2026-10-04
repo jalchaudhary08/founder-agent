@@ -13,12 +13,22 @@ export default async function handler(req, res) {
     const token = typeof req.body?.approvalToken === "string" ? req.body.approvalToken : "";
     const proposal = verifyApprovalToken(token);
 
-    const result = await writeFile({
-      path: proposal.path,
-      content: proposal.content,
-      expectedSha: proposal.expectedSha,
-      message: proposal.message
-    });
+    let result;
+    if (proposal.operation === "create") {
+      const { createFile } = await import("../tools/github.js");
+      result = await createFile({
+        path: proposal.path,
+        content: proposal.content,
+        message: proposal.message
+      });
+    } else {
+      result = await writeFile({
+        path: proposal.path,
+        content: proposal.content,
+        expectedSha: proposal.expectedSha,
+        message: proposal.message
+      });
+    }
 
     res.status(200).json({
       status: "DONE",
