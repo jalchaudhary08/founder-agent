@@ -70,20 +70,38 @@ async function loadContext(task) {
     .join("\n\n---\n\n");
 }
 
-const TOOL_DEFINITIONS = [{
-  type: "function",
-  name: "github_read_file",
-  description: "Read one text file from the Founder Agent repository.",
-  parameters: {
-    type: "object",
-    properties: {
-      path: { type: "string", description: "Repository-relative file path." }
+const TOOL_DEFINITIONS = [
+  {
+    type: "function",
+    name: "github_read_file",
+    description: "Read one text file from the Founder Agent repository.",
+    parameters: {
+      type: "object",
+      properties: {
+        path: { type: "string", description: "Repository-relative file path." }
+      },
+      required: ["path"],
+      additionalProperties: false
     },
-    required: ["path"],
-    additionalProperties: false
+    strict: true
   },
-  strict: true
-}];
+  {
+    type: "function",
+    name: "github_prepare_write",
+    description: "Prepare a proposed repository file change for explicit founder approval. This NEVER writes to GitHub.",
+    parameters: {
+      type: "object",
+      properties: {
+        path: { type: "string", description: "Repository-relative file path." },
+        content: { type: "string", description: "Complete replacement UTF-8 file content." },
+        message: { type: "string", description: "Proposed Git commit message." }
+      },
+      required: ["path", "content", "message"],
+      additionalProperties: false
+    },
+    strict: true
+  }
+];
 
 function extractFunctionCalls(data) {
   return (data.output ?? []).filter((item) => item.type === "function_call");
@@ -91,9 +109,12 @@ function extractFunctionCalls(data) {
 
 async function executeToolCall(call) {
   const args = JSON.parse(call.arguments || "{}");
-  if (call.name !== "github_read_file") throw new Error(`Unsupported tool: ${call.name}`);
-  const { readFile } = await import("./tools/github.js");
-  return await readFile(args.path);
+  const { readFile, prepareWrite } = await import("./tools/github.js");
+
+  if (call.name === "github_read_file") return await readFile(args.path);
+  if (call.name === "github_prepare_write") return await prepareWrite(args);
+
+  throw new Error(`Unsupported tool: ${call.name}`);
 }
 
 function extractOutputText(data) {
@@ -124,6 +145,7 @@ async function callOpenAI(task, history, context) {
 Use github_read_file when additional repository evidence is needed.
 Never claim a tool action happened without runtime evidence.
 Never fabricate completion, sources, customers, payments, permissions or verification.
+For repository changes, use github_prepare_write to create a proposal. NEVER write directly; explicit founder approval is required before any write.
 Do not reveal hidden chain-of-thought; provide concise conclusions and evidence.
 
 REPOSITORY CONTEXT:
@@ -137,6 +159,7 @@ ${context}`;
     { role: "user", content: task }
   ];
   const toolEvidence = [];
+  let approval = null;
 
   for (let round = 0; round < 3; round++) {
     const response = await fetch("https://api.openai.com/v1/responses", {
@@ -156,13 +179,24 @@ ${context}`;
     if (!response.ok) throw new Error(data?.error?.message || `OpenAI request failed: ${response.status}`);
 
     const calls = extractFunctionCalls(data);
-    if (!calls.length) return { text: extractOutputText(data), toolEvidence };
+    if (!calls.length) return { text: extractOutputText(data), toolEvidence, approval };
 
     input = [...input, ...(data.output ?? [])];
 
     for (const call of calls) {
       const result = await executeToolCall(call);
       toolEvidence.push({ tool: call.name, path: result.path, verified: result.verified === true });
+      if (call.name === "github_prepare_write") {
+        approval = {
+          approvalToken: result.approvalToken,
+          path: result.path,
+          expectedSha: result.expectedSha,
+          message: result.message,
+          contentPreview: result.contentPreview,
+          expiresInSeconds: result.expiresInSeconds,
+          requiresExplicitApproval: result.requiresExplicitApproval === true
+        };
+      }
       input.push({
         type: "function_call_output",
         call_id: call.call_id,
@@ -197,8 +231,9 @@ export default async function handler(req, res) {
     const result = modelResult.text;
 
     res.status(200).json({
-      status: "DONE",
+      status: modelResult.approval ? "NEEDS_HUMAN_APPROVAL" : "DONE",
       result,
+      approval: modelResult.approval,
       evidence: [
         "Authenticated Founder session verified.",
         "Repository context loaded from founder-agent/main.",
@@ -212,8 +247,12 @@ export default async function handler(req, res) {
         "Generated a response through the runtime provider adapter.",
         ...(modelResult.toolEvidence.length ? ["Executed bounded read-only GitHub tool calls and recorded evidence."] : [])
       ],
-      actions_not_taken: ["No repository write or destructive action was executed."],
-      next_step: "Verify the authenticated read-only runtime, then add the approval-gated write flow."
+      actions_not_taken: [modelResult.approval
+        ? "No repository write was executed; the proposed change is waiting for explicit founder approval."
+        : "No repository write or destructive action was executed."],
+      next_step: modelResult.approval
+        ? "Review the proposed change and approve it explicitly to execute the GitHub write."
+        : "Verify the authenticated runtime and use an approval-gated proposal for repository changes."
     });
   } catch (error) {
     if (error?.code === "UNAUTHORIZED") {
