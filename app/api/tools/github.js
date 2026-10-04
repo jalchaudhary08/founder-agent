@@ -35,7 +35,11 @@ export async function readFile(path) {
 
   if (!process.env.GITHUB_TOKEN) {
     const response = await fetch(RAW_BASE + safePath);
-    if (!response.ok) throw new Error(`GitHub public read failed for ${safePath}: ${response.status}`);
+    if (!response.ok) {
+      const error = new Error(`GitHub public read failed for ${safePath}: ${response.status}`);
+      if (response.status === 404) error.code = "NOT_FOUND";
+      throw error;
+    }
     return {
       path: safePath,
       content: await response.text(),
@@ -47,7 +51,11 @@ export async function readFile(path) {
   const url = API_BASE + encodeURIComponent(safePath).replace(/%2F/g, "/") + `?ref=${encodeURIComponent(BRANCH)}`;
   const response = await fetch(url, { headers: headers() });
 
-  if (!response.ok) throw new Error(`GitHub read failed for ${safePath}: ${response.status}`);
+  if (!response.ok) {
+    const error = new Error(`GitHub read failed for ${safePath}: ${response.status}`);
+    if (response.status === 404) error.code = "NOT_FOUND";
+    throw error;
+  }
 
   const data = await response.json();
   if (data.encoding !== "base64") throw new Error(`Unsupported GitHub encoding for ${safePath}`);
@@ -106,21 +114,32 @@ export async function prepareWrite({ path, content, message }) {
   if (typeof message !== "string" || !message.trim()) throw new Error("A commit message is required.");
   if (content.length > 200000) throw new Error("Proposed file is too large for the approval flow.");
 
-  const current = await readFile(safePath);
-  if (!current.sha) throw new Error("Current blob SHA is required before proposing a write.");
+  let current = null;
+  let expectedSha = null;
+  let operation = "create";
+
+  try {
+    current = await readFile(safePath);
+    expectedSha = current.sha;
+    operation = "update";
+  } catch (error) {
+    if (error?.code !== "NOT_FOUND") throw error;
+  }
 
   const { createApprovalToken } = await import("../_lib/approval.js");
   const proposal = {
     path: safePath,
     content,
-    expectedSha: current.sha,
+    expectedSha,
+    operation,
     message: message.trim()
   };
 
   return {
     approvalToken: createApprovalToken(proposal),
     path: safePath,
-    expectedSha: current.sha,
+    expectedSha: expectedSha,
+    operation,
     message: proposal.message,
     contentPreview: content.length > 12000 ? content.slice(0, 12000) + "\n…[preview truncated]" : content,
     verified: true,
