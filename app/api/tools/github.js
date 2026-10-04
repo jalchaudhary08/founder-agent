@@ -31,6 +31,11 @@ function headers() {
 
 export async function readFile(path) {
   const safePath = assertSafePath(path);
+  if (!process.env.GITHUB_TOKEN) {
+    const response = await fetch(RAW_BASE + safePath);
+    if (!response.ok) throw new Error(`GitHub public read failed for ${safePath}: ${response.status}`);
+    return { path: safePath, content: await response.text(), verified: true, source: "public-raw" };
+  }
   const response = await fetch(API_BASE + encodeURIComponent(safePath).replace(/%2F/g, "/") + \`?ref=\${encodeURIComponent(BRANCH)}\`, {
     headers: process.env.GITHUB_TOKEN ? headers() : { Accept: "application/vnd.github.raw+json" }
   });
