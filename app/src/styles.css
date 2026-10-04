@@ -9,7 +9,7 @@ body { margin: 0; min-width: 320px; min-height: 100vh; background:
   #08080d; }
 button, textarea, input { font: inherit; }
 .shell { width: min(760px, 100%); min-height: 100vh; margin: auto; padding: 18px 16px 28px; display: flex; flex-direction: column; }
-.topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; padding: 6px 2px 22px; }
+.topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; padding: 6px 2px 12px; }
 .top-actions { display:flex; align-items:center; gap:7px; }
 .brand { font-weight:900; letter-spacing:.08em; font-size:15px; }
 .brand span { color:#9b7cff; }
@@ -17,7 +17,14 @@ button, textarea, input { font: inherit; }
 .status { border:1px solid #282832; background:#101016; border-radius:999px; padding:7px 10px; font-size:10px; color:#aaaab4; letter-spacing:.08em; }
 .status i { display:inline-block; width:7px; height:7px; border-radius:50%; background:#63d48b; margin-right:6px; }
 .lock-button { border:1px solid #282832; background:#101016; color:#aaaab5; border-radius:999px; padding:7px 10px; font-size:10px; cursor:pointer; }
-.hero { text-align:center; padding:42px 10px 28px; }
+
+.token-bar { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; margin:0 0 6px; }
+.token-card { border:1px solid #292934; background:rgba(16,16,22,.78); border-radius:12px; padding:8px 9px; min-width:0; }
+.token-card span { display:block; color:#6f6f7b; font-size:7px; letter-spacing:.09em; margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.token-card strong { display:block; color:#e5e1ef; font-size:13px; font-weight:800; }
+.token-card.token-muted strong { color:#a99fc0; }
+
+.hero { text-align:center; padding:38px 10px 28px; }
 .orb { width:54px; height:54px; margin:0 auto 18px; display:grid; place-items:center; border-radius:18px; background:linear-gradient(135deg,#9b7cff,#5d39bd); box-shadow:0 0 45px rgba(124,58,237,.35); font-size:25px; }
 .hero h1 { margin:0; font-size:clamp(25px,7vw,42px); letter-spacing:-.04em; }
 .hero p { margin:9px 0 0; color:#8e8e99; font-size:14px; }
@@ -52,7 +59,6 @@ textarea::placeholder { color:#676773; }
 .auth-note { margin-top:16px; color:#656572; font-size:10px; line-height:1.5; }
 .loading-card { border:1px solid #292934; background:#111118; border-radius:18px; padding:16px 20px; color:#aaaab5; font-size:13px; }
 
-
 .approval-card { margin: 4px 2px 14px; padding: 16px; border:1px solid #5a3d9d; background:linear-gradient(145deg, rgba(39,25,66,.92), rgba(17,17,24,.96)); border-radius:18px; box-shadow:0 14px 45px rgba(67,37,120,.18); }
 .approval-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
 .approval-kicker { color:#b99cff; font-size:9px; font-weight:800; letter-spacing:.12em; }
@@ -71,3 +77,9 @@ textarea::placeholder { color:#676773; }
 .approve-button { border:0; background:#8a63ed; color:#fff; }
 .reject-button { border:1px solid #302d38; background:#111118; color:#aaaab5; }
 .approval-actions button:disabled { opacity:.5; cursor:not-allowed; }
+
+@media (max-width: 520px) {
+  .shell { padding-left:12px; padding-right:12px; }
+  .token-bar { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .hero { padding-top:30px; }
+}
