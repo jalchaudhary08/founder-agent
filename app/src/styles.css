@@ -51,3 +51,23 @@ textarea::placeholder { color:#676773; }
 .auth-error { margin-top:12px; color:#ff9a9a; font-size:12px; }
 .auth-note { margin-top:16px; color:#656572; font-size:10px; line-height:1.5; }
 .loading-card { border:1px solid #292934; background:#111118; border-radius:18px; padding:16px 20px; color:#aaaab5; font-size:13px; }
+
+
+.approval-card { margin: 4px 2px 14px; padding: 16px; border:1px solid #5a3d9d; background:linear-gradient(145deg, rgba(39,25,66,.92), rgba(17,17,24,.96)); border-radius:18px; box-shadow:0 14px 45px rgba(67,37,120,.18); }
+.approval-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.approval-kicker { color:#b99cff; font-size:9px; font-weight:800; letter-spacing:.12em; }
+.approval-card h2 { margin:5px 0 0; font-size:18px; letter-spacing:-.02em; }
+.approval-timer { border:1px solid #49336f; border-radius:999px; padding:5px 8px; color:#bca9e8; font-size:9px; white-space:nowrap; }
+.approval-meta { display:grid; gap:8px; margin:14px 0; }
+.approval-meta div { display:flex; flex-direction:column; gap:4px; }
+.approval-meta span { color:#777482; font-size:9px; text-transform:uppercase; letter-spacing:.08em; }
+.approval-meta code { color:#ddd7ed; background:#0d0d13; border:1px solid #2a2635; border-radius:8px; padding:8px; font-size:10px; overflow:auto; }
+.approval-card details { border:1px solid #292533; border-radius:10px; background:#0d0d13; }
+.approval-card summary { cursor:pointer; padding:9px 10px; color:#aaa3b8; font-size:11px; }
+.approval-card pre { margin:0; padding:10px; max-height:260px; overflow:auto; white-space:pre-wrap; word-break:break-word; color:#c9c4d2; font-size:9px; line-height:1.45; border-top:1px solid #292533; }
+.approval-warning { margin:12px 0; color:#c7b7df; font-size:10px; line-height:1.45; }
+.approval-actions { display:flex; gap:8px; }
+.approval-actions button { flex:1; border-radius:11px; padding:11px; cursor:pointer; font-size:11px; font-weight:700; }
+.approve-button { border:0; background:#8a63ed; color:#fff; }
+.reject-button { border:1px solid #302d38; background:#111118; color:#aaaab5; }
+.approval-actions button:disabled { opacity:.5; cursor:not-allowed; }
