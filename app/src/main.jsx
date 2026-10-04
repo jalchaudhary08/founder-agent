@@ -9,6 +9,13 @@ const starterMessages = [
   }
 ];
 
+function formatTokens(value) {
+  if (!Number.isFinite(value)) return "—";
+  if (value >= 1000000) return (value / 1000000).toFixed(1) + "M";
+  if (value >= 1000) return (value / 1000).toFixed(value >= 10000 ? 0 : 1) + "K";
+  return String(value);
+}
+
 function Login({ onAuthenticated }) {
   const [key, setKey] = React.useState("");
   const [busy, setBusy] = React.useState(false);
@@ -71,6 +78,14 @@ function App() {
   const [status, setStatus] = React.useState("IDLE");
   const [approval, setApproval] = React.useState(null);
   const [approvalBusy, setApprovalBusy] = React.useState(false);
+  const [telemetry, setTelemetry] = React.useState({
+    sessionTokens: 0,
+    lastTokens: 0,
+    cachedTokens: 0,
+    rateLimitTokens: null,
+    remainingTokens: null,
+    resetTokens: null
+  });
 
   React.useEffect(() => {
     fetch("/api/auth/me")
@@ -79,11 +94,31 @@ function App() {
       .catch(() => setAuthenticated(false));
   }, []);
 
+  function applyTelemetry(data) {
+    if (!data) return;
+    setTelemetry((current) => ({
+      sessionTokens: current.sessionTokens + Number(data.usage?.totalTokens || 0),
+      lastTokens: Number(data.usage?.totalTokens || 0),
+      cachedTokens: Number(data.usage?.cachedTokens || 0),
+      rateLimitTokens: data.rateLimit?.limitTokens ?? current.rateLimitTokens,
+      remainingTokens: data.rateLimit?.remainingTokens ?? current.remainingTokens,
+      resetTokens: data.rateLimit?.resetTokens ?? current.resetTokens
+    }));
+  }
+
   async function logout() {
     await fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
     setAuthenticated(false);
     setMessages(starterMessages);
     setStatus("LOCKED");
+    setTelemetry({
+      sessionTokens: 0,
+      lastTokens: 0,
+      cachedTokens: 0,
+      rateLimitTokens: null,
+      remainingTokens: null,
+      resetTokens: null
+    });
   }
 
   async function sendMessage(event) {
@@ -107,6 +142,7 @@ function App() {
       });
 
       const data = await response.json();
+      applyTelemetry(data);
 
       if (response.status === 401) {
         setAuthenticated(false);
@@ -114,7 +150,13 @@ function App() {
       }
 
       if (!response.ok) {
-        throw new Error(data.error || "Runtime request failed.");
+        const rateText = data.rateLimit?.remainingTokens != null
+          ? ` Remaining TPM: ${formatTokens(data.rateLimit.remainingTokens)}.`
+          : "";
+        const resetText = data.rateLimit?.resetTokens
+          ? ` Reset: ${data.rateLimit.resetTokens}.`
+          : "";
+        throw new Error((data.error || "Runtime request failed.") + rateText + resetText);
       }
 
       setMessages((items) => [
@@ -211,6 +253,25 @@ function App() {
           <button className="lock-button" onClick={logout}>Lock</button>
         </div>
       </header>
+
+      <section className="token-bar" aria-label="Token usage">
+        <div className="token-card">
+          <span>TPM LIMIT</span>
+          <strong>{formatTokens(telemetry.rateLimitTokens)}</strong>
+        </div>
+        <div className="token-card">
+          <span>REMAINING</span>
+          <strong>{formatTokens(telemetry.remainingTokens)}</strong>
+        </div>
+        <div className="token-card">
+          <span>SESSION USAGE</span>
+          <strong>{formatTokens(telemetry.sessionTokens)}</strong>
+        </div>
+        <div className="token-card token-muted">
+          <span>LAST CALL</span>
+          <strong>{formatTokens(telemetry.lastTokens)}</strong>
+        </div>
+      </section>
 
       <section className="hero">
         <div className="orb">✦</div>
