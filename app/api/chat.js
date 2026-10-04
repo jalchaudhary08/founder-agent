@@ -71,6 +71,33 @@ async function loadContext(task) {
     .join("\n\n---\n\n");
 }
 
+
+const TOOL_DEFINITIONS = [{
+  type: "function",
+  name: "github_read_file",
+  description: "Read one text file from the Founder Agent repository.",
+  parameters: {
+    type: "object",
+    properties: {
+      path: { type: "string", description: "Repository-relative file path." }
+    },
+    required: ["path"],
+    additionalProperties: false
+  },
+  strict: true
+}];
+
+function extractFunctionCalls(data) {
+  return (data.output ?? []).filter((item) => item.type === "function_call");
+}
+
+async function executeToolCall(call) {
+  const args = JSON.parse(call.arguments || "{}");
+  if (call.name !== "github_read_file") throw new Error(`Unsupported tool: ${call.name}`);
+  const { readFile } = await import("./tools/github.js");
+  return await readFile(args.path);
+}
+
 function extractOutputText(data) {
   if (typeof data.output_text === "string" && data.output_text.trim()) return data.output_text.trim();
 
@@ -89,62 +116,64 @@ async function callOpenAI(task, history, context) {
     error.code = "MISSING_API_KEY";
     throw error;
   }
-
   if (!process.env.OPENAI_MODEL) {
     const error = new Error("OPENAI_MODEL is not configured in Vercel.");
     error.code = "MISSING_MODEL";
     throw error;
   }
 
-  const system = `You are Founder Agent, a trustworthy personal AI operating system.
-
-Follow the repository constitution exactly. You are currently in Runtime Phase 1: reasoning + repository context. Do not claim that external tools were used or that external actions happened unless the runtime provides evidence.
-
-For every task:
-1. Understand the objective and constraints.
-2. Use the supplied repository context.
-3. Produce a concise executable plan.
-4. Distinguish FACT, SOURCE_DERIVED, ASSUMPTION, ESTIMATE and HYPOTHESIS when relevant.
-5. Identify approval gates before consequential actions.
-6. Report what you can do now and what requires the next runtime/tool integration.
-7. Never fabricate completion, sources, customers, payments, tool access or verification.
-
-Return a useful answer to the founder, not internal chain-of-thought.
+  const system = `You are Founder Agent. Follow the repository constitution exactly.
+Use github_read_file when additional repository evidence is needed.
+Never claim a tool action happened without runtime evidence.
+Never fabricate completion, sources, customers, payments, permissions or verification.
+Do not reveal hidden chain-of-thought; provide concise conclusions and evidence.
 
 REPOSITORY CONTEXT:
 ${context}`;
 
-  const input = [
+  let input = [
     ...history.slice(-10).map((message) => ({
       role: message.role === "agent" ? "assistant" : "user",
       content: message.text
     })),
     { role: "user", content: task }
   ];
+  const toolEvidence = [];
 
-  const response = await fetch("https://api.openai.com/v1/responses", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
-    },
-    body: JSON.stringify({
-      model: process.env.OPENAI_MODEL,
-      instructions: system,
-      input
-    })
-  });
+  for (let round = 0; round < 3; round++) {
+    const response = await fetch("https://api.openai.com/v1/responses", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: process.env.OPENAI_MODEL,
+        instructions: system,
+        input,
+        tools: TOOL_DEFINITIONS
+      })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data?.error?.message || `OpenAI request failed: ${response.status}`);
 
-  const data = await response.json();
-  if (!response.ok) {
-    const detail = data?.error?.message || `OpenAI request failed: ${response.status}`;
-    throw new Error(detail);
+    const calls = extractFunctionCalls(data);
+    if (!calls.length) return { text: extractOutputText(data), toolEvidence };
+
+    input = [...input, ...(data.output ?? [])];
+
+    for (const call of calls) {
+      const result = await executeToolCall(call);
+      toolEvidence.push({ tool: call.name, path: result.path, verified: result.verified === true });
+      input.push({
+        type: "function_call_output",
+        call_id: call.call_id,
+        output: JSON.stringify(result)
+      });
+    }
   }
 
-  const text = extractOutputText(data);
-  if (!text) throw new Error("Model returned no text output.");
-
-  return text;
+  throw new Error("Tool-calling loop exceeded the safe round limit.");
 }
 
 export default async function handler(req, res) {
@@ -164,18 +193,22 @@ export default async function handler(req, res) {
     }
 
     const context = await loadContext(task);
-    const result = await callOpenAI(task, history, context);
+    const modelResult = await callOpenAI(task, history, context);
+    const result = modelResult.text;
 
     res.status(200).json({
       status: "DONE",
       result,
       evidence: [
         "Repository context loaded from founder-agent/main.",
-        "Response generated by the configured model provider."
+        "Response generated by the configured model provider.",
+        ...modelResult.toolEvidence.map((e) => `Tool verified: ${e.tool} (${e.path}).`)
       ],
-      actions_taken: ["Parsed the founder request.", "Loaded relevant repository context.", "Generated a response through the runtime provider adapter."],
-      actions_not_taken: ["No external side-effecting tool action was executed in Runtime Phase 1."],
-      next_step: "Add authenticated tool adapters and durable task state for real execution."
+      actions_taken: ["Parsed the founder request.", "Loaded relevant repository context.", "Generated a response through the runtime provider adapter.",
+        ...(modelResult.toolEvidence.length ? ["Executed bounded read-only GitHub tool calls and recorded evidence."] : [])
+      ],
+      actions_not_taken: ["No repository write or destructive action was executed."],
+      next_step: "Verify the read-only tool loop, then add approval-gated writes."
     });
   } catch (error) {
     const missingConfig = error?.code === "MISSING_API_KEY" || error?.code === "MISSING_MODEL";
