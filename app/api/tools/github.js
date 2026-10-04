@@ -98,3 +98,33 @@ export async function writeFile({ path, content, expectedSha, message }) {
     verified: true
   };
 }
+
+
+export async function prepareWrite({ path, content, message }) {
+  const safePath = assertSafePath(path);
+  if (typeof content !== "string") throw new Error("File content must be a string.");
+  if (typeof message !== "string" || !message.trim()) throw new Error("A commit message is required.");
+  if (content.length > 200000) throw new Error("Proposed file is too large for the approval flow.");
+
+  const current = await readFile(safePath);
+  if (!current.sha) throw new Error("Current blob SHA is required before proposing a write.");
+
+  const { createApprovalToken } = await import("../_lib/approval.js");
+  const proposal = {
+    path: safePath,
+    content,
+    expectedSha: current.sha,
+    message: message.trim()
+  };
+
+  return {
+    approvalToken: createApprovalToken(proposal),
+    path: safePath,
+    expectedSha: current.sha,
+    message: proposal.message,
+    contentPreview: content.length > 12000 ? content.slice(0, 12000) + "\n…[preview truncated]" : content,
+    verified: true,
+    requiresExplicitApproval: true,
+    expiresInSeconds: 600
+  };
+}
