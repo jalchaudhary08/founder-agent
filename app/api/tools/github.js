@@ -147,3 +147,46 @@ export async function prepareWrite({ path, content, message }) {
     expiresInSeconds: 600
   };
 }
+
+
+export async function createFile({ path, content, message }) {
+  const safePath = assertSafePath(path);
+  if (typeof content !== "string") throw new Error("File content must be a string.");
+  if (typeof message !== "string" || !message.trim()) throw new Error("A commit message is required.");
+
+  let exists = false;
+  try {
+    await readFile(safePath);
+    exists = true;
+  } catch (error) {
+    if (error?.code !== "NOT_FOUND") throw error;
+  }
+  if (exists) {
+    const error = new Error("File already exists. A fresh update proposal is required.");
+    error.code = "ALREADY_EXISTS";
+    throw error;
+  }
+
+  const response = await fetch(API_BASE + encodeURIComponent(safePath).replace(/%2F/g, "/"), {
+    method: "PUT",
+    headers: headers(),
+    body: JSON.stringify({
+      message,
+      content: Buffer.from(content, "utf8").toString("base64"),
+      branch: BRANCH
+    })
+  });
+
+  const data = await response.json();
+  if (!response.ok) throw new Error(data?.message || `GitHub create failed: ${response.status}`);
+
+  const verified = await readFile(safePath);
+  if (verified.content !== content) throw new Error("Create completed but read-back verification failed.");
+
+  return {
+    path: safePath,
+    commitSha: data?.commit?.sha ?? null,
+    sha: verified.sha,
+    verified: true
+  };
+}
