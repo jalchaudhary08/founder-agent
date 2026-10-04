@@ -5,7 +5,7 @@ import "./styles.css";
 const starterMessages = [
   {
     role: "agent",
-    text: "Hey founder 👋 I'm your Founder Agent. Give me a task and I'll plan it, show approvals when needed, execute through connected tools, and verify the result."
+    text: "Hey founder 👋 I'm your Founder Agent. Give me a task and I'll plan it, use the repository brain, and report exactly what is verified."
   }
 ];
 
@@ -14,22 +14,50 @@ function App() {
   const [input, setInput] = React.useState("");
   const [status, setStatus] = React.useState("IDLE");
 
-  function sendMessage(event) {
+  async function sendMessage(event) {
     event.preventDefault();
     const value = input.trim();
-    if (!value) return;
+    if (!value || status === "WORKING") return;
 
-    setMessages((items) => [
-      ...items,
-      { role: "user", text: value },
-      {
-        role: "agent",
-        text: "I received the task. Runtime connection is the next integration step; this prototype is ready for the real orchestrator."
-      }
-    ]);
-    setStatus("WORKING");
+    const nextMessages = [...messages, { role: "user", text: value }];
+    setMessages(nextMessages);
     setInput("");
-    window.setTimeout(() => setStatus("IDLE"), 1200);
+    setStatus("WORKING");
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          task: value,
+          history: messages
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Runtime request failed.");
+      }
+
+      setMessages((items) => [
+        ...items,
+        {
+          role: "agent",
+          text: data.result || "The runtime completed without a text result."
+        }
+      ]);
+      setStatus(data.status || "IDLE");
+    } catch (error) {
+      setMessages((items) => [
+        ...items,
+        {
+          role: "agent",
+          text: `Runtime status: BLOCKED/FAILED. ${error.message}`
+        }
+      ]);
+      setStatus("BLOCKED");
+    }
   }
 
   return (
@@ -63,8 +91,9 @@ function App() {
           onChange={(event) => setInput(event.target.value)}
           placeholder="Tell Founder Agent what you want done..."
           rows={1}
+          disabled={status === "WORKING"}
         />
-        <button type="submit" aria-label="Send task">↑</button>
+        <button type="submit" aria-label="Send task" disabled={status === "WORKING"}>↑</button>
       </form>
 
       <div className="quick">
