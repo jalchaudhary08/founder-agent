@@ -77,9 +77,7 @@ const TOOL_DEFINITIONS = [
     description: "Read one text file from the Founder Agent repository.",
     parameters: {
       type: "object",
-      properties: {
-        path: { type: "string", description: "Repository-relative file path." }
-      },
+      properties: { path: { type: "string", description: "Repository-relative file path." } },
       required: ["path"],
       additionalProperties: false
     },
@@ -100,6 +98,30 @@ const TOOL_DEFINITIONS = [
       additionalProperties: false
     },
     strict: true
+  },
+  {
+    type: "function",
+    name: "web_search",
+    description: "Search the public web for current information. Search results are discovery evidence; open important source URLs before treating claims as verified.",
+    parameters: {
+      type: "object",
+      properties: { query: { type: "string", description: "Focused web search query." } },
+      required: ["query"],
+      additionalProperties: false
+    },
+    strict: true
+  },
+  {
+    type: "function",
+    name: "web_open",
+    description: "Open a public HTTP(S) web page to inspect its content and verify evidence.",
+    parameters: {
+      type: "object",
+      properties: { url: { type: "string", description: "Public HTTP(S) URL to inspect." } },
+      required: ["url"],
+      additionalProperties: false
+    },
+    strict: true
   }
 ];
 
@@ -110,9 +132,12 @@ function extractFunctionCalls(data) {
 async function executeToolCall(call) {
   const args = JSON.parse(call.arguments || "{}");
   const { readFile, prepareWrite } = await import("./tools/github.js");
+  const { searchWeb, openWeb } = await import("./tools/web.js");
 
   if (call.name === "github_read_file") return await readFile(args.path);
   if (call.name === "github_prepare_write") return await prepareWrite(args);
+  if (call.name === "web_search") return await searchWeb(args.query);
+  if (call.name === "web_open") return await openWeb(args.url);
 
   throw new Error(`Unsupported tool: ${call.name}`);
 }
@@ -143,6 +168,9 @@ async function callOpenAI(task, history, context) {
 
   const system = `You are Founder Agent. Follow the repository constitution exactly.
 Use github_read_file when additional repository evidence is needed.
+Use web_search for current public-web discovery and web_open to verify important source pages.
+For research, do not treat search snippets alone as verified evidence. Record source URLs and clearly distinguish FACT, SOURCE_DERIVED, ASSUMPTION, ESTIMATE and HYPOTHESIS.
+For Mission 002, follow the mission schema and do not invent missing prospect fields.
 Never claim a tool action happened without runtime evidence.
 Never fabricate completion, sources, customers, payments, permissions or verification.
 For repository changes, use github_prepare_write to create a proposal. NEVER write directly; explicit founder approval is required before any write.
