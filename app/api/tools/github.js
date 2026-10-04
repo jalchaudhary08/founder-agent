@@ -1,6 +1,7 @@
 const REPO = "jalchaudhary08/founder-agent";
 const BRANCH = "main";
-const API_BASE = \`https://api.github.com/repos/\${REPO}/contents/\`;
+const RAW_BASE = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/`;
+const API_BASE = `https://api.github.com/repos/${REPO}/contents/`;
 
 function requireToken() {
   if (!process.env.GITHUB_TOKEN) {
@@ -12,9 +13,9 @@ function requireToken() {
 
 function assertSafePath(path) {
   if (typeof path !== "string" || !path.trim()) throw new Error("Repository path is required.");
-  const normalized = path.replace(/^\\/+/, "");
+  const normalized = path.replace(/^\/+/, "");
   if (normalized.includes("..") || normalized.startsWith(".git/")) throw new Error("Unsafe repository path.");
-  const blocked = /(^|\\/)(\\.env|\\.env\\.|.*\\.pem$|.*\\.key$|credentials?\\.|secrets?\\.)/i;
+  const blocked = /(^|\/)(\.env|\.env\.|.*\.pem$|.*\.key$|credentials?\.|secrets?\.)/i;
   if (blocked.test(normalized)) throw new Error("Secret-like files are blocked by the runtime tool layer.");
   return normalized;
 }
@@ -23,7 +24,7 @@ function headers() {
   requireToken();
   return {
     Accept: "application/vnd.github+json",
-    Authorization: \`Bearer \${process.env.GITHUB_TOKEN}\`,
+    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
     "X-GitHub-Api-Version": "2022-11-28",
     "Content-Type": "application/json"
   };
@@ -31,25 +32,32 @@ function headers() {
 
 export async function readFile(path) {
   const safePath = assertSafePath(path);
+
   if (!process.env.GITHUB_TOKEN) {
     const response = await fetch(RAW_BASE + safePath);
     if (!response.ok) throw new Error(`GitHub public read failed for ${safePath}: ${response.status}`);
-    return { path: safePath, content: await response.text(), verified: true, source: "public-raw" };
+    return {
+      path: safePath,
+      content: await response.text(),
+      verified: true,
+      source: "public-raw"
+    };
   }
-  const response = await fetch(API_BASE + encodeURIComponent(safePath).replace(/%2F/g, "/") + \`?ref=\${encodeURIComponent(BRANCH)}\`, {
-    headers: process.env.GITHUB_TOKEN ? headers() : { Accept: "application/vnd.github.raw+json" }
-  });
-  if (!response.ok) throw new Error(\`GitHub read failed for \${safePath}: \${response.status}\`);
 
-  if (!process.env.GITHUB_TOKEN) return { path: safePath, content: await response.text(), verified: true };
+  const url = API_BASE + encodeURIComponent(safePath).replace(/%2F/g, "/") + `?ref=${encodeURIComponent(BRANCH)}`;
+  const response = await fetch(url, { headers: headers() });
+
+  if (!response.ok) throw new Error(`GitHub read failed for ${safePath}: ${response.status}`);
 
   const data = await response.json();
-  if (data.encoding !== "base64") throw new Error(\`Unsupported GitHub encoding for \${safePath}\`);
+  if (data.encoding !== "base64") throw new Error(`Unsupported GitHub encoding for ${safePath}`);
+
   return {
     path: safePath,
-    content: Buffer.from(data.content.replace(/\\n/g, ""), "base64").toString("utf8"),
+    content: Buffer.from(data.content.replace(/\n/g, ""), "base64").toString("utf8"),
     sha: data.sha,
-    verified: true
+    verified: true,
+    source: "github-api"
   };
 }
 
@@ -78,10 +86,15 @@ export async function writeFile({ path, content, expectedSha, message }) {
   });
 
   const data = await response.json();
-  if (!response.ok) throw new Error(data?.message || \`GitHub write failed: \${response.status}\`);
+  if (!response.ok) throw new Error(data?.message || `GitHub write failed: ${response.status}`);
 
   const verified = await readFile(safePath);
   if (verified.content !== content) throw new Error("Write completed but read-back verification failed.");
 
-  return { path: safePath, commitSha: data?.commit?.sha ?? null, sha: verified.sha, verified: true };
+  return {
+    path: safePath,
+    commitSha: data?.commit?.sha ?? null,
+    sha: verified.sha,
+    verified: true
+  };
 }
