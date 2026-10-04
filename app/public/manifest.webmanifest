@@ -1,0 +1,19 @@
+{
+  "name": "Founder Agent",
+  "short_name": "Founder Agent",
+  "description": "Personal AI operating system for research, building, verification, and growth.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#08080d",
+  "theme_color": "#08080d",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
