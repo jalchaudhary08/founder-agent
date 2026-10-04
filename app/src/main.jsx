@@ -69,6 +69,8 @@ function App() {
   const [messages, setMessages] = React.useState(starterMessages);
   const [input, setInput] = React.useState("");
   const [status, setStatus] = React.useState("IDLE");
+  const [approval, setApproval] = React.useState(null);
+  const [approvalBusy, setApprovalBusy] = React.useState(false);
 
   React.useEffect(() => {
     fetch("/api/auth/me")
@@ -122,6 +124,7 @@ function App() {
           text: data.result || "The runtime completed without a text result."
         }
       ]);
+      setApproval(data.approval || null);
       setStatus(data.status || "IDLE");
     } catch (error) {
       setMessages((items) => [
@@ -132,6 +135,52 @@ function App() {
         }
       ]);
       setStatus("BLOCKED");
+    }
+  }
+
+  async function approveWrite() {
+    if (!approval?.approvalToken || approvalBusy) return;
+
+    setApprovalBusy(true);
+    setStatus("WORKING");
+
+    try {
+      const response = await fetch("/api/approvals/approve", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ approvalToken: approval.approvalToken })
+      });
+      const data = await response.json();
+
+      if (response.status === 401) {
+        setAuthenticated(false);
+        throw new Error("Your Founder session expired. Unlock the agent again.");
+      }
+
+      if (!response.ok) throw new Error(data.error || "Approval execution failed.");
+
+      setMessages((items) => [
+        ...items,
+        {
+          role: "agent",
+          text: [
+            data.result,
+            "",
+            "Commit: " + (data.commitSha || "unavailable"),
+            "Verification: " + (data.verified ? "PASSED" : "FAILED")
+          ].join("\n")
+        }
+      ]);
+      setApproval(null);
+      setStatus(data.status || "DONE");
+    } catch (error) {
+      setMessages((items) => [
+        ...items,
+        { role: "agent", text: "Approval status: BLOCKED/FAILED. " + error.message }
+      ]);
+      setStatus("BLOCKED");
+    } finally {
+      setApprovalBusy(false);
     }
   }
 
@@ -177,6 +226,35 @@ function App() {
           </div>
         ))}
       </section>
+
+      {approval && (
+        <section className="approval-card" aria-label="Founder approval request">
+          <div className="approval-head">
+            <div>
+              <div className="approval-kicker">ACTION REQUIRES APPROVAL</div>
+              <h2>GitHub change ready</h2>
+            </div>
+            <span className="approval-timer">{Math.ceil((approval.expiresInSeconds || 600) / 60)} min</span>
+          </div>
+          <div className="approval-meta">
+            <div><span>File</span><code>{approval.path}</code></div>
+            <div><span>Commit</span><code>{approval.message}</code></div>
+          </div>
+          <details>
+            <summary>Review proposed content</summary>
+            <pre>{approval.contentPreview}</pre>
+          </details>
+          <div className="approval-warning">Nothing has been written yet. Approve only if this exact change is intended.</div>
+          <div className="approval-actions">
+            <button className="approve-button" onClick={approveWrite} disabled={approvalBusy}>
+              {approvalBusy ? "Applying…" : "✓ Approve & Write"}
+            </button>
+            <button className="reject-button" onClick={() => { setApproval(null); setStatus("IDLE"); }} disabled={approvalBusy}>
+              Cancel
+            </button>
+          </div>
+        </section>
+      )}
 
       <form className="composer" onSubmit={sendMessage}>
         <textarea
