@@ -5,23 +5,25 @@ const BRANCH = "main";
 const RAW_BASE = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/`;
 const API_BASE = `https://api.github.com/repos/${REPO}/contents/`;
 
-const ALWAYS_LOAD = [
+const BASE_FILES = [
   "AGENT.md",
-  "MEMORY/STATE.md",
-  "CORE/ORCHESTRATOR.md",
-  "CORE/DECISION_ENGINE.md",
-  "CORE/APPROVAL_GATES.md"
+  "MEMORY/STATE.md"
 ];
 
-const OPTIONAL_FILES = [
-  ["MISSION_002", "MISSIONS/MISSION_002_PROSPECT_RESEARCH.md"],
-  ["MISSION 002", "MISSIONS/MISSION_002_PROSPECT_RESEARCH.md"],
-  ["FOOD LABEL", "PRODUCTS/FOOD_LABEL_NUTRITION/PRODUCT_SPEC.md"],
-  ["FOOD", "PRODUCTS/FOOD_LABEL_NUTRITION/PRODUCT_SPEC.md"],
-  ["NUTRITION", "PRODUCTS/FOOD_LABEL_NUTRITION/PRODUCT_SPEC.md"],
-  ["PROSPECT", "MISSIONS/PROSPECT_RECORD_SCHEMA.md"],
-  ["PROSPECTS", "MISSIONS/PROSPECT_RECORD_SCHEMA.md"]
+const CONTEXT_RULES = [
+  [/(mission|build|execute|agent|task|run|research|project)/i, "CORE/ORCHESTRATOR.md"],
+  [/(decide|decision|compare|choose|strategy|recommend|business|saas)/i, "CORE/DECISION_ENGINE.md"],
+  [/(write|create|update|delete|github|approve|approval|send|payment|purchase|deploy)/i, "CORE/APPROVAL_GATES.md"],
+  [/(mission[ _-]?002)/i, "MISSIONS/MISSION_002_PROSPECT_RESEARCH.md"],
+  [/(mission[ _-]?002|prospect)/i, "MISSIONS/PROSPECT_RECORD_SCHEMA.md"],
+  [/(mission[ _-]?002|prospect|food label|nutrition|packaged food)/i, "MISSIONS/PROSPECT_RESEARCH_DATA.md"],
+  [/(food label|nutrition)/i, "PRODUCTS/FOOD_LABEL_NUTRITION/PRODUCT_SPEC.md"]
 ];
+
+const MAX_FILE_CHARS = 12000;
+const MAX_CONTEXT_CHARS = 36000;
+const MAX_HISTORY_MESSAGES = 6;
+const MAX_HISTORY_CHARS = 12000;
 
 function githubHeaders() {
   const headers = { Accept: "application/vnd.github.raw+json" };
@@ -43,31 +45,84 @@ async function loadRepoFile(path) {
   return response.text();
 }
 
-async function loadContext(task) {
-  const paths = [...ALWAYS_LOAD];
-  const upper = task.toUpperCase();
-
-  for (const [keyword, path] of OPTIONAL_FILES) {
-    if (upper.includes(keyword) && !paths.includes(path)) paths.push(path);
+function selectContextPaths(task) {
+  const paths = [...BASE_FILES];
+  for (const [pattern, path] of CONTEXT_RULES) {
+    if (pattern.test(task) && !paths.includes(path)) paths.push(path);
   }
+  return paths;
+}
 
+async function loadContext(task) {
+  const paths = selectContextPaths(task);
   const results = await Promise.all(
     paths.map(async (path) => {
       try {
-        return { path, content: await loadRepoFile(path) };
+        const content = await loadRepoFile(path);
+        return { path, content: content.length > MAX_FILE_CHARS
+          ? content.slice(0, MAX_FILE_CHARS) + "\n[CONTEXT TRUNCATED BY RUNTIME]"
+          : content };
       } catch (error) {
         return { path, error: error.message };
       }
     })
   );
 
-  return results
-    .map((item) =>
-      item.error
-        ? `## ${item.path}\n[CONTEXT UNAVAILABLE: ${item.error}]`
-        : `## ${item.path}\n${item.content}`
-    )
-    .join("\n\n---\n\n");
+  let total = 0;
+  const sections = [];
+  for (const item of results) {
+    const section = item.error
+      ? `## ${item.path}\n[CONTEXT UNAVAILABLE: ${item.error}]`
+      : `## ${item.path}\n${item.content}`;
+    if (total + section.length > MAX_CONTEXT_CHARS) break;
+    sections.push(section);
+    total += section.length;
+  }
+  return sections.join("\n\n---\n\n");
+}
+
+function trimHistory(history) {
+  return history
+    .slice(-MAX_HISTORY_MESSAGES)
+    .map((message) => ({
+      role: message.role === "agent" ? "assistant" : "user",
+      content: String(message.text || "").slice(0, 2200)
+    }))
+    .reduce((items, item) => {
+      const used = items.reduce((sum, current) => sum + current.content.length, 0);
+      if (used + item.content.length > MAX_HISTORY_CHARS) return items;
+      items.push(item);
+      return items;
+    }, []);
+}
+
+function headerNumber(response, name) {
+  const value = response.headers.get(name);
+  if (!value) return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function rateLimitSnapshot(response) {
+  return {
+    limitTokens: headerNumber(response, "x-ratelimit-limit-tokens"),
+    remainingTokens: headerNumber(response, "x-ratelimit-remaining-tokens"),
+    resetTokens: response.headers.get("x-ratelimit-reset-tokens"),
+    limitRequests: headerNumber(response, "x-ratelimit-limit-requests"),
+    remainingRequests: headerNumber(response, "x-ratelimit-remaining-requests"),
+    resetRequests: response.headers.get("x-ratelimit-reset-requests"),
+    retryAfter: response.headers.get("retry-after")
+  };
+}
+
+function addUsage(total, usage) {
+  if (!usage) return total;
+  return {
+    inputTokens: total.inputTokens + Number(usage.input_tokens || 0),
+    outputTokens: total.outputTokens + Number(usage.output_tokens || 0),
+    totalTokens: total.totalTokens + Number(usage.total_tokens || 0),
+    cachedTokens: total.cachedTokens + Number(usage.input_tokens_details?.cached_tokens || 0)
+  };
 }
 
 const TOOL_DEFINITIONS = [
@@ -139,11 +194,13 @@ async function callOpenAI(task, history, context) {
     throw error;
   }
 
+  const isMission002 = /mission[ _-]?002/i.test(task);
   const system = `You are Founder Agent. Follow the repository constitution exactly.
 Use github_read_file when additional repository evidence is needed.
 Use the built-in web_search tool for current public-web discovery and source verification.
 For research, do not treat unsupported claims as verified evidence. Use the web search citations/sources provided by the runtime and clearly distinguish FACT, SOURCE_DERIVED, ASSUMPTION, ESTIMATE and HYPOTHESIS.
 For Mission 002, follow the mission schema and do not invent missing prospect fields.
+Mission 002 is resumable and batch-limited: NEVER attempt all 30 prospects in one model turn. Process at most 5 new prospects per execution, report how many remain, and resume from repository state on the next run.
 Authoritative Mission 002 repository paths are exactly:
 - MISSIONS/MISSION_002_PROSPECT_RESEARCH.md
 - MISSIONS/PROSPECT_RECORD_SCHEMA.md
@@ -155,20 +212,17 @@ For repository changes, use github_prepare_write to create a proposal. NEVER wri
 If the user asks to create a NEW file, call github_prepare_write directly; do NOT call github_read_file on the target first because a new file correctly returns 404.
 If the user asks for a change to an EXISTING file and the target is not known to exist, read it first only when necessary to establish the current content.
 Do not reveal hidden chain-of-thought; provide concise conclusions and evidence.
+${isMission002 ? "Mission 002 batch rule is active for this request: maximum 5 new prospects." : ""}
 
 REPOSITORY CONTEXT:
 ${context}`;
 
-  let input = [
-    ...history.slice(-10).map((message) => ({
-      role: message.role === "agent" ? "assistant" : "user",
-      content: message.text
-    })),
-    { role: "user", content: task }
-  ];
+  let input = [...trimHistory(history), { role: "user", content: task }];
   const toolEvidence = [];
   let approval = null;
   let webSearchCount = 0;
+  let usageTotals = { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 };
+  let lastRateLimit = null;
 
   for (let round = 0; round < 3; round++) {
     const response = await fetch("https://api.openai.com/v1/responses", {
@@ -181,6 +235,8 @@ ${context}`;
         model: process.env.OPENAI_MODEL,
         instructions: system,
         input,
+        max_output_tokens: isMission002 ? 4500 : 2500,
+        max_tool_calls: isMission002 ? 8 : 4,
         tools: [
           ...TOOL_DEFINITIONS,
           { type: "web_search", search_context_size: "medium" }
@@ -188,12 +244,31 @@ ${context}`;
         include: ["web_search_call.results"]
       })
     });
+
+    lastRateLimit = rateLimitSnapshot(response);
     const data = await response.json();
-    if (!response.ok) throw new Error(data?.error?.message || `OpenAI request failed: ${response.status}`);
+    usageTotals = addUsage(usageTotals, data.usage);
+
+    if (!response.ok) {
+      const error = new Error(data?.error?.message || `OpenAI request failed: ${response.status}`);
+      error.statusCode = response.status;
+      error.code = data?.error?.code;
+      error.telemetry = { usage: usageTotals, rateLimit: lastRateLimit };
+      throw error;
+    }
 
     const calls = extractFunctionCalls(data);
     webSearchCount += (data.output ?? []).filter((item) => item.type === "web_search_call").length;
-    if (!calls.length) return { text: extractOutputText(data), toolEvidence, approval, webSearchCount };
+    if (!calls.length) {
+      return {
+        text: extractOutputText(data),
+        toolEvidence,
+        approval,
+        webSearchCount,
+        usage: usageTotals,
+        rateLimit: lastRateLimit
+      };
+    }
 
     input = [...input, ...(data.output ?? [])];
 
@@ -242,15 +317,16 @@ export default async function handler(req, res) {
 
     const context = await loadContext(task);
     const modelResult = await callOpenAI(task, history, context);
-    const result = modelResult.text;
 
     res.status(200).json({
       status: modelResult.approval ? "NEEDS_HUMAN_APPROVAL" : "DONE",
-      result,
+      result: modelResult.text,
       approval: modelResult.approval,
+      usage: modelResult.usage,
+      rateLimit: modelResult.rateLimit,
       evidence: [
         "Authenticated Founder session verified.",
-        "Repository context loaded from founder-agent/main.",
+        "Loaded task-relevant repository context only.",
         "Response generated by the configured model provider.",
         ...modelResult.toolEvidence.map((e) => `Tool verified: ${e.tool} (${e.path}).`),
         ...(modelResult.webSearchCount ? [`Built-in web search executed: ${modelResult.webSearchCount} search call(s).`] : [])
@@ -258,16 +334,16 @@ export default async function handler(req, res) {
       actions_taken: [
         "Verified Founder authentication.",
         "Parsed the founder request.",
-        "Loaded relevant repository context.",
+        "Loaded only task-relevant repository context.",
         "Generated a response through the runtime provider adapter.",
-        ...(modelResult.toolEvidence.length ? ["Executed bounded read-only GitHub tool calls and recorded evidence."] : [])
+        ...(modelResult.toolEvidence.length ? ["Executed bounded GitHub tool calls and recorded evidence."] : [])
       ],
       actions_not_taken: [modelResult.approval
         ? "No repository write was executed; the proposed change is waiting for explicit founder approval."
         : "No repository write or destructive action was executed."],
       next_step: modelResult.approval
         ? "Review the proposed change and approve it explicitly to execute the GitHub write."
-        : "Verify the authenticated runtime and use an approval-gated proposal for repository changes."
+        : "Continue with the next task or a resumable mission batch."
     });
   } catch (error) {
     if (error?.code === "UNAUTHORIZED") {
@@ -284,12 +360,17 @@ export default async function handler(req, res) {
       error?.code === "MISSING_MODEL" ||
       error?.code === "MISSING_AUTH_SECRET";
 
-    res.status(missingConfig ? 503 : 500).json({
-      status: missingConfig ? "BLOCKED" : "FAILED",
+    const statusCode = Number.isInteger(error?.statusCode) ? error.statusCode : (missingConfig ? 503 : 500);
+    res.status(statusCode).json({
+      status: statusCode === 429 ? "RATE_LIMITED" : (missingConfig ? "BLOCKED" : "FAILED"),
       error: error?.message || "Runtime error.",
-      next_step: missingConfig
-        ? "Configure the required runtime environment variables in Vercel."
-        : "Inspect the runtime error, fix the failing dependency, and retry."
+      usage: error?.telemetry?.usage || null,
+      rateLimit: error?.telemetry?.rateLimit || null,
+      next_step: statusCode === 429
+        ? "Wait for the reported rate-limit reset, or reduce request size/traffic before retrying."
+        : (missingConfig
+          ? "Configure the required runtime environment variables in Vercel."
+          : "Inspect the runtime error, fix the failing dependency, and retry.")
     });
   }
 }
