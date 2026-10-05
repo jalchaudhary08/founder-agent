@@ -1,0 +1,626 @@
+{
+  "version": 1,
+  "owner": "Jal Chaudhary",
+  "title": "Jal Chaudhary — Founder Agent Master Roadmap",
+  "phases": [
+    {
+      "id": "foundation",
+      "title": "Founder Agent Brain",
+      "icon": "🧠",
+      "tasks": [
+        {
+          "id": "constitution",
+          "title": "Agent constitution",
+          "check": {
+            "type": "file_exists",
+            "path": "AGENT.md"
+          }
+        },
+        {
+          "id": "principles",
+          "title": "Core principles",
+          "check": {
+            "type": "file_exists",
+            "path": "CORE/PRINCIPLES.md"
+          }
+        },
+        {
+          "id": "decision",
+          "title": "Decision engine",
+          "check": {
+            "type": "file_exists",
+            "path": "CORE/DECISION_ENGINE.md"
+          }
+        },
+        {
+          "id": "orchestrator",
+          "title": "Orchestrator",
+          "check": {
+            "type": "file_exists",
+            "path": "CORE/ORCHESTRATOR.md"
+          }
+        },
+        {
+          "id": "state_machine",
+          "title": "State machine",
+          "check": {
+            "type": "file_exists",
+            "path": "CORE/STATE_MACHINE.md"
+          }
+        },
+        {
+          "id": "recovery",
+          "title": "Error recovery",
+          "check": {
+            "type": "file_exists",
+            "path": "CORE/ERROR_RECOVERY.md"
+          }
+        },
+        {
+          "id": "quality",
+          "title": "Quality standard",
+          "check": {
+            "type": "file_exists",
+            "path": "CORE/QUALITY_STANDARD.md"
+          }
+        },
+        {
+          "id": "gates",
+          "title": "Approval gates",
+          "check": {
+            "type": "file_exists",
+            "path": "CORE/APPROVAL_GATES.md"
+          }
+        }
+      ]
+    },
+    {
+      "id": "runtime",
+      "title": "Runtime / Execution Engine",
+      "icon": "⚙️",
+      "tasks": [
+        {
+          "id": "task_protocol",
+          "title": "Task protocol",
+          "check": {
+            "type": "file_exists",
+            "path": "RUNTIME/TASK_PROTOCOL.md"
+          }
+        },
+        {
+          "id": "context",
+          "title": "Context map",
+          "check": {
+            "type": "file_exists",
+            "path": "RUNTIME/CONTEXT_MAP.md"
+          }
+        },
+        {
+          "id": "router",
+          "title": "Context Router 2.0",
+          "check": {
+            "type": "file_exists",
+            "path": "RUNTIME/CONTEXT_ROUTER.md"
+          }
+        },
+        {
+          "id": "provider",
+          "title": "Provider adapter",
+          "check": {
+            "type": "file_exists",
+            "path": "RUNTIME/PROVIDER_ADAPTER.md"
+          }
+        },
+        {
+          "id": "tool_layer",
+          "title": "Tool layer",
+          "check": {
+            "type": "file_exists",
+            "path": "RUNTIME/TOOL_LAYER.md"
+          }
+        },
+        {
+          "id": "approval_flow",
+          "title": "Approval flow",
+          "check": {
+            "type": "file_exists",
+            "path": "RUNTIME/APPROVAL_FLOW.md"
+          }
+        },
+        {
+          "id": "auth_protocol",
+          "title": "Runtime authentication",
+          "check": {
+            "type": "file_exists",
+            "path": "RUNTIME/AUTH_PROTOCOL.md"
+          }
+        },
+        {
+          "id": "efficiency",
+          "title": "Token / cost controls",
+          "check": {
+            "type": "file_exists",
+            "path": "RUNTIME/EFFICIENCY.md"
+          }
+        },
+        {
+          "id": "self_test",
+          "title": "Runtime self-test",
+          "check": {
+            "type": "contains",
+            "path": "app/api/chat.js",
+            "text": "roadmap"
+          }
+        },
+        {
+          "id": "recovery_test",
+          "title": "Failure / recovery test",
+          "check": {
+            "type": "manual"
+          }
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "title": "Security & Approvals",
+      "icon": "🔐",
+      "tasks": [
+        {
+          "id": "auth",
+          "title": "Founder authentication",
+          "check": {
+            "type": "file_exists",
+            "path": "app/api/auth/login.js"
+          }
+        },
+        {
+          "id": "cookie",
+          "title": "Secure session cookie",
+          "check": {
+            "type": "contains",
+            "path": "app/api/_lib/auth.js",
+            "text": "HttpOnly"
+          }
+        },
+        {
+          "id": "secret_paths",
+          "title": "Secret-path protection",
+          "check": {
+            "type": "contains",
+            "path": "app/api/tools/github.js",
+            "text": "secret"
+          }
+        },
+        {
+          "id": "env_secrets",
+          "title": "Secrets in environment only",
+          "check": {
+            "type": "contains",
+            "path": "RUNTIME/AUTH_PROTOCOL.md",
+            "text": "environment"
+          }
+        },
+        {
+          "id": "approval_tokens",
+          "title": "Signed approval capability",
+          "check": {
+            "type": "file_exists",
+            "path": "app/api/_lib/approval.js"
+          }
+        },
+        {
+          "id": "readback",
+          "title": "Read-back verification",
+          "check": {
+            "type": "contains",
+            "path": "app/api/approvals/approve.js",
+            "text": "verified"
+          }
+        },
+        {
+          "id": "approval_test",
+          "title": "Real approval-flow test",
+          "check": {
+            "type": "file_exists",
+            "path": "RUNTIME/APPROVAL_TEST.md"
+          }
+        }
+      ]
+    },
+    {
+      "id": "memory",
+      "title": "Memory & Mission System",
+      "icon": "📚",
+      "tasks": [
+        {
+          "id": "state",
+          "title": "Persistent state",
+          "check": {
+            "type": "file_exists",
+            "path": "MEMORY/STATE.md"
+          }
+        },
+        {
+          "id": "decisions",
+          "title": "Decisions memory",
+          "check": {
+            "type": "file_exists",
+            "path": "MEMORY/DECISIONS.md"
+          }
+        },
+        {
+          "id": "projects",
+          "title": "Projects memory",
+          "check": {
+            "type": "file_exists",
+            "path": "MEMORY/PROJECTS.md"
+          }
+        },
+        {
+          "id": "learnings",
+          "title": "Learnings memory",
+          "check": {
+            "type": "file_exists",
+            "path": "MEMORY/LEARNINGS.md"
+          }
+        },
+        {
+          "id": "mission_protocol",
+          "title": "Mission execution protocol",
+          "check": {
+            "type": "file_exists",
+            "path": "MISSIONS/EXECUTION_PROTOCOL.md"
+          }
+        },
+        {
+          "id": "mission_schema",
+          "title": "Prospect research schema",
+          "check": {
+            "type": "file_exists",
+            "path": "MISSIONS/PROSPECT_RECORD_SCHEMA.md"
+          }
+        },
+        {
+          "id": "auto_memory",
+          "title": "Automatic memory update",
+          "check": {
+            "type": "manual"
+          }
+        }
+      ]
+    },
+    {
+      "id": "app",
+      "title": "Founder Agent App 2.0",
+      "icon": "📱",
+      "tasks": [
+        {
+          "id": "identity",
+          "title": "Jal Chaudhary identity",
+          "check": {
+            "type": "contains",
+            "path": "app/src/main.jsx",
+            "text": "JAL CHAUDHARY"
+          }
+        },
+        {
+          "id": "splash",
+          "title": "Agent boot / splash experience",
+          "check": {
+            "type": "contains",
+            "path": "app/src/main.jsx",
+            "text": "INITIALIZING SYSTEM"
+          }
+        },
+        {
+          "id": "dashboard",
+          "title": "Premium agent dashboard",
+          "check": {
+            "type": "contains",
+            "path": "app/src/main.jsx",
+            "text": "Founder overview"
+          }
+        },
+        {
+          "id": "navigation",
+          "title": "App navigation",
+          "check": {
+            "type": "contains",
+            "path": "app/src/main.jsx",
+            "text": "MISSIONS"
+          }
+        },
+        {
+          "id": "chat_ui",
+          "title": "Agent-style chat",
+          "check": {
+            "type": "contains",
+            "path": "app/src/main.jsx",
+            "text": "AGENT RESPONSE"
+          }
+        },
+        {
+          "id": "roadmap_ui",
+          "title": "Personal live roadmap",
+          "check": {
+            "type": "contains",
+            "path": "app/src/main.jsx",
+            "text": "MASTER ROADMAP"
+          }
+        },
+        {
+          "id": "mission_center",
+          "title": "Mission center",
+          "check": {
+            "type": "contains",
+            "path": "app/src/main.jsx",
+            "text": "Mission Center"
+          }
+        },
+        {
+          "id": "project_view",
+          "title": "Project view",
+          "check": {
+            "type": "contains",
+            "path": "app/src/main.jsx",
+            "text": "AI Food Label"
+          }
+        },
+        {
+          "id": "memory_view",
+          "title": "Memory view",
+          "check": {
+            "type": "contains",
+            "path": "app/src/main.jsx",
+            "text": "Agent memory"
+          }
+        },
+        {
+          "id": "tools_view",
+          "title": "Tools & security view",
+          "check": {
+            "type": "contains",
+            "path": "app/src/main.jsx",
+            "text": "Connected tools"
+          }
+        },
+        {
+          "id": "activity",
+          "title": "Activity timeline",
+          "check": {
+            "type": "contains",
+            "path": "app/src/main.jsx",
+            "text": "ACTIVITY"
+          }
+        },
+        {
+          "id": "settings",
+          "title": "Settings surface",
+          "check": {
+            "type": "contains",
+            "path": "app/src/main.jsx",
+            "text": "SETTINGS"
+          }
+        },
+        {
+          "id": "loading",
+          "title": "Smooth loading / skeleton states",
+          "check": {
+            "type": "contains",
+            "path": "app/src/styles.css",
+            "text": "skeleton"
+          }
+        },
+        {
+          "id": "polish",
+          "title": "Premium motion & responsive polish",
+          "check": {
+            "type": "contains",
+            "path": "app/src/styles.css",
+            "text": "transition"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mission002",
+      "title": "Mission 002 — Prospect Validation",
+      "icon": "🔎",
+      "tasks": [
+        {
+          "id": "definition",
+          "title": "Mission definition",
+          "check": {
+            "type": "file_exists",
+            "path": "MISSIONS/MISSION_002_PROSPECT_RESEARCH.md"
+          }
+        },
+        {
+          "id": "target",
+          "title": "Target customer defined",
+          "check": {
+            "type": "contains",
+            "path": "PRODUCTS/FOOD_LABEL_NUTRITION/PRODUCT_SPEC.md",
+            "text": "small packaged-food businesses"
+          }
+        },
+        {
+          "id": "data_store",
+          "title": "Prospect data store",
+          "check": {
+            "type": "file_exists",
+            "path": "MISSIONS/PROSPECT_RESEARCH_DATA.md"
+          }
+        },
+        {
+          "id": "thirty",
+          "title": "30 qualified prospects",
+          "check": {
+            "type": "prospect_count",
+            "path": "MISSIONS/PROSPECT_RESEARCH_DATA.md",
+            "minimum": 30
+          }
+        },
+        {
+          "id": "top10",
+          "title": "Top 10 shortlist",
+          "check": {
+            "type": "manual"
+          }
+        },
+        {
+          "id": "approval",
+          "title": "Founder-approved outreach",
+          "check": {
+            "type": "manual"
+          }
+        },
+        {
+          "id": "payment1",
+          "title": "First genuine payment",
+          "check": {
+            "type": "manual"
+          }
+        },
+        {
+          "id": "payments3",
+          "title": "2–3 genuine payments",
+          "check": {
+            "type": "manual"
+          }
+        }
+      ]
+    },
+    {
+      "id": "saas",
+      "title": "AI Food Label SaaS MVP",
+      "icon": "🥫",
+      "tasks": [
+        {
+          "id": "spec",
+          "title": "Product specification",
+          "check": {
+            "type": "file_exists",
+            "path": "PRODUCTS/FOOD_LABEL_NUTRITION/PRODUCT_SPEC.md"
+          }
+        },
+        {
+          "id": "workflow",
+          "title": "Customer workflow",
+          "check": {
+            "type": "manual"
+          }
+        },
+        {
+          "id": "nutrition",
+          "title": "Nutrition calculation engine",
+          "check": {
+            "type": "manual"
+          }
+        },
+        {
+          "id": "ingredients",
+          "title": "Ingredient & allergen engine",
+          "check": {
+            "type": "manual"
+          }
+        },
+        {
+          "id": "label",
+          "title": "Label-ready generator",
+          "check": {
+            "type": "manual"
+          }
+        },
+        {
+          "id": "pdf",
+          "title": "PDF/document output",
+          "check": {
+            "type": "manual"
+          }
+        },
+        {
+          "id": "payments",
+          "title": "Payment flow",
+          "check": {
+            "type": "manual"
+          }
+        },
+        {
+          "id": "customer",
+          "title": "Customer-facing SaaS",
+          "check": {
+            "type": "manual"
+          }
+        }
+      ]
+    },
+    {
+      "id": "growth",
+      "title": "Customers, Revenue & Scale",
+      "icon": "💰",
+      "tasks": [
+        {
+          "id": "first_customer",
+          "title": "First paying customer",
+          "check": {
+            "type": "manual"
+          }
+        },
+        {
+          "id": "three_customers",
+          "title": "3 paying customers",
+          "check": {
+            "type": "manual"
+          }
+        },
+        {
+          "id": "ten_customers",
+          "title": "10 paying customers",
+          "check": {
+            "type": "manual"
+          }
+        },
+        {
+          "id": "recurring",
+          "title": "Recurring revenue",
+          "check": {
+            "type": "manual"
+          }
+        },
+        {
+          "id": "analytics",
+          "title": "Business analytics",
+          "check": {
+            "type": "manual"
+          }
+        },
+        {
+          "id": "seo",
+          "title": "SEO growth system",
+          "check": {
+            "type": "file_exists",
+            "path": "SKILLS/SEO/SKILL.md"
+          }
+        },
+        {
+          "id": "marketing",
+          "title": "Marketing system",
+          "check": {
+            "type": "file_exists",
+            "path": "SKILLS/MARKETING/SKILL.md"
+          }
+        },
+        {
+          "id": "automation",
+          "title": "Growth automation",
+          "check": {
+            "type": "file_exists",
+            "path": "SKILLS/AUTOMATION/SKILL.md"
+          }
+        }
+      ]
+    }
+  ]
+}
