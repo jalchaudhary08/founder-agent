@@ -205,6 +205,20 @@ function App() {
     finally { setApprovalBusy(false); }
   }
 
+
+  async function diagnosticsCheck() {
+    try {
+      const response = await fetch("/api/chat?diagnostics=1");
+      const data = await response.json();
+      const lines = (data.checks || []).map(check => (check.status === "PASS" ? "✓ " : "✕ ") + check.name);
+      setMessages(items => [...items, {role:"agent", text:"Runtime self-test: " + data.status + " (" + (data.passed ?? 0) + "/" + (data.total ?? 0) + ")\\n\\n" + lines.join("\\n") + "\\n\\nOpenAI probe: " + (data.openaiProbe || "NOT_RUN") + " | Tokens: " + (data.tokenUsage ?? 0)}]);
+      setStatus(data.status === "SELF_TEST_PASS" ? "DONE" : "BLOCKED");
+    } catch(error) {
+      setMessages(items => [...items, {role:"agent", text:"Runtime self-test failed: " + error.message}]);
+      setStatus("BLOCKED");
+    }
+  }
+
   async function healthCheck() {
     try {
       const response = await fetch("/api/chat?health=1"), data = await response.json(), checks = data.checks || {};
@@ -252,7 +266,7 @@ function App() {
       <div className="quick-grid">
         <button onClick={()=>setActiveView("missions")}><b>🔎</b><span>Mission Center</span><small>Run and review missions</small></button>
         <button onClick={()=>setActiveView("roadmap")}><b>☑</b><span>Master Roadmap</span><small>Track every target</small></button>
-        <button onClick={healthCheck}><b>✦</b><span>Health Check</span><small>Zero model tokens</small></button>
+        <button onClick={diagnosticsCheck}><b>✓</b><span>Diagnostics</span><small>Zero model tokens</small></button>
         <button onClick={()=>setActiveView("tools")}><b>⚙</b><span>System</span><small>Tools & security</small></button>
       </div>
       <div className="recent-card"><div className="section-mini"><span>RECENT ACTIVITY</span><button onClick={()=>setActiveView("activity")}>View all →</button></div><div className="activity-item"><i className="dot good-dot"/><span>Runtime health verified</span><time>Today</time></div><div className="activity-item"><i className="dot"/><span>Personal roadmap added</span><time>Today</time></div><div className="activity-item"><i className="dot"/><span>Approval flow verified</span><time>Done</time></div></div>
@@ -277,7 +291,7 @@ function App() {
       <section className="chat">{messages.map((message,index)=><div className={message.role==="user"?"row user":"row"} key={index}><div className="avatar">{message.role==="user"?"YOU":"FA"}</div><div className="bubble"><div className="bubble-label">{message.role==="user"?"JAL CHAUDHARY":"AGENT RESPONSE"}</div>{message.text}</div></div>)}</section>
       {approval && <section className="approval-card"><div className="approval-head"><div><div className="approval-kicker">ACTION REQUIRES APPROVAL</div><h2>GitHub change ready</h2></div><span className="approval-timer">{Math.ceil((approval.expiresInSeconds||600)/60)} min</span></div><div className="approval-meta"><div><span>File</span><code>{approval.path}</code></div><div><span>Commit</span><code>{approval.message}</code></div></div><details><summary>Review proposed content</summary><pre>{approval.contentPreview}</pre></details><div className="approval-warning">Nothing has been written yet. Approve only if this exact change is intended.</div><div className="approval-actions"><button className="approve-button" onClick={approveWrite} disabled={approvalBusy}>{approvalBusy?"Applying…":"✓ Approve & Write"}</button><button className="reject-button" onClick={()=>{setApproval(null);setStatus("IDLE");}} disabled={approvalBusy}>Cancel</button></div></section>}
       <form className="composer" onSubmit={sendMessage}><textarea value={input} onChange={e=>setInput(e.target.value)} placeholder="Tell Founder Agent what you want done…" rows={1} disabled={status==="WORKING"}/><button type="submit" disabled={status==="WORKING"}>↑</button></form>
-      <div className="quick"><button onClick={()=>setInput("Start Mission 002.")}>Start Mission 002</button><button onClick={()=>setInput("Show me the current project status.")}>Project status</button><button onClick={healthCheck}>Health check</button></div>
+      <div className="quick"><button onClick={()=>setInput("Start Mission 002.")}>Start Mission 002</button><button onClick={()=>setInput("Show me the current project status.")}>Project status</button><button onClick={healthCheck}>Health check</button><button onClick={diagnosticsCheck}>Diagnostics</button></div>
     </section>}
   </main>;
 }
