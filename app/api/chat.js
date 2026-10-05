@@ -397,6 +397,51 @@ export default async function handler(req, res) {
   try {
     requireAuth(req);
 
+
+    if (req.method === "GET" && req.query?.roadmap === "1") {
+      const raw = await loadRepoFile("MEMORY/ROADMAP.json");
+      const config = JSON.parse(raw);
+      const allPaths = [...new Set(config.phases.flatMap((phase) => phase.tasks.map((task) => task.check?.path).filter(Boolean)))];
+      const cache = new Map();
+      for (const path of allPaths) {
+        try { cache.set(path, await loadRepoFile(path)); } catch { cache.set(path, null); }
+      }
+
+      function checkTask(task) {
+        const check = task.check || {};
+        if (check.type === "file_exists") return cache.get(check.path) != null;
+        if (check.type === "contains") return String(cache.get(check.path) || "").includes(check.text);
+        if (check.type === "prospect_count") {
+          const text = String(cache.get(check.path) || "");
+          const matches = text.match(/prospect[_ ]?id\s*:/gi);
+          return (matches?.length || 0) >= Number(check.minimum || 0);
+        }
+        return false;
+      }
+
+      let total = 0, completed = 0, completedPhases = 0;
+      const phases = config.phases.map((phase) => {
+        const tasks = phase.tasks.map((task) => {
+          const done = checkTask(task);
+          total += 1; if (done) completed += 1;
+          return {...task, done};
+        });
+        const phaseCompleted = tasks.filter((task) => task.done).length;
+        if (phaseCompleted === tasks.length) completedPhases += 1;
+        return {...phase, tasks, completed: phaseCompleted, total: tasks.length};
+      });
+
+      res.status(200).json({
+        owner: config.owner, title: config.title, phases,
+        total, completed, percent: total ? Math.round((completed / total) * 100) : 0,
+        completedPhases, totalPhases: phases.length,
+        source: "MEMORY/ROADMAP.json",
+        tokenUsage: 0,
+        note: "Roadmap progress is deterministic: ticks are based on verified repository evidence, not model claims."
+      });
+      return;
+    }
+
     if (req.method === "GET" && req.query?.health === "1") {
       const checks = {
         auth: "PASS",
