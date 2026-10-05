@@ -296,7 +296,7 @@ async function callOpenAI(task, history, route, context) {
         instructions: buildInstructions(route, context),
         input,
         max_output_tokens: route.maxOutputTokens,
-        max_tool_calls: route.name === "mission" ? 8 : route.tools.length ? 4 : 0,
+        ...(route.tools.length ? { max_tool_calls: route.name === "mission" ? 8 : 4 } : {}),
         tools,
         ...(route.tools.includes("web_search") ? { include: ["web_search_call.results"] } : {})
       })
