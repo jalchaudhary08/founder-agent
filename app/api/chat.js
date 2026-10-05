@@ -398,6 +398,51 @@ export default async function handler(req, res) {
     requireAuth(req);
 
 
+
+    if (req.method === "GET" && req.query?.diagnostics === "1") {
+      const targets = [
+        ["Auth module", "app/api/_lib/auth.js"],
+        ["GitHub tool layer", "app/api/tools/github.js"],
+        ["Approval executor", "app/api/approvals/approve.js"],
+        ["Repository state", "MEMORY/STATE.md"],
+        ["Master roadmap", "MEMORY/ROADMAP.json"],
+        ["Founder UI", "app/src/main.jsx"],
+        ["UI styles", "app/src/styles.css"]
+      ];
+      const checks = [];
+      for (const [name, path] of targets) {
+        try {
+          const content = await loadRepoFile(path);
+          checks.push({ name, path, status: content ? "PASS" : "FAIL" });
+        } catch (error) {
+          checks.push({ name, path, status: "FAIL", error: error.message });
+        }
+      }
+
+      const configChecks = [
+        ["OPENAI_API_KEY", Boolean(process.env.OPENAI_API_KEY)],
+        ["OPENAI_MODEL", Boolean(process.env.OPENAI_MODEL)],
+        ["FOUNDER_AUTH_SECRET", Boolean(process.env.FOUNDER_AUTH_SECRET)],
+        ["GITHUB_TOKEN", Boolean(process.env.GITHUB_TOKEN)]
+      ].map(([name, configured]) => ({ name, status: configured ? "PASS" : "FAIL" }));
+
+      const allChecks = [...checks, ...configChecks];
+      const passed = allChecks.filter((item) => item.status === "PASS").length;
+      const total = allChecks.length;
+      const healthy = passed === total;
+
+      res.status(healthy ? 200 : 503).json({
+        status: healthy ? "SELF_TEST_PASS" : "SELF_TEST_DEGRADED",
+        passed,
+        total,
+        checks: allChecks,
+        tokenUsage: 0,
+        openaiProbe: "NOT_RUN",
+        note: "Deterministic runtime diagnostics only. No model call and no repository write."
+      });
+      return;
+    }
+
     if (req.method === "GET" && req.query?.roadmap === "1") {
       const raw = await loadRepoFile("MEMORY/ROADMAP.json");
       const config = JSON.parse(raw);
