@@ -430,7 +430,7 @@ export default async function handler(req, res) {
 
       res.status(200).json({
         status: "DONE",
-        result: `**Current status:** Phase: ${phase}. Mode: ${mode}. Current product: ${product}.\\n**Next step:** ${mission}`,
+        result: `**Current status:** Phase: ${phase}. Mode: ${mode}. Current product: ${product}.\n**Next step:** ${mission}`,
         approval: null,
         usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 },
         rateLimit: null,
