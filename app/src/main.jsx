@@ -67,11 +67,11 @@ function BootScreen({ onDone }) {
   </main>;
 }
 
-function Roadmap({ roadmap, onRefresh }) {
+function Roadmap({ roadmap, onRefresh, onStartTask }) {
   if (!roadmap) return <section className="panel"><div className="skeleton skeleton-lg" /><div className="skeleton" /><div className="skeleton" /></section>;
   return <section className="roadmap-panel">
     <div className="section-head">
-      <div><div className="eyebrow">PERSONAL CONTROL BOARD</div><h2>MASTER ROADMAP</h2><p>Jal Chaudhary’s live build plan. Completed work ticks itself from verified repository evidence.</p></div>
+      <div><div className="eyebrow">PERSONAL CONTROL BOARD</div><h2>MASTER ROADMAP</h2><p>Jal Chaudhary’s live build plan. Tap START on any unfinished task and we begin that exact task. Completed work ticks itself from verified repository evidence.</p></div>
       <button className="ghost-button" onClick={onRefresh}>↻ Refresh</button>
     </div>
     <div className="roadmap-summary">
@@ -89,7 +89,8 @@ function Roadmap({ roadmap, onRefresh }) {
         <div className="task-list">
           {phase.tasks.map(task => <div className={"task-row " + (task.done ? "task-done" : "")} key={task.id}>
             <span className="task-check">{task.done ? "✓" : "○"}</span>
-            <span>{task.title}</span>
+            <span className="task-name">{task.title}</span>
+            {!task.done && <button className="task-start" onClick={() => onStartTask(task, phase)}>START →</button>}
           </div>)}
         </div>
       </div>)}
@@ -107,6 +108,7 @@ function App() {
   const [approvalBusy, setApprovalBusy] = React.useState(false);
   const [activeView, setActiveView] = React.useState("home");
   const [roadmap, setRoadmap] = React.useState(null);
+  const [focusTask, setFocusTask] = React.useState(null);
   const [telemetry, setTelemetry] = React.useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem("founder_agent_telemetry") || "null");
@@ -152,6 +154,14 @@ function App() {
       resetTokens: data.rateLimit?.resetTokens ?? current.resetTokens,
       blockedUntil: data.rateLimit?.retryAfter ? Date.now() + Number(data.rateLimit.retryAfter) * 1000 : current.blockedUntil
     }));
+  }
+
+
+  function startRoadmapTask(task, phase) {
+    const command = "Work on roadmap task: " + task.title + ". Phase: " + phase.title + ". Inspect the current repository state first, then do the next safe step. Do not mark this task complete unless the required work is actually verified.";
+    setFocusTask({title: task.title, phase: phase.title});
+    setInput(command);
+    setActiveView("chat");
   }
 
   async function logout() {
@@ -265,14 +275,14 @@ function App() {
       <div className="overview-card"><div className="eyebrow">FOUNDER OVERVIEW</div><div className="overview-row"><span>Current project</span><b>AI Food Label & Nutrition Pack</b></div><div className="overview-row"><span>Current mission</span><b>Mission 002 — Prospect Validation</b></div><div className="overview-row"><span>Runtime</span><b className="good">● HEALTHY CHECK AVAILABLE</b></div></div>
       <div className="quick-grid">
         <button onClick={()=>setActiveView("missions")}><b>🔎</b><span>Mission Center</span><small>Run and review missions</small></button>
-        <button onClick={()=>setActiveView("roadmap")}><b>☑</b><span>Master Roadmap</span><small>Track every target</small></button>
+        <button onClick={()=>setActiveView("roadmap")}><b>☑</b><span>Master Roadmap</span><small>Pick the next task & build it</small></button>
         <button onClick={diagnosticsCheck}><b>✓</b><span>Diagnostics</span><small>Zero model tokens</small></button>
         <button onClick={()=>setActiveView("tools")}><b>⚙</b><span>System</span><small>Tools & security</small></button>
       </div>
       <div className="recent-card"><div className="section-mini"><span>RECENT ACTIVITY</span><button onClick={()=>setActiveView("activity")}>View all →</button></div><div className="activity-item"><i className="dot good-dot"/><span>Runtime health verified</span><time>Today</time></div><div className="activity-item"><i className="dot"/><span>Personal roadmap added</span><time>Today</time></div><div className="activity-item"><i className="dot"/><span>Approval flow verified</span><time>Done</time></div></div>
     </section>}
 
-    {activeView === "roadmap" && <Roadmap roadmap={roadmap} onRefresh={loadRoadmap} />}
+    {activeView === "roadmap" && <Roadmap roadmap={roadmap} onRefresh={loadRoadmap} onStartTask={startRoadmapTask} />}
 
     {activeView === "missions" && <section className="panel"><div className="section-head"><div><div className="eyebrow">EXECUTION CENTER</div><h2>MISSION CENTER</h2><p>Long-running work is tracked here and grounded in repository state.</p></div></div><div className="mission-card"><div><span className="mission-status">IN PROGRESS</span><h3>Mission 002 — Prospect Validation</h3><p>Validate the Food Label & Nutrition Pack before building the full MVP.</p></div><button onClick={()=>{setActiveView("chat");setInput("Start Mission 002.");}}>Open Mission →</button></div><div className="mission-card muted"><div><span className="mission-status">COMPLETE</span><h3>Mission 001 — Food Label Validation</h3><p>Foundation research and product specification.</p></div></div></section>}
 
@@ -287,6 +297,7 @@ function App() {
     {activeView === "settings" && <section className="panel"><div className="section-head"><div><div className="eyebrow">FOUNDER PROFILE</div><h2>SETTINGS</h2><p>Personal controls for Jal Chaudhary’s agent.</p></div></div><div className="settings-list"><div><span>Founder</span><b>Jal Chaudhary</b></div><div><span>Agent</span><b>Founder Agent</b></div><div><span>Theme</span><b>Midnight / Neon Purple</b></div><div><span>Repository</span><b>jalchaudhary08/founder-agent</b></div><div><span>Security</span><b>Authenticated + approval gated</b></div></div></section>}
 
     {activeView === "chat" && <section className="chat-view">
+      {focusTask && <div className="focus-task"><div><span>ACTIVE ROADMAP TASK</span><b>{focusTask.title}</b><small>{focusTask.phase}</small></div><button onClick={() => setFocusTask(null)}>Clear</button></div>}
       <div className="chat-title"><div><div className="eyebrow">FOUNDER AGENT</div><h2>What are we building today?</h2></div><span className="live-pill"><i/> LIVE</span></div>
       <section className="chat">{messages.map((message,index)=><div className={message.role==="user"?"row user":"row"} key={index}><div className="avatar">{message.role==="user"?"YOU":"FA"}</div><div className="bubble"><div className="bubble-label">{message.role==="user"?"JAL CHAUDHARY":"AGENT RESPONSE"}</div>{message.text}</div></div>)}</section>
       {approval && <section className="approval-card"><div className="approval-head"><div><div className="approval-kicker">ACTION REQUIRES APPROVAL</div><h2>GitHub change ready</h2></div><span className="approval-timer">{Math.ceil((approval.expiresInSeconds||600)/60)} min</span></div><div className="approval-meta"><div><span>File</span><code>{approval.path}</code></div><div><span>Commit</span><code>{approval.message}</code></div></div><details><summary>Review proposed content</summary><pre>{approval.contentPreview}</pre></details><div className="approval-warning">Nothing has been written yet. Approve only if this exact change is intended.</div><div className="approval-actions"><button className="approve-button" onClick={approveWrite} disabled={approvalBusy}>{approvalBusy?"Applying…":"✓ Approve & Write"}</button><button className="reject-button" onClick={()=>{setApproval(null);setStatus("IDLE");}} disabled={approvalBusy}>Cancel</button></div></section>}
