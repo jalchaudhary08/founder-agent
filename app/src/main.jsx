@@ -158,10 +158,14 @@ function App() {
 
 
   function startRoadmapTask(task, phase) {
-    const command = "Work on roadmap task: " + task.title + ". Phase: " + phase.title + ". Inspect the current repository state first, then do the next safe step. Do not mark this task complete unless the required work is actually verified.";
     setFocusTask({title: task.title, phase: phase.title});
-    setInput(command);
     setActiveView("chat");
+    if (task.id === "recovery_test") {
+      recoveryCheck();
+      return;
+    }
+    const command = "Work on roadmap task: " + task.title + ". Phase: " + phase.title + ". Inspect the current repository state first, then do the next safe step. Do not mark this task complete unless the required work is actually verified.";
+    setInput(command);
   }
 
   async function logout() {
@@ -215,6 +219,21 @@ function App() {
     finally { setApprovalBusy(false); }
   }
 
+
+
+  async function recoveryCheck() {
+    try {
+      const response = await fetch("/api/chat?recovery=1");
+      const data = await response.json();
+      const trace = (data.trace || []).map(item => item.step + ": " + item.state).join("\n");
+      setMessages(items => [...items, {role:"agent", text:"Runtime recovery test: " + data.status + "\n\n" + trace + "\n\nFailure detected: " + (data.failureDetected ? "YES" : "NO") + " | Recovered: " + (data.recovered ? "YES" : "NO") + " | Tokens: " + (data.tokenUsage ?? 0)}]);
+      setStatus(data.status === "RECOVERY_TEST_PASS" ? "DONE" : "BLOCKED");
+      loadRoadmap();
+    } catch(error) {
+      setMessages(items => [...items, {role:"agent", text:"Runtime recovery test failed: " + error.message}]);
+      setStatus("BLOCKED");
+    }
+  }
 
   async function diagnosticsCheck() {
     try {
