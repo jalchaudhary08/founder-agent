@@ -417,16 +417,16 @@ export default async function handler(req, res) {
     // Status is a deterministic repository-state read. Do not spend model tokens
     // for a simple status request or ask the model to interpret whether STATE.md loaded.
     if (route.name === "status") {
-      const stateMatch = context.match(/## MEMORY\\/STATE\\.md\\n([\\s\\S]*)/);
+      const stateMatch = context.match(/## MEMORY\/STATE\.md\n([\s\S]*)/);
       const state = stateMatch?.[1] || "";
       if (!state || state.includes("[CONTEXT UNAVAILABLE:")) {
         throw new Error("MEMORY/STATE.md could not be loaded for deterministic status.");
       }
 
-      const phase = state.match(/Phase:\\s*(.+)/)?.[1]?.trim() || "Unknown";
-      const mode = state.match(/Mode:\\s*(.+)/)?.[1]?.trim() || "Unknown";
-      const mission = state.match(/## Current mission\\n([\\s\\S]*?)(?:\\n## |$)/)?.[1]?.trim() || "Not specified";
-      const product = state.match(/## Current product candidate\\n([\\s\\S]*?)(?:\\n## |$)/)?.[1]?.trim() || "Not specified";
+      const phase = state.match(/Phase:\s*(.+)/)?.[1]?.trim() || "Unknown";
+      const mode = state.match(/Mode:\s*(.+)/)?.[1]?.trim() || "Unknown";
+      const mission = state.match(/## Current mission\n([\s\S]*?)(?:\n## |$)/)?.[1]?.trim() || "Not specified";
+      const product = state.match(/## Current product candidate\n([\s\S]*?)(?:\n## |$)/)?.[1]?.trim() || "Not specified";
 
       res.status(200).json({
         status: "DONE",
