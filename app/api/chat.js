@@ -518,6 +518,7 @@ export default async function handler(req, res) {
           const matches = text.match(/prospect[_ ]?id\s*:/gi);
           return (matches?.length || 0) >= Number(check.minimum || 0);
         }
+        if (check.type === "all") return (check.checks || []).every(checkTask);
         return false;
       }
 
