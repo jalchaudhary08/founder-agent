@@ -135,7 +135,7 @@ function App() {
 
   const loadRoadmap = React.useCallback(async () => {
     try {
-      const response = await fetch("/api/chat?roadmap=1");
+      const response = await fetch("/api/chat?roadmap=1", { cache: "no-store" });
       const data = await response.json();
       if (response.ok) setRoadmap(data);
     } catch {}
