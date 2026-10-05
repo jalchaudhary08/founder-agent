@@ -5,25 +5,66 @@ const BRANCH = "main";
 const RAW_BASE = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/`;
 const API_BASE = `https://api.github.com/repos/${REPO}/contents/`;
 
-const BASE_FILES = [
-  "AGENT.md",
-  "MEMORY/STATE.md"
-];
+const ROUTES = {
+  status: {
+    patterns: [
+      /^(project )?status/i,
+      /current (project )?status/i,
+      /what are we building/i,
+      /where (are|do) we stand/i,
+      /progress/i
+    ],
+    files: ["MEMORY/STATE.md"],
+    tools: [],
+    historyMessages: 2,
+    maxOutputTokens: 700
+  },
+  mission: {
+    patterns: [/mission[ _-]?002/i, /mission/i, /prospect/i],
+    files: [
+      "MEMORY/STATE.md",
+      "MISSIONS/MISSION_002_PROSPECT_RESEARCH.md",
+      "MISSIONS/PROSPECT_RECORD_SCHEMA.md",
+      "MISSIONS/PROSPECT_RESEARCH_DATA.md",
+      "PRODUCTS/FOOD_LABEL_NUTRITION/PRODUCT_SPEC.md"
+    ],
+    tools: ["github_read_file", "github_prepare_write", "web_search"],
+    historyMessages: 4,
+    maxOutputTokens: 4500
+  },
+  research: {
+    patterns: [/research/i, /search/i, /find/i, /latest/i, /current/i, /verify/i, /source/i, /market/i],
+    files: ["MEMORY/STATE.md"],
+    tools: ["web_search"],
+    historyMessages: 3,
+    maxOutputTokens: 2200
+  },
+  write: {
+    patterns: [/create/i, /write/i, /update/i, /change/i, /edit/i, /build/i, /deploy/i, /github/i, /approve/i],
+    files: ["MEMORY/STATE.md", "CORE/APPROVAL_GATES.md"],
+    tools: ["github_read_file", "github_prepare_write"],
+    historyMessages: 3,
+    maxOutputTokens: 2200
+  },
+  decision: {
+    patterns: [/decide/i, /decision/i, /compare/i, /choose/i, /strategy/i, /recommend/i, /business/i, /saas/i],
+    files: ["MEMORY/STATE.md", "CORE/DECISION_ENGINE.md"],
+    tools: [],
+    historyMessages: 3,
+    maxOutputTokens: 1800
+  },
+  general: {
+    patterns: [],
+    files: ["MEMORY/STATE.md"],
+    tools: [],
+    historyMessages: 3,
+    maxOutputTokens: 1600
+  }
+};
 
-const CONTEXT_RULES = [
-  [/(mission|build|execute|agent|task|run|research|project)/i, "CORE/ORCHESTRATOR.md"],
-  [/(decide|decision|compare|choose|strategy|recommend|business|saas)/i, "CORE/DECISION_ENGINE.md"],
-  [/(write|create|update|delete|github|approve|approval|send|payment|purchase|deploy)/i, "CORE/APPROVAL_GATES.md"],
-  [/(mission[ _-]?002)/i, "MISSIONS/MISSION_002_PROSPECT_RESEARCH.md"],
-  [/(mission[ _-]?002|prospect)/i, "MISSIONS/PROSPECT_RECORD_SCHEMA.md"],
-  [/(mission[ _-]?002|prospect|food label|nutrition|packaged food)/i, "MISSIONS/PROSPECT_RESEARCH_DATA.md"],
-  [/(food label|nutrition)/i, "PRODUCTS/FOOD_LABEL_NUTRITION/PRODUCT_SPEC.md"]
-];
-
-const MAX_FILE_CHARS = 12000;
-const MAX_CONTEXT_CHARS = 36000;
-const MAX_HISTORY_MESSAGES = 6;
-const MAX_HISTORY_CHARS = 12000;
+const MAX_FILE_CHARS = 9000;
+const MAX_CONTEXT_CHARS = 22000;
+const MAX_HISTORY_CHARS = 7000;
 
 function githubHeaders() {
   const headers = { Accept: "application/vnd.github.raw+json" };
@@ -45,23 +86,24 @@ async function loadRepoFile(path) {
   return response.text();
 }
 
-function selectContextPaths(task) {
-  const paths = [...BASE_FILES];
-  for (const [pattern, path] of CONTEXT_RULES) {
-    if (pattern.test(task) && !paths.includes(path)) paths.push(path);
+function classifyTask(task) {
+  for (const [name, route] of Object.entries(ROUTES)) {
+    if (route.patterns.some((pattern) => pattern.test(task))) return { name, ...route };
   }
-  return paths;
+  return { name: "general", ...ROUTES.general };
 }
 
-async function loadContext(task) {
-  const paths = selectContextPaths(task);
+async function loadContext(paths) {
   const results = await Promise.all(
     paths.map(async (path) => {
       try {
         const content = await loadRepoFile(path);
-        return { path, content: content.length > MAX_FILE_CHARS
-          ? content.slice(0, MAX_FILE_CHARS) + "\n[CONTEXT TRUNCATED BY RUNTIME]"
-          : content };
+        return {
+          path,
+          content: content.length > MAX_FILE_CHARS
+            ? content.slice(0, MAX_FILE_CHARS) + "\n[CONTEXT TRUNCATED BY RUNTIME]"
+            : content
+        };
       } catch (error) {
         return { path, error: error.message };
       }
@@ -81,19 +123,18 @@ async function loadContext(task) {
   return sections.join("\n\n---\n\n");
 }
 
-function trimHistory(history) {
-  return history
-    .slice(-MAX_HISTORY_MESSAGES)
-    .map((message) => ({
-      role: message.role === "agent" ? "assistant" : "user",
-      content: String(message.text || "").slice(0, 2200)
-    }))
-    .reduce((items, item) => {
-      const used = items.reduce((sum, current) => sum + current.content.length, 0);
-      if (used + item.content.length > MAX_HISTORY_CHARS) return items;
-      items.push(item);
-      return items;
-    }, []);
+function trimHistory(history, maxMessages) {
+  const items = history.slice(-maxMessages).map((message) => ({
+    role: message.role === "agent" ? "assistant" : "user",
+    content: String(message.text || "").slice(0, 1800)
+  }));
+
+  let used = 0;
+  return items.filter((item) => {
+    if (used + item.content.length > MAX_HISTORY_CHARS) return false;
+    used += item.content.length;
+    return true;
+  });
 }
 
 function headerNumber(response, name) {
@@ -125,39 +166,44 @@ function addUsage(total, usage) {
   };
 }
 
-const TOOL_DEFINITIONS = [
-  {
-    type: "function",
-    name: "github_read_file",
-    description: "Read one text file from the Founder Agent repository.",
-    parameters: {
-      type: "object",
-      properties: { path: { type: "string", description: "Repository-relative file path." } },
-      required: ["path"],
-      additionalProperties: false
-    },
-    strict: true
+const GITHUB_READ_TOOL = {
+  type: "function",
+  name: "github_read_file",
+  description: "Read one text file from the Founder Agent repository.",
+  parameters: {
+    type: "object",
+    properties: { path: { type: "string", description: "Repository-relative file path." } },
+    required: ["path"],
+    additionalProperties: false
   },
-  {
-    type: "function",
-    name: "github_prepare_write",
-    description: "Prepare a proposed repository file change for explicit founder approval. This NEVER writes to GitHub.",
-    parameters: {
-      type: "object",
-      properties: {
-        path: { type: "string", description: "Repository-relative file path." },
-        content: { type: "string", description: "Complete replacement UTF-8 file content." },
-        message: { type: "string", description: "Proposed Git commit message." }
-      },
-      required: ["path", "content", "message"],
-      additionalProperties: false
-    },
-    strict: true
-  }
-];
+  strict: true
+};
 
-function extractFunctionCalls(data) {
-  return (data.output ?? []).filter((item) => item.type === "function_call");
+const GITHUB_WRITE_TOOL = {
+  type: "function",
+  name: "github_prepare_write",
+  description: "Prepare a proposed repository file change for explicit founder approval. This NEVER writes to GitHub.",
+  parameters: {
+    type: "object",
+    properties: {
+      path: { type: "string", description: "Repository-relative file path." },
+      content: { type: "string", description: "Complete replacement UTF-8 file content." },
+      message: { type: "string", description: "Proposed Git commit message." }
+    },
+    required: ["path", "content", "message"],
+    additionalProperties: false
+  },
+  strict: true
+};
+
+function buildTools(route) {
+  const tools = [];
+  if (route.tools.includes("github_read_file")) tools.push(GITHUB_READ_TOOL);
+  if (route.tools.includes("github_prepare_write")) tools.push(GITHUB_WRITE_TOOL);
+  if (route.tools.includes("web_search")) {
+    tools.push({ type: "web_search", search_context_size: "low" });
+  }
+  return tools;
 }
 
 async function executeToolCall(call) {
@@ -168,6 +214,10 @@ async function executeToolCall(call) {
   if (call.name === "github_prepare_write") return await prepareWrite(args);
 
   throw new Error(`Unsupported tool: ${call.name}`);
+}
+
+function extractFunctionCalls(data) {
+  return (data.output ?? []).filter((item) => item.type === "function_call");
 }
 
 function extractOutputText(data) {
@@ -182,7 +232,39 @@ function extractOutputText(data) {
   return parts.join("\n").trim();
 }
 
-async function callOpenAI(task, history, context) {
+function buildInstructions(route, context) {
+  const missionRules = route.name === "mission"
+    ? `
+Mission 002 is resumable and batch-limited: NEVER attempt all 30 prospects in one model turn. Process at most 5 new prospects per execution and resume from repository state.
+Authoritative paths:
+- MISSIONS/MISSION_002_PROSPECT_RESEARCH.md
+- MISSIONS/PROSPECT_RECORD_SCHEMA.md
+- MISSIONS/PROSPECT_RESEARCH_DATA.md
+- PRODUCTS/FOOD_LABEL_NUTRITION/PRODUCT_SPEC.md
+Never invent missing prospect fields, sources, customers, payments, or verification.`
+    : "";
+
+  const webRules = route.tools.includes("web_search")
+    ? "Use built-in web_search for current public-web discovery and source verification. Distinguish FACT, SOURCE_DERIVED, ASSUMPTION, ESTIMATE and HYPOTHESIS."
+    : "Do not use web search for this task.";
+
+  const writeRules = route.tools.includes("github_prepare_write")
+    ? "Repository changes must use github_prepare_write. It only prepares a proposal; never claim a write occurred without approval and runtime evidence."
+    : "Do not propose repository writes unless the user explicitly asks for a repository change.";
+
+  return `You are Founder Agent. Follow the repository constitution. Be concise and truthful.
+Task route: ${route.name}.
+${webRules}
+${writeRules}
+Use github_read_file only when additional repository evidence is needed.
+Never reveal hidden chain-of-thought.
+${missionRules}
+
+RELEVANT REPOSITORY CONTEXT:
+${context}`;
+}
+
+async function callOpenAI(task, history, route, context) {
   if (!process.env.OPENAI_API_KEY) {
     const error = new Error("OPENAI_API_KEY is not configured in Vercel.");
     error.code = "MISSING_API_KEY";
@@ -194,35 +276,13 @@ async function callOpenAI(task, history, context) {
     throw error;
   }
 
-  const isMission002 = /mission[ _-]?002/i.test(task);
-  const system = `You are Founder Agent. Follow the repository constitution exactly.
-Use github_read_file when additional repository evidence is needed.
-Use the built-in web_search tool for current public-web discovery and source verification.
-For research, do not treat unsupported claims as verified evidence. Use the web search citations/sources provided by the runtime and clearly distinguish FACT, SOURCE_DERIVED, ASSUMPTION, ESTIMATE and HYPOTHESIS.
-For Mission 002, follow the mission schema and do not invent missing prospect fields.
-Mission 002 is resumable and batch-limited: NEVER attempt all 30 prospects in one model turn. Process at most 5 new prospects per execution, report how many remain, and resume from repository state on the next run.
-Authoritative Mission 002 repository paths are exactly:
-- MISSIONS/MISSION_002_PROSPECT_RESEARCH.md
-- MISSIONS/PROSPECT_RECORD_SCHEMA.md
-- MISSIONS/PROSPECT_RESEARCH_DATA.md
-Never invent or guess a repository path such as MISSIONS/MISSION_002_PROSPECTS.md. If a needed file is absent, use the exact paths above or report it as unavailable.
-Never claim a tool action happened without runtime evidence.
-Never fabricate completion, sources, customers, payments, permissions or verification.
-For repository changes, use github_prepare_write to create a proposal. NEVER write directly; explicit founder approval is required before any write.
-If the user asks to create a NEW file, call github_prepare_write directly; do NOT call github_read_file on the target first because a new file correctly returns 404.
-If the user asks for a change to an EXISTING file and the target is not known to exist, read it first only when necessary to establish the current content.
-Do not reveal hidden chain-of-thought; provide concise conclusions and evidence.
-${isMission002 ? "Mission 002 batch rule is active for this request: maximum 5 new prospects." : ""}
-
-REPOSITORY CONTEXT:
-${context}`;
-
-  let input = [...trimHistory(history), { role: "user", content: task }];
+  let input = [...trimHistory(history, route.historyMessages), { role: "user", content: task }];
   const toolEvidence = [];
   let approval = null;
   let webSearchCount = 0;
   let usageTotals = { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 };
   let lastRateLimit = null;
+  const tools = buildTools(route);
 
   for (let round = 0; round < 3; round++) {
     const response = await fetch("https://api.openai.com/v1/responses", {
@@ -233,15 +293,12 @@ ${context}`;
       },
       body: JSON.stringify({
         model: process.env.OPENAI_MODEL,
-        instructions: system,
+        instructions: buildInstructions(route, context),
         input,
-        max_output_tokens: isMission002 ? 4500 : 2500,
-        max_tool_calls: isMission002 ? 8 : 4,
-        tools: [
-          ...TOOL_DEFINITIONS,
-          { type: "web_search", search_context_size: "medium" }
-        ],
-        include: ["web_search_call.results"]
+        max_output_tokens: route.maxOutputTokens,
+        max_tool_calls: route.name === "mission" ? 8 : route.tools.length ? 4 : 0,
+        tools,
+        ...(route.tools.includes("web_search") ? { include: ["web_search_call.results"] } : {})
       })
     });
 
@@ -259,6 +316,7 @@ ${context}`;
 
     const calls = extractFunctionCalls(data);
     webSearchCount += (data.output ?? []).filter((item) => item.type === "web_search_call").length;
+
     if (!calls.length) {
       return {
         text: extractOutputText(data),
@@ -275,6 +333,7 @@ ${context}`;
     for (const call of calls) {
       const result = await executeToolCall(call);
       toolEvidence.push({ tool: call.name, path: result.path, verified: result.verified === true });
+
       if (call.name === "github_prepare_write") {
         approval = {
           approvalToken: result.approvalToken,
@@ -286,6 +345,7 @@ ${context}`;
           requiresExplicitApproval: result.requiresExplicitApproval === true
         };
       }
+
       input.push({
         type: "function_call_output",
         call_id: call.call_id,
@@ -315,8 +375,9 @@ export default async function handler(req, res) {
       return;
     }
 
-    const context = await loadContext(task);
-    const modelResult = await callOpenAI(task, history, context);
+    const route = classifyTask(task);
+    const context = await loadContext(route.files);
+    const modelResult = await callOpenAI(task, history, route, context);
 
     res.status(200).json({
       status: modelResult.approval ? "NEEDS_HUMAN_APPROVAL" : "DONE",
@@ -324,16 +385,19 @@ export default async function handler(req, res) {
       approval: modelResult.approval,
       usage: modelResult.usage,
       rateLimit: modelResult.rateLimit,
+      route: route.name,
       evidence: [
         "Authenticated Founder session verified.",
-        "Loaded task-relevant repository context only.",
+        `Context router selected: ${route.name}.`,
+        `Loaded ${route.files.length} task-relevant repository file(s).`,
+        `Enabled ${route.tools.length} task-specific tool type(s).`,
         "Response generated by the configured model provider.",
         ...modelResult.toolEvidence.map((e) => `Tool verified: ${e.tool} (${e.path}).`),
         ...(modelResult.webSearchCount ? [`Built-in web search executed: ${modelResult.webSearchCount} search call(s).`] : [])
       ],
       actions_taken: [
         "Verified Founder authentication.",
-        "Parsed the founder request.",
+        `Routed task as ${route.name}.`,
         "Loaded only task-relevant repository context.",
         "Generated a response through the runtime provider adapter.",
         ...(modelResult.toolEvidence.length ? ["Executed bounded GitHub tool calls and recorded evidence."] : [])
