@@ -87,7 +87,8 @@ function App() {
         cachedTokens: 0,
         rateLimitTokens: Number.isFinite(saved?.rateLimitTokens) ? saved.rateLimitTokens : null,
         remainingTokens: Number.isFinite(saved?.remainingTokens) ? saved.remainingTokens : null,
-        resetTokens: saved?.resetTokens || null
+        resetTokens: saved?.resetTokens || null,
+        blockedUntil: Number.isFinite(saved?.blockedUntil) ? saved.blockedUntil : 0
       };
     } catch {
       return {
@@ -96,7 +97,8 @@ function App() {
         cachedTokens: 0,
         rateLimitTokens: null,
         remainingTokens: null,
-        resetTokens: null
+        resetTokens: null,
+        blockedUntil: 0
       };
     }
   });
@@ -106,7 +108,8 @@ function App() {
       localStorage.setItem("founder_agent_telemetry", JSON.stringify({
         rateLimitTokens: telemetry.rateLimitTokens,
         remainingTokens: telemetry.remainingTokens,
-        resetTokens: telemetry.resetTokens
+        resetTokens: telemetry.resetTokens,
+        blockedUntil: telemetry.blockedUntil
       }));
     } catch {}
   }, [telemetry.rateLimitTokens, telemetry.remainingTokens, telemetry.resetTokens]);
@@ -126,7 +129,10 @@ function App() {
       cachedTokens: Number(data.usage?.cachedTokens || 0),
       rateLimitTokens: data.rateLimit?.limitTokens ?? current.rateLimitTokens,
       remainingTokens: data.rateLimit?.remainingTokens ?? current.remainingTokens,
-      resetTokens: data.rateLimit?.resetTokens ?? current.resetTokens
+      resetTokens: data.rateLimit?.resetTokens ?? current.resetTokens,
+      blockedUntil: data.rateLimit?.retryAfter
+        ? Date.now() + (Number(data.rateLimit.retryAfter) * 1000)
+        : current.blockedUntil
     }));
   }
 
@@ -149,6 +155,31 @@ function App() {
     event.preventDefault();
     const value = input.trim();
     if (!value || status === "WORKING" || !authenticated) return;
+
+    const isStatusRequest = /^(project )?status|current (project )?status|show me the current project status/i.test(value);
+    const now = Date.now();
+    const minimumAiTokens = 6000;
+
+    if (!isStatusRequest) {
+      if (telemetry.blockedUntil > now) {
+        const waitSeconds = Math.ceil((telemetry.blockedUntil - now) / 1000);
+        setMessages((items) => [...items, {
+          role: "agent",
+          text: `Rate-limit guard: AI request not sent. Please wait about ${waitSeconds}s. No model tokens were consumed.`
+        }]);
+        setStatus("RATE_LIMITED");
+        return;
+      }
+
+      if (Number.isFinite(telemetry.remainingTokens) && telemetry.remainingTokens < minimumAiTokens) {
+        setMessages((items) => [...items, {
+          role: "agent",
+          text: `Rate-limit guard: only ${formatTokens(telemetry.remainingTokens)} TPM remains, below the ${formatTokens(minimumAiTokens)} safety threshold. Request was not sent and no model tokens were consumed.`
+        }]);
+        setStatus("RATE_LIMITED");
+        return;
+      }
+    }
 
     const nextMessages = [...messages, { role: "user", text: value }];
     setMessages(nextMessages);
@@ -355,6 +386,21 @@ function App() {
       <div className="quick">
         <button onClick={() => setInput("Start Mission 002.")}>Start Mission 002</button>
         <button onClick={() => setInput("Show me the current project status.")}>Project status</button>
+        <button onClick={async () => {
+          try {
+            const response = await fetch("/api/chat?health=1");
+            const data = await response.json();
+            const checks = data.checks || {};
+            setMessages((items) => [...items, {
+              role: "agent",
+              text: `Health: ${data.status}. Auth: ${checks.auth || "—"} | GitHub state: ${checks.githubState || "—"} | OpenAI config: ${checks.openaiKey || "—"} / ${checks.openaiModel || "—"} | Tokens used: ${data.tokenUsage ?? "—"}.`
+            }]);
+            setStatus(data.status === "HEALTHY" ? "DONE" : "BLOCKED");
+          } catch (error) {
+            setMessages((items) => [...items, { role: "agent", text: "Health check failed: " + error.message }]);
+            setStatus("BLOCKED");
+          }
+        }}>Health check</button>
       </div>
     </main>
   );
