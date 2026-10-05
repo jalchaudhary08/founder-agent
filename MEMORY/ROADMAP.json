@@ -287,7 +287,18 @@
           "id": "auto_memory",
           "title": "Automatic memory update",
           "check": {
-            "type": "manual"
+            "type": "all",
+            "checks": [
+              {
+                "type": "file_exists",
+                "path": "RUNTIME/MEMORY_UPDATE_PROTOCOL.md"
+              },
+              {
+                "type": "contains",
+                "path": "app/api/chat.js",
+                "text": "memoryCandidate: buildMemoryCandidate"
+              }
+            ]
           }
         }
       ]
