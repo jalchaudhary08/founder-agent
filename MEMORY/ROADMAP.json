@@ -156,7 +156,9 @@
           "id": "recovery_test",
           "title": "Failure / recovery test",
           "check": {
-            "type": "manual"
+            "type": "contains",
+            "path": "app/api/chat.js",
+            "text": "RECOVERY_TEST_PASS"
           }
         }
       ]
