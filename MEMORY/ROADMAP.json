@@ -332,7 +332,7 @@
           "check": {
             "type": "contains",
             "path": "app/src/main.jsx",
-            "text": "Founder overview"
+            "text": "FOUNDER OVERVIEW"
           }
         },
         {
