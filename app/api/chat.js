@@ -394,13 +394,48 @@ async function callOpenAI(task, history, route, context) {
 }
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    res.status(405).json({ status: "FAILED", error: "Method not allowed." });
-    return;
-  }
-
   try {
     requireAuth(req);
+
+    if (req.method === "GET" && req.query?.health === "1") {
+      const checks = {
+        auth: "PASS",
+        githubState: "UNKNOWN",
+        openaiKey: process.env.OPENAI_API_KEY ? "CONFIGURED" : "MISSING",
+        openaiModel: process.env.OPENAI_MODEL ? "CONFIGURED" : "MISSING",
+        founderAuthSecret: process.env.FOUNDER_AUTH_SECRET ? "CONFIGURED" : "MISSING"
+      };
+
+      try {
+        const response = await fetch(RAW_BASE + "MEMORY/STATE.md");
+        if (response.ok) {
+          const text = await response.text();
+          checks.githubState = text.includes("# Founder Agent State") ? "PASS" : "FAIL";
+        } else {
+          checks.githubState = `FAIL_HTTP_${response.status}`;
+        }
+      } catch {
+        checks.githubState = "FAIL_NETWORK";
+      }
+
+      const healthy = Object.values(checks).every((value) =>
+        value === "PASS" || value === "CONFIGURED"
+      );
+
+      res.status(healthy ? 200 : 503).json({
+        status: healthy ? "HEALTHY" : "DEGRADED",
+        checks,
+        openaiProbe: "NOT_RUN",
+        tokenUsage: 0,
+        note: "Health check does not call the OpenAI model and does not consume model tokens."
+      });
+      return;
+    }
+
+    if (req.method !== "POST") {
+      res.status(405).json({ status: "FAILED", error: "Method not allowed." });
+      return;
+    }
 
     const body = req.body ?? {};
     const task = typeof body.task === "string" ? body.task.trim() : "";
