@@ -377,6 +377,45 @@ export default async function handler(req, res) {
 
     const route = classifyTask(task);
     const context = await loadContext(route.files);
+
+    // Status is a deterministic repository-state read. Do not spend model tokens
+    // for a simple status request or ask the model to interpret whether STATE.md loaded.
+    if (route.name === "status") {
+      const stateMatch = context.match(/## MEMORY\\/STATE\\.md\\n([\\s\\S]*)/);
+      const state = stateMatch?.[1] || "";
+      if (!state || state.includes("[CONTEXT UNAVAILABLE:")) {
+        throw new Error("MEMORY/STATE.md could not be loaded for deterministic status.");
+      }
+
+      const phase = state.match(/Phase:\\s*(.+)/)?.[1]?.trim() || "Unknown";
+      const mode = state.match(/Mode:\\s*(.+)/)?.[1]?.trim() || "Unknown";
+      const mission = state.match(/## Current mission\\n([\\s\\S]*?)(?:\\n## |$)/)?.[1]?.trim() || "Not specified";
+      const product = state.match(/## Current product candidate\\n([\\s\\S]*?)(?:\\n## |$)/)?.[1]?.trim() || "Not specified";
+
+      res.status(200).json({
+        status: "DONE",
+        result: `**Current status:** Phase: ${phase}. Mode: ${mode}. Current product: ${product}.\\n**Next step:** ${mission}`,
+        approval: null,
+        usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 },
+        rateLimit: null,
+        route: route.name,
+        evidence: [
+          "Authenticated Founder session verified.",
+          "Context router selected: status.",
+          "Read authoritative MEMORY/STATE.md directly.",
+          "No model call or tools were required for this deterministic status request."
+        ],
+        actions_taken: [
+          "Verified Founder authentication.",
+          "Loaded MEMORY/STATE.md.",
+          "Returned status directly from repository state."
+        ],
+        actions_not_taken: ["No model/API call, repository write, or destructive action was executed."],
+        next_step: mission
+      });
+      return;
+    }
+
     const modelResult = await callOpenAI(task, history, route, context);
 
     res.status(200).json({
