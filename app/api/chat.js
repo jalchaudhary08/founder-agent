@@ -67,8 +67,15 @@ const MAX_CONTEXT_CHARS = 22000;
 const MAX_HISTORY_CHARS = 7000;
 
 function githubHeaders() {
-  const headers = { Accept: "application/vnd.github.raw+json" };
-  if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+  const headers = {
+    Accept: process.env.GITHUB_TOKEN
+      ? "application/vnd.github+json"
+      : "application/vnd.github.raw+json"
+  };
+  if (process.env.GITHUB_TOKEN) {
+    headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+    headers["X-GitHub-Api-Version"] = "2022-11-28";
+  }
   return headers;
 }
 
