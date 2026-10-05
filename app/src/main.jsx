@@ -78,14 +78,38 @@ function App() {
   const [status, setStatus] = React.useState("IDLE");
   const [approval, setApproval] = React.useState(null);
   const [approvalBusy, setApprovalBusy] = React.useState(false);
-  const [telemetry, setTelemetry] = React.useState({
-    sessionTokens: 0,
-    lastTokens: 0,
-    cachedTokens: 0,
-    rateLimitTokens: null,
-    remainingTokens: null,
-    resetTokens: null
+  const [telemetry, setTelemetry] = React.useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("founder_agent_telemetry") || "null");
+      return {
+        sessionTokens: 0,
+        lastTokens: 0,
+        cachedTokens: 0,
+        rateLimitTokens: Number.isFinite(saved?.rateLimitTokens) ? saved.rateLimitTokens : null,
+        remainingTokens: Number.isFinite(saved?.remainingTokens) ? saved.remainingTokens : null,
+        resetTokens: saved?.resetTokens || null
+      };
+    } catch {
+      return {
+        sessionTokens: 0,
+        lastTokens: 0,
+        cachedTokens: 0,
+        rateLimitTokens: null,
+        remainingTokens: null,
+        resetTokens: null
+      };
+    }
   });
+
+  React.useEffect(() => {
+    try {
+      localStorage.setItem("founder_agent_telemetry", JSON.stringify({
+        rateLimitTokens: telemetry.rateLimitTokens,
+        remainingTokens: telemetry.remainingTokens,
+        resetTokens: telemetry.resetTokens
+      }));
+    } catch {}
+  }, [telemetry.rateLimitTokens, telemetry.remainingTokens, telemetry.resetTokens]);
 
   React.useEffect(() => {
     fetch("/api/auth/me")
@@ -111,14 +135,14 @@ function App() {
     setAuthenticated(false);
     setMessages(starterMessages);
     setStatus("LOCKED");
-    setTelemetry({
+    setTelemetry((current) => ({
       sessionTokens: 0,
       lastTokens: 0,
       cachedTokens: 0,
-      rateLimitTokens: null,
-      remainingTokens: null,
-      resetTokens: null
-    });
+      rateLimitTokens: current.rateLimitTokens,
+      remainingTokens: current.remainingTokens,
+      resetTokens: current.resetTokens
+    }));
   }
 
   async function sendMessage(event) {
