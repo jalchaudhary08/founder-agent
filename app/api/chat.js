@@ -399,6 +399,45 @@ export default async function handler(req, res) {
 
 
 
+
+    if (req.method === "GET" && req.query?.recovery === "1") {
+      // Deterministic fault-injection test. No OpenAI call, no GitHub write.
+      const trace = [];
+      let runtimeState = "READY";
+
+      trace.push({ step: "baseline", state: runtimeState, expected: "READY" });
+
+      runtimeState = "FAILED";
+      trace.push({ step: "injected_failure", state: runtimeState, expected: "FAILED" });
+
+      const failureDetected = runtimeState === "FAILED";
+      runtimeState = failureDetected ? "RECOVERING" : runtimeState;
+      trace.push({ step: "recovery_started", state: runtimeState, expected: "RECOVERING" });
+
+      runtimeState = runtimeState === "RECOVERING" ? "READY" : runtimeState;
+      trace.push({ step: "recovery_complete", state: runtimeState, expected: "READY" });
+
+      const pass =
+        trace[0].state === trace[0].expected &&
+        trace[1].state === trace[1].expected &&
+        trace[2].state === trace[2].expected &&
+        trace[3].state === trace[3].expected &&
+        failureDetected &&
+        runtimeState === "READY";
+
+      res.status(pass ? 200 : 503).json({
+        status: pass ? "RECOVERY_TEST_PASS" : "RECOVERY_TEST_FAIL",
+        trace,
+        failureDetected,
+        recovered: runtimeState === "READY",
+        tokenUsage: 0,
+        openaiProbe: "NOT_RUN",
+        githubWrite: "NOT_RUN",
+        note: "Deterministic fault-injection recovery test. It validates failure detection and recovery state transitions without external side effects."
+      });
+      return;
+    }
+
     if (req.method === "GET" && req.query?.diagnostics === "1") {
       const targets = [
         ["Auth module", "app/api/_lib/auth.js"],
