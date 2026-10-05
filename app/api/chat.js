@@ -511,6 +511,10 @@ export default async function handler(req, res) {
 
       function checkTask(task) {
         const check = task.check || {};
+        return evaluateCheck(check);
+      }
+
+      function evaluateCheck(check) {
         if (check.type === "file_exists") return cache.get(check.path) != null;
         if (check.type === "contains") return String(cache.get(check.path) || "").includes(check.text);
         if (check.type === "prospect_count") {
@@ -518,7 +522,7 @@ export default async function handler(req, res) {
           const matches = text.match(/prospect[_ ]?id\s*:/gi);
           return (matches?.length || 0) >= Number(check.minimum || 0);
         }
-        if (check.type === "all") return (check.checks || []).every(checkTask);
+        if (check.type === "all") return (check.checks || []).every(evaluateCheck);
         return false;
       }
 
