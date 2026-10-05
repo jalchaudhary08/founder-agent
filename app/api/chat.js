@@ -268,6 +268,24 @@ function extractOutputText(data) {
   return parts.join("\n").trim();
 }
 
+function buildMemoryCandidate({ task, route, status, evidence, nextStep }) {
+  const facts = [
+    "Task: " + String(task || "").slice(0, 500),
+    "Route: " + String(route || "general"),
+    "Status: " + String(status || "UNVERIFIED")
+  ];
+
+  return {
+    kind: "MEMORY_CANDIDATE",
+    version: 1,
+    durable_facts: facts,
+    evidence: Array.isArray(evidence) ? evidence.slice(0, 8) : [],
+    next_step: String(nextStep || "").slice(0, 500),
+    persistence: "NOT_PERSISTED",
+    rule: "Candidate only until the existing Founder approval gate explicitly approves a repository memory write."
+  };
+}
+
 function buildInstructions(route, context) {
   const missionRules = route.name === "mission"
     ? `
@@ -526,6 +544,28 @@ export default async function handler(req, res) {
       return;
     }
 
+    if (req.method === "GET" && req.query?.memory === "1") {
+      const candidate = buildMemoryCandidate({
+        task: "Deterministic memory protocol self-test",
+        route: "memory",
+        status: "DONE",
+        evidence: [
+          "Authenticated runtime endpoint reached.",
+          "Memory candidate schema generated without a model call."
+        ],
+        nextStep: "Use the existing approval flow before persisting a memory-file change."
+      });
+      res.status(200).json({
+        status: "MEMORY_PROTOCOL_PASS",
+        candidate,
+        tokenUsage: 0,
+        openaiProbe: "NOT_RUN",
+        githubWrite: "NOT_RUN"
+      });
+      return;
+    }
+
+
     if (req.method === "GET" && req.query?.health === "1") {
       const checks = {
         auth: "PASS",
@@ -611,7 +651,17 @@ export default async function handler(req, res) {
           "Returned status directly from repository state."
         ],
         actions_not_taken: ["No model/API call, repository write, or destructive action was executed."],
-        next_step: mission
+        next_step: mission,
+        memoryCandidate: buildMemoryCandidate({
+          task: "Project status request",
+          route: route.name,
+          status: "DONE",
+          evidence: [
+            "Authenticated Founder session verified.",
+            "MEMORY/STATE.md read directly."
+          ],
+          nextStep: mission
+        })
       });
       return;
     }
