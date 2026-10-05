@@ -503,7 +503,20 @@ export default async function handler(req, res) {
     if (req.method === "GET" && req.query?.roadmap === "1") {
       const raw = await loadRepoFile("MEMORY/ROADMAP.json");
       const config = JSON.parse(raw);
-      const allPaths = [...new Set(config.phases.flatMap((phase) => phase.tasks.map((task) => task.check?.path).filter(Boolean)))];
+      function collectCheckPaths(check, paths = []) {
+        if (!check) return paths;
+        if (check.path) paths.push(check.path);
+        if (check.type === "all") {
+          for (const nested of check.checks || []) collectCheckPaths(nested, paths);
+        }
+        return paths;
+      }
+
+      const allPaths = [...new Set(
+        config.phases.flatMap((phase) =>
+          phase.tasks.flatMap((task) => collectCheckPaths(task.check))
+        )
+      )];
       const cache = new Map();
       for (const path of allPaths) {
         try { cache.set(path, await loadRepoFile(path)); } catch { cache.set(path, null); }
