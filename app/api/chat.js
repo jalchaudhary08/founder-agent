@@ -80,16 +80,45 @@ function githubHeaders() {
 }
 
 async function loadRepoFile(path) {
-  const url = process.env.GITHUB_TOKEN ? API_BASE + path : RAW_BASE + path;
-  const response = await fetch(url, { headers: githubHeaders() });
-  if (!response.ok) throw new Error(`GitHub context load failed for ${path}: ${response.status}`);
+  const apiUrl = API_BASE + path;
+  const rawUrl = RAW_BASE + path;
 
-  if (process.env.GITHUB_TOKEN) {
-    const data = await response.json();
-    if (data.encoding !== "base64") throw new Error(`Unsupported GitHub encoding for ${path}`);
-    return Buffer.from(data.content.replace(/\\n/g, ""), "base64").toString("utf8");
+  async function readResponse(response) {
+    const contentType = response.headers.get("content-type") || "";
+
+    if (contentType.includes("application/json")) {
+      const data = await response.json();
+      if (data.encoding === "base64" && typeof data.content === "string") {
+        return Buffer.from(data.content.replace(/\\n/g, ""), "base64").toString("utf8");
+      }
+      if (typeof data.content === "string") return data.content;
+      throw new Error(`Unexpected GitHub JSON response for ${path}`);
+    }
+
+    return response.text();
   }
 
+  if (process.env.GITHUB_TOKEN) {
+    try {
+      const response = await fetch(apiUrl, { headers: githubHeaders() });
+      if (response.ok) return await readResponse(response);
+
+      // Public repositories can fall back to raw content if the GitHub API has
+      // a transient/server-side failure. Never treat an API error body as JSON.
+      const rawResponse = await fetch(rawUrl);
+      if (rawResponse.ok) return await rawResponse.text();
+
+      throw new Error(`GitHub context load failed for ${path}: API ${response.status}, RAW ${rawResponse.status}`);
+    } catch (error) {
+      if (error.message?.includes("GitHub context load failed")) throw error;
+      const rawResponse = await fetch(rawUrl);
+      if (rawResponse.ok) return await rawResponse.text();
+      throw new Error(`GitHub context load failed for ${path}: ${error.message}`);
+    }
+  }
+
+  const response = await fetch(rawUrl);
+  if (!response.ok) throw new Error(`GitHub context load failed for ${path}: ${response.status}`);
   return response.text();
 }
 
