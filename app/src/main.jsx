@@ -138,6 +138,7 @@ function App() {
   const [activeView, setActiveView] = React.useState("home");
   const [roadmap, setRoadmap] = React.useState(null);
   const [focusTask, setFocusTask] = React.useState(null);
+  const [agentActivated, setAgentActivated] = React.useState(false);
   const [telemetry, setTelemetry] = React.useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem("founder_agent_telemetry") || "null");
@@ -195,6 +196,12 @@ function App() {
     }));
   }
 
+
+  function activateAgent() {
+    setAgentActivated(true);
+    setStatus("ACTIVE");
+    window.setTimeout(() => setAgentActivated(false), 4200);
+  }
 
   function startRoadmapTask(task, phase) {
     setFocusTask({title: task.title, phase: phase.title});
@@ -330,7 +337,14 @@ function App() {
         <h1>Your agent is ready.</h1>
         <p>Research. Build. Verify. Grow. One verified step at a time.</p>
         <div className="hero-actions"><button onClick={()=>setActiveView("chat")}>Talk to Agent</button><button className="secondary" onClick={()=>setActiveView("roadmap")}>View Roadmap</button></div></div>
-        <div className="hero-core-wrap" aria-hidden="true"><div className="hero-orbit orbit-one"/><div className="hero-orbit orbit-two"/><div className="hero-core"><div className="core-symbol">✦</div><span>FOUNDER</span><b>AGENT</b><small>ONLINE</small></div></div>
+        <div className={"hero-core-wrap " + (agentActivated ? "agent-activated" : "")}>
+          <button className="hero-core-button" onClick={activateAgent} aria-label="Activate Founder Agent">
+            <div className="hero-orbit orbit-one"/><div className="hero-orbit orbit-two"/>
+            <div className="hero-core"><div className="core-symbol">✦</div><span>FOUNDER</span><b>AGENT</b><small>{agentActivated ? "ACTIVE" : "ONLINE"}</small></div>
+          </button>
+          <div className="core-hint">{agentActivated ? "JAL CHAUDHARY • AGENT ACTIVE" : "TAP TO ACTIVATE"}</div>
+          {agentActivated && <div className="activation-reply"><i/> <strong>JAL CHAUDHARY</strong><span>Founder Agent is active.</span></div>}
+        </div>
         <div className="hero-metrics"><div><span>MISSION</span><b>002</b></div><div><span>STATE</span><b>BUILDING</b></div><div><span>TRUST</span><b>VERIFIED</b></div></div>
       </div>
       <div className="overview-card"><div className="eyebrow">FOUNDER OVERVIEW</div><div className="overview-row"><span>Current project</span><b>AI Food Label & Nutrition Pack</b></div><div className="overview-row"><span>Current mission</span><b>Mission 002 — Prospect Validation</b></div><div className="overview-row"><span>Runtime</span><b className="good">● HEALTHY CHECK AVAILABLE</b></div></div>
