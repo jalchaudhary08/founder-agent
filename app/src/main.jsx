@@ -14,6 +14,35 @@ function formatTokens(value) {
   return String(value);
 }
 
+function parseResetDuration(value) {
+  if (!value) return null;
+  const text = String(value).trim();
+  if (/^\\d+$/.test(text)) {
+    const numeric = Number(text);
+    return numeric > 1000000000 ? numeric * 1000 : Date.now() + numeric * 1000;
+  }
+  let totalMs = 0;
+  const pattern = /(\\d+(?:\\.\\d+)?)(ms|s|m|h|d)/gi;
+  let match;
+  while ((match = pattern.exec(text))) {
+    const amount = Number(match[1]);
+    const unit = match[2].toLowerCase();
+    totalMs += amount * ({ms:1,s:1000,m:60000,h:3600000,d:86400000}[unit] || 0);
+  }
+  return totalMs > 0 ? Date.now() + totalMs : null;
+}
+
+function formatCountdown(ms) {
+  if (!Number.isFinite(ms) || ms <= 0) return "READY";
+  const totalSeconds = Math.ceil(ms / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  if (hours) return hours + "h " + minutes + "m";
+  if (minutes) return minutes + "m " + String(seconds).padStart(2, "0") + "s";
+  return seconds + "s";
+}
+
 function Login({ onAuthenticated }) {
   const [key, setKey] = React.useState("");
   const [busy, setBusy] = React.useState(false);
@@ -116,14 +145,16 @@ function App() {
         rateLimitTokens: Number.isFinite(saved?.rateLimitTokens) ? saved.rateLimitTokens : null,
         remainingTokens: Number.isFinite(saved?.remainingTokens) ? saved.remainingTokens : null,
         resetTokens: saved?.resetTokens || null,
+        resetAt: Number.isFinite(saved?.resetAt) ? saved.resetAt : 0,
         blockedUntil: Number.isFinite(saved?.blockedUntil) ? saved.blockedUntil : 0 };
-    } catch { return { sessionTokens:0,lastTokens:0,cachedTokens:0,rateLimitTokens:null,remainingTokens:null,resetTokens:null,blockedUntil:0 }; }
+    } catch { return { sessionTokens:0,lastTokens:0,cachedTokens:0,rateLimitTokens:null,remainingTokens:null,resetTokens:null,resetAt:0,blockedUntil:0 }; }
   });
+  const [resetNow, setResetNow] = React.useState(Date.now());
 
   React.useEffect(() => {
     try { localStorage.setItem("founder_agent_telemetry", JSON.stringify({
       rateLimitTokens: telemetry.rateLimitTokens, remainingTokens: telemetry.remainingTokens,
-      resetTokens: telemetry.resetTokens, blockedUntil: telemetry.blockedUntil
+      resetTokens: telemetry.resetTokens, resetAt: telemetry.resetAt, blockedUntil: telemetry.blockedUntil
     })); } catch {}
   }, [telemetry.rateLimitTokens, telemetry.remainingTokens, telemetry.resetTokens, telemetry.blockedUntil]);
 
@@ -131,6 +162,11 @@ function App() {
     fetch("/api/auth/me").then(r => r.json()).then(data => {
       setAuthenticated(data.authenticated === true);
     }).catch(() => setAuthenticated(false));
+  }, []);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => setResetNow(Date.now()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
   const loadRoadmap = React.useCallback(async () => {
@@ -152,6 +188,7 @@ function App() {
       rateLimitTokens: data.rateLimit?.limitTokens ?? current.rateLimitTokens,
       remainingTokens: data.rateLimit?.remainingTokens ?? current.remainingTokens,
       resetTokens: data.rateLimit?.resetTokens ?? current.resetTokens,
+      resetAt: data.rateLimit?.resetTokens ? (parseResetDuration(data.rateLimit.resetTokens) || current.resetAt) : current.resetAt,
       blockedUntil: data.rateLimit?.retryAfter ? Date.now() + Number(data.rateLimit.retryAfter) * 1000 : current.blockedUntil
     }));
   }
@@ -280,6 +317,7 @@ function App() {
     <section className="token-bar">
       <div className="token-card"><span>TPM LIMIT</span><strong>{formatTokens(telemetry.rateLimitTokens)}</strong></div>
       <div className="token-card"><span>REMAINING</span><strong>{formatTokens(telemetry.remainingTokens)}</strong></div>
+      <div className="token-card"><span>RESET IN</span><strong>{formatCountdown(Math.max(0, (telemetry.resetAt || 0) - resetNow))}</strong></div>
       <div className="token-card"><span>SESSION</span><strong>{formatTokens(telemetry.sessionTokens)}</strong></div>
       <div className="token-card"><span>LAST CALL</span><strong>{formatTokens(telemetry.lastTokens)}</strong></div>
     </section>
