@@ -145,7 +145,9 @@ function App() {
         rateLimitTokens: Number.isFinite(saved?.rateLimitTokens) ? saved.rateLimitTokens : null,
         remainingTokens: Number.isFinite(saved?.remainingTokens) ? saved.remainingTokens : null,
         resetTokens: saved?.resetTokens || null,
-        resetAt: Number.isFinite(saved?.resetAt) ? saved.resetAt : 0,
+        resetAt: Number.isFinite(saved?.resetAt)
+          ? saved.resetAt
+          : (parseResetDuration(saved?.resetTokens) || (Number.isFinite(saved?.blockedUntil) ? saved.blockedUntil : 0)),
         blockedUntil: Number.isFinite(saved?.blockedUntil) ? saved.blockedUntil : 0 };
     } catch { return { sessionTokens:0,lastTokens:0,cachedTokens:0,rateLimitTokens:null,remainingTokens:null,resetTokens:null,resetAt:0,blockedUntil:0 }; }
   });
@@ -317,7 +319,7 @@ function App() {
     <section className="token-bar">
       <div className="token-card"><span>TPM LIMIT</span><strong>{formatTokens(telemetry.rateLimitTokens)}</strong></div>
       <div className="token-card"><span>REMAINING</span><strong>{formatTokens(telemetry.remainingTokens)}</strong></div>
-      <div className="token-card"><span>RESET IN</span><strong>{formatCountdown(Math.max(0, (telemetry.resetAt || 0) - resetNow))}</strong></div>
+      <div className="token-card"><span>RESET IN</span><strong>{telemetry.resetAt > resetNow ? formatCountdown(telemetry.resetAt - resetNow) : (Number.isFinite(telemetry.remainingTokens) && telemetry.remainingTokens < 6000 ? "WAITING" : "READY")}</strong></div>
       <div className="token-card"><span>SESSION</span><strong>{formatTokens(telemetry.sessionTokens)}</strong></div>
       <div className="token-card"><span>LAST CALL</span><strong>{formatTokens(telemetry.lastTokens)}</strong></div>
     </section>
