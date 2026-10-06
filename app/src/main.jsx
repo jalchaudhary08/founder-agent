@@ -326,10 +326,12 @@ function App() {
 
     {activeView === "home" && <section className="home-grid">
       <div className="hero-card">
-        <div className="eyebrow">GOOD MORNING, JAL</div>
+        <div className="hero-copy"><div className="eyebrow">GOOD MORNING, JAL</div>
         <h1>Your agent is ready.</h1>
         <p>Research. Build. Verify. Grow. One verified step at a time.</p>
-        <div className="hero-actions"><button onClick={()=>setActiveView("chat")}>Talk to Agent</button><button className="secondary" onClick={()=>setActiveView("roadmap")}>View Roadmap</button></div>
+        <div className="hero-actions"><button onClick={()=>setActiveView("chat")}>Talk to Agent</button><button className="secondary" onClick={()=>setActiveView("roadmap")}>View Roadmap</button></div></div>
+        <div className="hero-core-wrap" aria-hidden="true"><div className="hero-orbit orbit-one"/><div className="hero-orbit orbit-two"/><div className="hero-core"><div className="core-symbol">✦</div><span>FOUNDER</span><b>AGENT</b><small>ONLINE</small></div></div>
+        <div className="hero-metrics"><div><span>MISSION</span><b>002</b></div><div><span>STATE</span><b>BUILDING</b></div><div><span>TRUST</span><b>VERIFIED</b></div></div>
       </div>
       <div className="overview-card"><div className="eyebrow">FOUNDER OVERVIEW</div><div className="overview-row"><span>Current project</span><b>AI Food Label & Nutrition Pack</b></div><div className="overview-row"><span>Current mission</span><b>Mission 002 — Prospect Validation</b></div><div className="overview-row"><span>Runtime</span><b className="good">● HEALTHY CHECK AVAILABLE</b></div></div>
       <div className="quick-grid">
