@@ -17,27 +17,26 @@ const ROUTES = {
     files: ["MEMORY/STATE.md"],
     tools: [],
     historyMessages: 2,
-    maxOutputTokens: 700
+    maxOutputTokens: 450
   },
   mission: {
     patterns: [/mission[ _-]?002/i, /mission/i, /prospect/i],
     files: [
       "MEMORY/STATE.md",
       "MISSIONS/MISSION_002_PROSPECT_RESEARCH.md",
-      "MISSIONS/PROSPECT_RECORD_SCHEMA.md",
       "MISSIONS/PROSPECT_RESEARCH_DATA.md",
       "PRODUCTS/FOOD_LABEL_NUTRITION/PRODUCT_SPEC.md"
     ],
     tools: ["github_read_file", "github_prepare_write", "web_search"],
     historyMessages: 4,
-    maxOutputTokens: 4500
+    maxOutputTokens: 1400
   },
   research: {
     patterns: [/research/i, /search/i, /find/i, /latest/i, /current/i, /verify/i, /source/i, /market/i],
     files: ["MEMORY/STATE.md"],
     tools: ["web_search"],
     historyMessages: 3,
-    maxOutputTokens: 2200
+    maxOutputTokens: 1000
   },
   write: {
     patterns: [/create/i, /write/i, /update/i, /change/i, /edit/i, /build/i, /deploy/i, /github/i, /approve/i],
@@ -51,7 +50,7 @@ const ROUTES = {
     files: ["MEMORY/STATE.md", "CORE/DECISION_ENGINE.md"],
     tools: [],
     historyMessages: 3,
-    maxOutputTokens: 1800
+    maxOutputTokens: 900
   },
   general: {
     patterns: [],
@@ -62,9 +61,9 @@ const ROUTES = {
   }
 };
 
-const MAX_FILE_CHARS = 9000;
-const MAX_CONTEXT_CHARS = 22000;
-const MAX_HISTORY_CHARS = 7000;
+const MAX_FILE_CHARS = 4500;
+const MAX_CONTEXT_CHARS = 10000;
+const MAX_HISTORY_CHARS = 3000;
 
 function githubHeaders() {
   const headers = {
@@ -162,7 +161,7 @@ async function loadContext(paths) {
 function trimHistory(history, maxMessages) {
   const items = history.slice(-maxMessages).map((message) => ({
     role: message.role === "agent" ? "assistant" : "user",
-    content: String(message.text || "").slice(0, 1800)
+    content: String(message.text || "").slice(0, 1200)
   }));
 
   let used = 0;
@@ -338,7 +337,7 @@ async function callOpenAI(task, history, route, context) {
   let lastRateLimit = null;
   const tools = buildTools(route);
 
-  for (let round = 0; round < 3; round++) {
+  for (let round = 0; round < 2; round++) {
     const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
@@ -350,7 +349,7 @@ async function callOpenAI(task, history, route, context) {
         instructions: buildInstructions(route, context),
         input,
         max_output_tokens: route.maxOutputTokens,
-        ...(route.tools.length ? { max_tool_calls: route.name === "mission" ? 8 : 4 } : {}),
+        ...(route.tools.length ? { max_tool_calls: route.name === "mission" ? 3 : 2 } : {}),
         tools,
         ...(route.tools.includes("web_search") ? { include: ["web_search_call.results"] } : {})
       })
