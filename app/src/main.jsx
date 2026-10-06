@@ -142,14 +142,17 @@ function App() {
   const [telemetry, setTelemetry] = React.useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem("founder_agent_telemetry") || "null");
+      const stale = !Number.isFinite(saved?.observedAt) || (Date.now() - saved.observedAt > 120000);
+      const staleLimit = stale && Number.isFinite(saved?.remainingTokens) && saved.remainingTokens < 6000;
       return { sessionTokens: 0, lastTokens: 0, cachedTokens: 0,
         rateLimitTokens: Number.isFinite(saved?.rateLimitTokens) ? saved.rateLimitTokens : null,
-        remainingTokens: Number.isFinite(saved?.remainingTokens) ? saved.remainingTokens : null,
-        resetTokens: saved?.resetTokens || null,
-        resetAt: Number.isFinite(saved?.resetAt)
+        remainingTokens: staleLimit ? null : (Number.isFinite(saved?.remainingTokens) ? saved.remainingTokens : null),
+        resetTokens: staleLimit ? null : (saved?.resetTokens || null),
+        resetAt: staleLimit ? 0 : (Number.isFinite(saved?.resetAt)
           ? saved.resetAt
-          : (parseResetDuration(saved?.resetTokens) || (Number.isFinite(saved?.blockedUntil) ? saved.blockedUntil : 0)),
-        blockedUntil: Number.isFinite(saved?.blockedUntil) ? saved.blockedUntil : 0 };
+          : (parseResetDuration(saved?.resetTokens) || (Number.isFinite(saved?.blockedUntil) ? saved.blockedUntil : 0))),
+        blockedUntil: staleLimit ? 0 : (Number.isFinite(saved?.blockedUntil) ? saved.blockedUntil : 0),
+        observedAt: Number.isFinite(saved?.observedAt) ? saved.observedAt : 0 };
     } catch { return { sessionTokens:0,lastTokens:0,cachedTokens:0,rateLimitTokens:null,remainingTokens:null,resetTokens:null,resetAt:0,blockedUntil:0 }; }
   });
   const [resetNow, setResetNow] = React.useState(Date.now());
@@ -157,7 +160,8 @@ function App() {
   React.useEffect(() => {
     try { localStorage.setItem("founder_agent_telemetry", JSON.stringify({
       rateLimitTokens: telemetry.rateLimitTokens, remainingTokens: telemetry.remainingTokens,
-      resetTokens: telemetry.resetTokens, resetAt: telemetry.resetAt, blockedUntil: telemetry.blockedUntil
+      resetTokens: telemetry.resetTokens, resetAt: telemetry.resetAt, blockedUntil: telemetry.blockedUntil,
+      observedAt: telemetry.observedAt
     })); } catch {}
   }, [telemetry.rateLimitTokens, telemetry.remainingTokens, telemetry.resetTokens, telemetry.blockedUntil]);
 
@@ -191,8 +195,11 @@ function App() {
       rateLimitTokens: data.rateLimit?.limitTokens ?? current.rateLimitTokens,
       remainingTokens: data.rateLimit?.remainingTokens ?? current.remainingTokens,
       resetTokens: data.rateLimit?.resetTokens ?? current.resetTokens,
-      resetAt: data.rateLimit?.resetTokens ? (parseResetDuration(data.rateLimit.resetTokens) || current.resetAt) : current.resetAt,
-      blockedUntil: data.rateLimit?.retryAfter ? Date.now() + Number(data.rateLimit.retryAfter) * 1000 : current.blockedUntil
+      resetAt: data.rateLimit?.resetTokens
+        ? (parseResetDuration(data.rateLimit.resetTokens) || current.resetAt)
+        : (data.rateLimit?.retryAfter ? (parseResetDuration(data.rateLimit.retryAfter) || current.resetAt) : current.resetAt),
+      blockedUntil: data.rateLimit?.retryAfter ? Date.now() + Number(data.rateLimit.retryAfter) * 1000 : current.blockedUntil,
+      observedAt: Date.now()
     }));
   }
 
