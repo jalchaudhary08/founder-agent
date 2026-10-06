@@ -27,7 +27,7 @@ const ROUTES = {
     ],
     tools: ["web_search"],
     historyMessages: 0,
-    maxOutputTokens: 900,
+    maxOutputTokens: 700,
     reasoningEffort: "low",
     maxToolCalls: 1
   },
@@ -360,6 +360,7 @@ async function callOpenAI(task, history, route, context) {
         ...(route.tools.length ? { max_tool_calls: route.maxToolCalls ?? (route.name === "mission" ? 1 : 2) } : {}),
         ...(route.reasoningEffort ? { reasoning: { effort: route.reasoningEffort } } : {}),
         ...(route.tools.includes("web_search") ? { prompt_cache_key: "founder-agent-" + route.name + "-v2", prompt_cache_retention: "24h" } : {}),
+        ...(route.tools.includes("web_search") ? { tool_choice: "required" } : {}),
         tools,
       })
     });
