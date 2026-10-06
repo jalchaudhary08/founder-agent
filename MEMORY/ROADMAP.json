@@ -386,7 +386,7 @@
           "check": {
             "type": "contains",
             "path": "app/src/main.jsx",
-            "text": "Agent memory"
+            "text": "AGENT MEMORY"
           }
         },
         {
@@ -395,7 +395,7 @@
           "check": {
             "type": "contains",
             "path": "app/src/main.jsx",
-            "text": "Connected tools"
+            "text": "CONNECTED TOOLS"
           }
         },
         {
