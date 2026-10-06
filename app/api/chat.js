@@ -17,7 +17,7 @@ const ROUTES = {
     files: ["MEMORY/STATE.md"],
     tools: [],
     historyMessages: 2,
-    maxOutputTokens: 450
+    maxOutputTokens: 350
   },
   mission: {
     patterns: [/mission[ _-]?002/i, /mission/i, /prospect/i],
@@ -29,14 +29,14 @@ const ROUTES = {
     ],
     tools: ["github_read_file", "github_prepare_write", "web_search"],
     historyMessages: 4,
-    maxOutputTokens: 1400
+    maxOutputTokens: 1200
   },
   research: {
     patterns: [/research/i, /search/i, /find/i, /latest/i, /current/i, /verify/i, /source/i, /market/i],
     files: ["MEMORY/STATE.md"],
     tools: ["web_search"],
     historyMessages: 3,
-    maxOutputTokens: 1000
+    maxOutputTokens: 700
   },
   write: {
     patterns: [/create/i, /write/i, /update/i, /change/i, /edit/i, /build/i, /deploy/i, /github/i, /approve/i],
@@ -50,7 +50,7 @@ const ROUTES = {
     files: ["MEMORY/STATE.md", "CORE/DECISION_ENGINE.md"],
     tools: [],
     historyMessages: 3,
-    maxOutputTokens: 900
+    maxOutputTokens: 700
   },
   general: {
     patterns: [],
@@ -61,9 +61,9 @@ const ROUTES = {
   }
 };
 
-const MAX_FILE_CHARS = 4500;
-const MAX_CONTEXT_CHARS = 10000;
-const MAX_HISTORY_CHARS = 3000;
+const MAX_FILE_CHARS = 3500;
+const MAX_CONTEXT_CHARS = 7000;
+const MAX_HISTORY_CHARS = 2200;
 
 function githubHeaders() {
   const headers = {
@@ -161,7 +161,7 @@ async function loadContext(paths) {
 function trimHistory(history, maxMessages) {
   const items = history.slice(-maxMessages).map((message) => ({
     role: message.role === "agent" ? "assistant" : "user",
-    content: String(message.text || "").slice(0, 1200)
+    content: String(message.text || "").slice(0, 900)
   }));
 
   let used = 0;
@@ -351,7 +351,6 @@ async function callOpenAI(task, history, route, context) {
         max_output_tokens: route.maxOutputTokens,
         ...(route.tools.length ? { max_tool_calls: route.name === "mission" ? 3 : 2 } : {}),
         tools,
-        ...(route.tools.includes("web_search") ? { include: ["web_search_call.results"] } : {})
       })
     });
 
