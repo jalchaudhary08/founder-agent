@@ -179,6 +179,12 @@ function headerNumber(response, name) {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
+function extractRetryAfterFromMessage(message) {
+  const text = String(message || "");
+  const match = text.match(/(?:try again|retry)[^\d]*(?:in|after)\s+(\d+(?:\.\d+)?(?:ms|s|m|h|d)(?:\s*\d+(?:\.\d+)?(?:ms|s|m|h|d))*)/i);
+  return match ? match[1] : null;
+}
+
 function rateLimitSnapshot(response) {
   return {
     limitTokens: headerNumber(response, "x-ratelimit-limit-tokens"),
@@ -362,6 +368,9 @@ async function callOpenAI(task, history, route, context) {
       const error = new Error(data?.error?.message || `OpenAI request failed: ${response.status}`);
       error.statusCode = response.status;
       error.code = data?.error?.code;
+      if (response.status === 429 && lastRateLimit && !lastRateLimit.retryAfter) {
+        lastRateLimit.retryAfter = extractRetryAfterFromMessage(error.message);
+      }
       error.telemetry = { usage: usageTotals, rateLimit: lastRateLimit };
       throw error;
     }
