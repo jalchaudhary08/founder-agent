@@ -3,6 +3,9 @@
 ## Positioning
 A workflow that turns a small food business's recipe/ingredient and available source information into a structured nutrition and label-preparation pack.
 
+## Target customer
+India-based small packaged-food businesses that sell products such as cookies, granola, protein snacks, sauces, spices, pickles, and similar packaged foods.
+
 ## Intended input
 - recipe
 - ingredient list
