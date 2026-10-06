@@ -269,3 +269,70 @@ body{
 @media(prefers-reduced-motion:reduce){
   .hero-core,.hero-orbit{animation:none}
 }
+
+
+/* Interactive Founder Core — tactile activation + live reply */
+.hero-core-button{
+  appearance:none;border:0;background:transparent;padding:0;margin:0;
+  width:210px;height:210px;position:relative;display:grid;place-items:center;
+  cursor:pointer;color:inherit;touch-action:manipulation;
+}
+.hero-core-button:focus-visible{outline:2px solid #b49cff;outline-offset:8px;border-radius:50%}
+.hero-core-button .hero-core{position:relative;z-index:3}
+.hero-core-button:hover .hero-core{
+  box-shadow:0 28px 55px rgba(0,0,0,.5),0 0 85px rgba(155,124,255,.55),inset 0 2px 0 rgba(255,255,255,.28);
+}
+.hero-core-button:active .hero-core{transform:translateY(2px) scale(.94) rotateX(8deg) rotateY(-10deg)}
+.core-hint{
+  position:absolute;z-index:5;bottom:-5px;left:50%;transform:translateX(-50%);
+  white-space:nowrap;color:#77708a;font-size:6px;letter-spacing:.16em;font-weight:800;
+  transition:color .25s ease,transform .25s ease;
+}
+.agent-activated .core-hint{color:#c5b5ff;transform:translateX(-50%) translateY(3px)}
+.activation-reply{
+  position:absolute;z-index:10;top:-10px;right:-115px;width:172px;
+  padding:10px 12px;border:1px solid rgba(176,148,255,.35);border-radius:13px;
+  background:linear-gradient(145deg,rgba(29,24,43,.96),rgba(12,11,18,.96));
+  box-shadow:0 15px 40px rgba(0,0,0,.42),0 0 30px rgba(124,58,237,.18);
+  display:grid;grid-template-columns:8px 1fr;column-gap:7px;align-items:center;
+  animation:reply-pop .38s cubic-bezier(.2,.9,.2,1) both;
+}
+.activation-reply i{
+  width:6px;height:6px;border-radius:50%;background:#65e39a;
+  box-shadow:0 0 12px rgba(101,227,154,.8);grid-row:1/3;
+}
+.activation-reply strong{font-size:7px;letter-spacing:.1em;color:#ddd4f3}
+.activation-reply span{font-size:7px;color:#918a9f;margin-top:2px}
+.agent-activated .hero-core{
+  animation:core-active .9s cubic-bezier(.2,.8,.2,1) 1,core-float 5s ease-in-out .9s infinite;
+}
+.agent-activated .orbit-one{animation:orbit-a .7s linear infinite}
+.agent-activated .orbit-two{animation:orbit-b .9s linear infinite}
+.agent-activated:before,.agent-activated:after{
+  content:"";position:absolute;left:50%;top:50%;width:128px;height:128px;
+  border:1px solid rgba(172,142,255,.5);border-radius:50%;pointer-events:none;
+  transform:translate(-50%,-50%) scale(.45);animation:activation-wave 1.1s ease-out both;
+}
+.agent-activated:after{animation-delay:.18s;border-color:rgba(112,226,165,.32)}
+@keyframes core-active{
+  0%{transform:scale(.92) rotateX(8deg) rotateY(-10deg);filter:brightness(1)}
+  35%{transform:scale(1.16) rotateX(14deg) rotateY(12deg);filter:brightness(1.35)}
+  65%{transform:scale(1.04) rotateX(7deg) rotateY(-8deg);filter:brightness(1.12)}
+  100%{transform:scale(1) rotateX(8deg) rotateY(-10deg);filter:brightness(1)}
+}
+@keyframes activation-wave{
+  0%{opacity:.85;transform:translate(-50%,-50%) scale(.45)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(2.1)}
+}
+@keyframes reply-pop{
+  from{opacity:0;transform:translateY(8px) scale(.9)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@media(max-width:700px){
+  .hero-core-button{width:190px;height:190px}
+  .activation-reply{top:-8px;right:-25px;transform:translateY(-100%);width:190px}
+}
+@media(prefers-reduced-motion:reduce){
+  .agent-activated .hero-core,.agent-activated .orbit-one,.agent-activated .orbit-two,
+  .agent-activated:before,.agent-activated:after,.activation-reply{animation:none}
+}
