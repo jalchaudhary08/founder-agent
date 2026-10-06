@@ -49,3 +49,90 @@ button{cursor:pointer}
 .task-start:hover{border-color:#7654c3;background:#211735;color:#d4c6ff}
 .task-done .task-name{text-decoration:line-through;text-decoration-color:#554a67}
 @media(max-width:700px){.task-row{gap:7px}.task-start{padding:5px 6px}}
+
+
+/* Premium smooth layer — restrained depth, motion and touch feedback */
+:root{
+  --fa-accent:#9b7cff;
+  --fa-accent-2:#6f4bd0;
+  --fa-border:rgba(155,124,255,.16);
+  --fa-glass:rgba(18,17,25,.72);
+}
+*{-webkit-tap-highlight-color:transparent}
+body{
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 50% -12%,rgba(124,58,237,.16),transparent 34%),
+    radial-gradient(circle at 100% 55%,rgba(111,75,208,.055),transparent 28%),
+    #07070b;
+}
+.app-shell{perspective:1200px}
+.topbar,.nav-scroll,.token-bar,.panel,.roadmap-panel,.home-grid{animation:fa-enter .42s cubic-bezier(.22,.8,.25,1) both}
+.mini-orb,.boot-core,.boot-mark{
+  transform-style:preserve-3d;
+  animation:fa-orb 5s ease-in-out infinite;
+}
+.mini-orb{
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 8px 28px rgba(124,58,237,.24),inset 0 1px 0 rgba(255,255,255,.16);
+}
+.hero-card,.overview-card,.panel,.roadmap-panel,.recent-card,.phase-card,.mission-card,.project-progress,.memory-card,.tool-card,.settings-list,.chat-view{
+  box-shadow:0 14px 45px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.025);
+  transition:transform .24s cubic-bezier(.22,.8,.25,1),border-color .24s ease,box-shadow .24s ease;
+}
+.quick-grid button,.hero-actions button,.mission-card button,.ghost-button,.task-start,.nav-item,.lock-button,.quick button,.composer button{
+  transition:transform .18s cubic-bezier(.22,.8,.25,1),background .18s ease,border-color .18s ease,box-shadow .18s ease,opacity .18s ease;
+}
+.quick-grid button:hover,.memory-card:hover,.tool-card:hover,.mission-card:hover{
+  transform:translateY(-2px);
+  border-color:var(--fa-border);
+  box-shadow:0 16px 38px rgba(0,0,0,.24),0 0 24px rgba(124,58,237,.055);
+}
+.quick-grid button:active,.hero-actions button:active,.mission-card button:active,.task-start:active,.nav-item:active,.composer button:active{
+  transform:translateY(1px) scale(.985);
+}
+.hero-card{
+  position:relative;
+  overflow:hidden;
+}
+.hero-card:after{
+  content:"";
+  position:absolute;
+  width:220px;height:220px;
+  right:-100px;top:-120px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(155,124,255,.12),transparent 68%);
+  pointer-events:none;
+}
+.token-card{
+  transition:border-color .2s ease,transform .2s ease,background .2s ease;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+.token-card:hover{transform:translateY(-1px);border-color:var(--fa-border)}
+.progress-track div{
+  box-shadow:0 0 14px rgba(137,98,237,.25);
+}
+.composer{
+  box-shadow:0 16px 50px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.035);
+}
+.composer button{
+  box-shadow:0 7px 20px rgba(108,75,208,.24),inset 0 1px 0 rgba(255,255,255,.14);
+}
+.composer button:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(108,75,208,.30)}
+.focus-task{box-shadow:0 12px 34px rgba(0,0,0,.2),0 0 24px rgba(124,58,237,.07)}
+@keyframes fa-enter{
+  from{opacity:0;transform:translateY(5px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes fa-orb{
+  0%,100%{transform:translate3d(0,0,0) rotateX(0deg) rotateY(0deg)}
+  50%{transform:translate3d(0,-2px,0) rotateX(2deg) rotateY(-4deg)}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.001ms!important;
+  }
+}
