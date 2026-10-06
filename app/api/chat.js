@@ -23,20 +23,22 @@ const ROUTES = {
     patterns: [/mission[ _-]?002/i, /mission/i, /prospect/i],
     files: [
       "MEMORY/STATE.md",
-      "MISSIONS/MISSION_002_PROSPECT_RESEARCH.md",
-      "MISSIONS/PROSPECT_RESEARCH_DATA.md",
-      "PRODUCTS/FOOD_LABEL_NUTRITION/PRODUCT_SPEC.md"
+      "MISSIONS/PROSPECT_RESEARCH_DATA.md"
     ],
-    tools: ["github_read_file", "github_prepare_write", "web_search"],
-    historyMessages: 4,
-    maxOutputTokens: 1200
+    tools: ["web_search"],
+    historyMessages: 0,
+    maxOutputTokens: 900,
+    reasoningEffort: "low",
+    maxToolCalls: 1
   },
   research: {
     patterns: [/research/i, /search/i, /find/i, /latest/i, /current/i, /verify/i, /source/i, /market/i],
     files: ["MEMORY/STATE.md"],
     tools: ["web_search"],
-    historyMessages: 3,
-    maxOutputTokens: 700
+    historyMessages: 0,
+    maxOutputTokens: 600,
+    reasoningEffort: "low",
+    maxToolCalls: 1
   },
   write: {
     patterns: [/create/i, /write/i, /update/i, /change/i, /edit/i, /build/i, /deploy/i, /github/i, /approve/i],
@@ -49,8 +51,10 @@ const ROUTES = {
     patterns: [/decide/i, /decision/i, /compare/i, /choose/i, /strategy/i, /recommend/i, /business/i, /saas/i],
     files: ["MEMORY/STATE.md", "CORE/DECISION_ENGINE.md"],
     tools: [],
-    historyMessages: 3,
-    maxOutputTokens: 700
+    historyMessages: 2,
+    maxOutputTokens: 700,
+    reasoningEffort: "medium",
+    maxToolCalls: 0
   },
   general: {
     patterns: [],
@@ -294,13 +298,11 @@ function buildMemoryCandidate({ task, route, status, evidence, nextStep }) {
 function buildInstructions(route, context) {
   const missionRules = route.name === "mission"
     ? `
-Mission 002 is resumable and batch-limited: NEVER attempt all 30 prospects in one model turn. Process at most 5 new prospects per execution and resume from repository state.
-Authoritative paths:
-- MISSIONS/MISSION_002_PROSPECT_RESEARCH.md
-- MISSIONS/PROSPECT_RECORD_SCHEMA.md
-- MISSIONS/PROSPECT_RESEARCH_DATA.md
-- PRODUCTS/FOOD_LABEL_NUTRITION/PRODUCT_SPEC.md
-Never invent missing prospect fields, sources, customers, payments, or verification.`
+Mission 002 is resumable and batch-limited: process at most 5 new prospects per execution.
+Target: India-based small packaged-food businesses (cookies, granola, protein snacks, sauces, spices, pickles and similar).
+For each prospect require: business name, website/social, product category, active product evidence, why relevant, public contact route, source/evidence URL, priority and verification status.
+Only record facts supported by public evidence. Missing evidence = UNVERIFIED. Never invent contacts, sources, customers, payments or verification.
+Return a compact, evidence-first batch; do not write to GitHub from the mission route.`
     : "";
 
   const webRules = route.tools.includes("web_search")
@@ -343,7 +345,7 @@ async function callOpenAI(task, history, route, context) {
   let lastRateLimit = null;
   const tools = buildTools(route);
 
-  for (let round = 0; round < 2; round++) {
+  for (let round = 0; round < (route.tools.includes("web_search") ? 1 : 2); round++) {
     const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
@@ -355,7 +357,9 @@ async function callOpenAI(task, history, route, context) {
         instructions: buildInstructions(route, context),
         input,
         max_output_tokens: route.maxOutputTokens,
-        ...(route.tools.length ? { max_tool_calls: route.name === "mission" ? 3 : 2 } : {}),
+        ...(route.tools.length ? { max_tool_calls: route.maxToolCalls ?? (route.name === "mission" ? 1 : 2) } : {}),
+        ...(route.reasoningEffort ? { reasoning: { effort: route.reasoningEffort } } : {}),
+        ...(route.tools.includes("web_search") ? { prompt_cache_key: "founder-agent-" + route.name + "-v2", prompt_cache_retention: "24h" } : {}),
         tools,
       })
     });
