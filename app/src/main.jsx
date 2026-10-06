@@ -198,7 +198,7 @@ function App() {
       resetAt: data.rateLimit?.resetTokens
         ? (parseResetDuration(data.rateLimit.resetTokens) || current.resetAt)
         : (data.rateLimit?.retryAfter ? (parseResetDuration(data.rateLimit.retryAfter) || current.resetAt) : current.resetAt),
-      blockedUntil: data.rateLimit?.retryAfter ? Date.now() + Number(data.rateLimit.retryAfter) * 1000 : current.blockedUntil,
+      blockedUntil: data.rateLimit?.retryAfter ? (parseResetDuration(data.rateLimit.retryAfter) || current.blockedUntil) : current.blockedUntil,
       observedAt: Date.now()
     }));
   }
@@ -333,7 +333,7 @@ function App() {
     <section className="token-bar">
       <div className="token-card"><span>TPM LIMIT</span><strong>{formatTokens(telemetry.rateLimitTokens)}</strong></div>
       <div className="token-card"><span>REMAINING</span><strong>{formatTokens(telemetry.remainingTokens)}</strong></div>
-      <div className="token-card"><span>RESET IN</span><strong>{telemetry.resetAt > resetNow ? formatCountdown(telemetry.resetAt - resetNow) : (Number.isFinite(telemetry.remainingTokens) && telemetry.remainingTokens < 6000 ? "WAITING" : "READY")}</strong></div>
+      <div className="token-card"><span>RESET IN</span><strong>{telemetry.resetAt > resetNow ? formatCountdown(telemetry.resetAt - resetNow) : (Number.isFinite(telemetry.remainingTokens) ? (telemetry.remainingTokens < 6000 ? "WAITING" : "—") : "—")}</strong></div>
       <div className="token-card"><span>SESSION</span><strong>{formatTokens(telemetry.sessionTokens)}</strong></div>
       <div className="token-card"><span>LAST CALL</span><strong>{formatTokens(telemetry.lastTokens)}</strong></div>
     </section>
