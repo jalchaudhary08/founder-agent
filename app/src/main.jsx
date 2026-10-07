@@ -143,15 +143,15 @@ function App() {
     try {
       const saved = JSON.parse(localStorage.getItem("founder_agent_telemetry") || "null");
       const stale = !Number.isFinite(saved?.observedAt) || (Date.now() - saved.observedAt > 120000);
-      const staleLimit = stale && Number.isFinite(saved?.remainingTokens) && saved.remainingTokens < 6000;
+      const staleTelemetry = stale;
       return { sessionTokens: 0, lastTokens: 0, cachedTokens: 0,
         rateLimitTokens: Number.isFinite(saved?.rateLimitTokens) ? saved.rateLimitTokens : null,
-        remainingTokens: staleLimit ? null : (Number.isFinite(saved?.remainingTokens) ? saved.remainingTokens : null),
-        resetTokens: staleLimit ? null : (saved?.resetTokens || null),
-        resetAt: staleLimit ? 0 : (Number.isFinite(saved?.resetAt)
+        remainingTokens: staleTelemetry ? null : (Number.isFinite(saved?.remainingTokens) ? saved.remainingTokens : null),
+        resetTokens: staleTelemetry ? null : (saved?.resetTokens || null),
+        resetAt: staleTelemetry ? 0 : (Number.isFinite(saved?.resetAt)
           ? saved.resetAt
           : (parseResetDuration(saved?.resetTokens) || (Number.isFinite(saved?.blockedUntil) ? saved.blockedUntil : 0))),
-        blockedUntil: staleLimit ? 0 : (Number.isFinite(saved?.blockedUntil) ? saved.blockedUntil : 0),
+        blockedUntil: staleTelemetry ? 0 : (Number.isFinite(saved?.blockedUntil) ? saved.blockedUntil : 0),
         observedAt: Number.isFinite(saved?.observedAt) ? saved.observedAt : 0 };
     } catch { return { sessionTokens:0,lastTokens:0,cachedTokens:0,rateLimitTokens:null,remainingTokens:null,resetTokens:null,resetAt:0,blockedUntil:0 }; }
   });
@@ -231,15 +231,19 @@ function App() {
     const value = input.trim();
     if (!value || status === "WORKING" || !authenticated) return;
     const isStatusRequest = /^(project )?status|current (project )?status|show me the current project status/i.test(value);
-    const now = Date.now(), minimumAiTokens = 6000;
+    const isMissionRequest = /mission[ _-]?002|prospect/i.test(value);
+    const isResearchRequest = /research|search|find|latest|current|verify|source|market/i.test(value);
+    const now = Date.now();
+    const minimumAiTokens = isMissionRequest ? 6500 : (isResearchRequest ? 5500 : 6000);
+    const telemetryFresh = Number.isFinite(telemetry.observedAt) && (now - telemetry.observedAt) <= 120000;
 
     if (!isStatusRequest) {
       if (telemetry.blockedUntil > now) {
-        setMessages(items => [...items,{role:"agent",text:"Rate-limit guard: AI request not sent. Wait for the runtime reset. No model tokens were consumed."}]);
+        setMessages(items => [...items,{role:"agent",text:"Rate-limit guard: AI request not sent. Wait for the provider reset window. No model tokens were consumed."}]);
         setStatus("RATE_LIMITED"); return;
       }
-      if (Number.isFinite(telemetry.remainingTokens) && telemetry.remainingTokens < minimumAiTokens) {
-        setMessages(items => [...items,{role:"agent",text:"Rate-limit guard: available TPM is below the safety threshold. Request was not sent and no model tokens were consumed."}]);
+      if (telemetryFresh && Number.isFinite(telemetry.remainingTokens) && telemetry.remainingTokens < minimumAiTokens) {
+        setMessages(items => [...items,{role:"agent",text:"Rate-limit preflight: available TPM is below this task's safe budget. Request was not sent and no model tokens were consumed."}]);
         setStatus("RATE_LIMITED"); return;
       }
     }
@@ -247,10 +251,22 @@ function App() {
     const nextMessages = [...messages,{role:"user",text:value}];
     setMessages(nextMessages); setInput(""); setStatus("WORKING");
     try {
-      const response = await fetch("/api/chat", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({task:value,history:messages})});
+      const response = await fetch("/api/chat", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+        task:value,
+        history:messages,
+        clientRateLimit: {
+          remainingTokens: telemetry.remainingTokens,
+          blockedUntil: telemetry.blockedUntil,
+          observedAt: telemetry.observedAt
+        }
+      })});
       const data = await response.json(); applyTelemetry(data);
       if (response.status === 401) { setAuthenticated(false); throw new Error("Your Founder session expired. Unlock the agent again."); }
-      if (!response.ok) throw new Error((data.error || "Runtime request failed.") + (data.rateLimit?.remainingTokens != null ? " Remaining TPM: " + formatTokens(data.rateLimit.remainingTokens) + "." : ""));
+      if (!response.ok) throw new Error(
+        (data.error || "Runtime request failed.")
+        + (data.rateLimit?.remainingTokens != null ? " Remaining TPM: " + formatTokens(data.rateLimit.remainingTokens) + "." : "")
+        + (data.rateLimit?.requiredRemainingTokens != null ? " Safe budget: " + formatTokens(data.rateLimit.requiredRemainingTokens) + "." : "")
+      );
       setMessages(items => [...items,{role:"agent",text:data.result || "Runtime completed without a text result."}]);
       setApproval(data.approval || null); setStatus(data.status || "IDLE"); loadRoadmap();
     } catch (error) {
