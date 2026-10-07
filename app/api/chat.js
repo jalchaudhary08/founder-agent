@@ -29,7 +29,8 @@ const ROUTES = {
     historyMessages: 0,
     maxOutputTokens: 700,
     reasoningEffort: "low",
-    maxToolCalls: 1
+    maxToolCalls: 1,
+    minRemainingTokens: 6500
   },
   research: {
     patterns: [/research/i, /search/i, /find/i, /latest/i, /current/i, /verify/i, /source/i, /market/i],
@@ -38,14 +39,16 @@ const ROUTES = {
     historyMessages: 0,
     maxOutputTokens: 600,
     reasoningEffort: "low",
-    maxToolCalls: 1
+    maxToolCalls: 1,
+    minRemainingTokens: 5500
   },
   write: {
     patterns: [/create/i, /write/i, /update/i, /change/i, /edit/i, /build/i, /deploy/i, /github/i, /approve/i],
     files: ["MEMORY/STATE.md", "CORE/APPROVAL_GATES.md"],
     tools: ["github_read_file", "github_prepare_write"],
     historyMessages: 3,
-    maxOutputTokens: 2200
+    maxOutputTokens: 2200,
+    minRemainingTokens: 7000
   },
   decision: {
     patterns: [/decide/i, /decision/i, /compare/i, /choose/i, /strategy/i, /recommend/i, /business/i, /saas/i],
@@ -61,7 +64,8 @@ const ROUTES = {
     files: ["MEMORY/STATE.md"],
     tools: [],
     historyMessages: 3,
-    maxOutputTokens: 1600
+    maxOutputTokens: 1600,
+    minRemainingTokens: 6000
   }
 };
 
@@ -323,6 +327,75 @@ ${missionRules}
 
 RELEVANT REPOSITORY CONTEXT:
 ${context}`;
+}
+
+function estimateRequestTokens(task, history, route, context) {
+  const instructions = buildInstructions(route, context);
+  const input = [
+    ...trimHistory(history, route.historyMessages),
+    { role: "user", content: task }
+  ];
+  const inputChars = instructions.length + JSON.stringify(input).length;
+  const inputTokens = Math.ceil(inputChars / 4);
+  const outputReserve = Number(route.maxOutputTokens || 0);
+  const reasoningReserve = route.reasoningEffort === "medium" ? 900 : route.reasoningEffort === "low" ? 350 : 0;
+  const webReserve = route.tools.includes("web_search") ? 900 : 0;
+  const safetyReserve = 350;
+  return Math.ceil((inputTokens + outputReserve + reasoningReserve + webReserve + safetyReserve) * 1.2);
+}
+
+function getClientRateLimit(body) {
+  const source = body?.clientRateLimit;
+  if (!source || typeof source !== "object") return null;
+  const remaining = Number(source.remainingTokens);
+  const observedAt = Number(source.observedAt);
+  const blockedUntil = Number(source.blockedUntil);
+  return {
+    remainingTokens: Number.isFinite(remaining) ? remaining : null,
+    observedAt: Number.isFinite(observedAt) ? observedAt : 0,
+    blockedUntil: Number.isFinite(blockedUntil) ? blockedUntil : 0
+  };
+}
+
+function enforceRatePreflight(route, task, history, context, clientRateLimit) {
+  if (!route.minRemainingTokens || !clientRateLimit) return null;
+
+  const now = Date.now();
+  const fresh = clientRateLimit.observedAt > 0 && (now - clientRateLimit.observedAt) <= 120000;
+  if (!fresh || !Number.isFinite(clientRateLimit.remainingTokens)) return null;
+
+  if (clientRateLimit.blockedUntil > now) {
+    const error = new Error("Rate-limit guard: the last provider response reported a retry window. Request was not sent.");
+    error.statusCode = 429;
+    error.code = "CLIENT_RATE_LIMIT_GUARD";
+    error.telemetry = {
+      usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 },
+      rateLimit: { remainingTokens: clientRateLimit.remainingTokens, retryAfter: Math.ceil((clientRateLimit.blockedUntil - now) / 1000) + "s" }
+    };
+    throw error;
+  }
+
+  const estimatedTokens = estimateRequestTokens(task, history, route, context);
+  const requiredRemainingTokens = Math.max(route.minRemainingTokens, estimatedTokens);
+  if (clientRateLimit.remainingTokens < requiredRemainingTokens) {
+    const error = new Error(
+      `Rate-limit preflight blocked this request before OpenAI. Available TPM: ${Math.floor(clientRateLimit.remainingTokens)}; estimated safe requirement: ${requiredRemainingTokens}. No model tokens were consumed.`
+    );
+    error.statusCode = 429;
+    error.code = "RATE_PREFLIGHT_BLOCKED";
+    error.telemetry = {
+      usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 },
+      rateLimit: {
+        remainingTokens: clientRateLimit.remainingTokens,
+        preflight: true,
+        estimatedTokens,
+        requiredRemainingTokens
+      }
+    };
+    throw error;
+  }
+
+  return { estimatedTokens, requiredRemainingTokens };
 }
 
 async function callOpenAI(task, history, route, context) {
@@ -647,6 +720,10 @@ export default async function handler(req, res) {
 
     const route = classifyTask(task);
     const context = await loadContext(route.files);
+    const clientRateLimit = body.clientRateLimit || null;
+    const preflight = route.name === "status"
+      ? null
+      : enforceRatePreflight(route, task, history, context, getClientRateLimit(body));
 
     // Status is a deterministic repository-state read. Do not spend model tokens
     // for a simple status request or ask the model to interpret whether STATE.md loaded.
@@ -726,7 +803,8 @@ export default async function handler(req, res) {
         : "No repository write or destructive action was executed."],
       next_step: modelResult.approval
         ? "Review the proposed change and approve it explicitly to execute the GitHub write."
-        : "Continue with the next task or a resumable mission batch."
+        : "Continue with the next task or a resumable mission batch.",
+      preflight
     });
   } catch (error) {
     if (error?.code === "UNAUTHORIZED") {
