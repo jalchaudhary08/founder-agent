@@ -340,7 +340,7 @@ function estimateRequestTokens(task, history, route, context) {
   const reasoningReserve = route.reasoningEffort === "medium" ? 900 : route.reasoningEffort === "low" ? 350 : 0;
   // Web-search requests reserve TPM for retrieved search content, not just the
   // visible answer. Keep a large deterministic reserve so we block before 429s.
-  const webReserve = route.tools.includes("web_search") ? 10000 : 0;
+  const webReserve = route.tools.includes("web_search") ? 8000 : 0;
   const safetyReserve = 500;
   return Math.ceil((inputTokens + outputReserve + reasoningReserve + webReserve + safetyReserve) * 1.35);
 }
