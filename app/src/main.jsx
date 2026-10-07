@@ -142,17 +142,24 @@ function App() {
   const [telemetry, setTelemetry] = React.useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem("founder_agent_telemetry") || "null");
-      const stale = !Number.isFinite(saved?.observedAt) || (Date.now() - saved.observedAt > 120000);
-      const staleTelemetry = stale;
+      const now = Date.now();
+      const savedResetAt = Number.isFinite(saved?.resetAt)
+        ? saved.resetAt
+        : (parseResetDuration(saved?.resetTokens) || (Number.isFinite(saved?.blockedUntil) ? saved.blockedUntil : 0));
+      const knownLimit = Number.isFinite(saved?.rateLimitTokens) ? saved.rateLimitTokens : null;
+      const resetPassed = savedResetAt > 0 && savedResetAt <= now;
+      const remaining = Number.isFinite(saved?.remainingTokens) ? saved.remainingTokens : null;
+      // Never erase a known low-budget snapshot just because the page was refreshed.
+      // After the known reset, re-bootstrap to the last provider-reported limit.
+      const bootstrappedAfterReset = resetPassed && Number.isFinite(knownLimit) ? knownLimit : remaining;
+      const effectiveObservedAt = bootstrappedAfterReset !== remaining ? now : (Number.isFinite(saved?.observedAt) ? saved.observedAt : 0);
       return { sessionTokens: 0, lastTokens: 0, cachedTokens: 0,
-        rateLimitTokens: Number.isFinite(saved?.rateLimitTokens) ? saved.rateLimitTokens : null,
-        remainingTokens: staleTelemetry ? null : (Number.isFinite(saved?.remainingTokens) ? saved.remainingTokens : null),
-        resetTokens: staleTelemetry ? null : (saved?.resetTokens || null),
-        resetAt: staleTelemetry ? 0 : (Number.isFinite(saved?.resetAt)
-          ? saved.resetAt
-          : (parseResetDuration(saved?.resetTokens) || (Number.isFinite(saved?.blockedUntil) ? saved.blockedUntil : 0))),
-        blockedUntil: staleTelemetry ? 0 : (Number.isFinite(saved?.blockedUntil) ? saved.blockedUntil : 0),
-        observedAt: Number.isFinite(saved?.observedAt) ? saved.observedAt : 0 };
+        rateLimitTokens: knownLimit,
+        remainingTokens: bootstrappedAfterReset,
+        resetTokens: saved?.resetTokens || null,
+        resetAt: savedResetAt,
+        blockedUntil: Number.isFinite(saved?.blockedUntil) ? saved.blockedUntil : 0,
+        observedAt: effectiveObservedAt };
     } catch { return { sessionTokens:0,lastTokens:0,cachedTokens:0,rateLimitTokens:null,remainingTokens:null,resetTokens:null,resetAt:0,blockedUntil:0 }; }
   });
   const [resetNow, setResetNow] = React.useState(Date.now());
@@ -163,7 +170,7 @@ function App() {
       resetTokens: telemetry.resetTokens, resetAt: telemetry.resetAt, blockedUntil: telemetry.blockedUntil,
       observedAt: telemetry.observedAt
     })); } catch {}
-  }, [telemetry.rateLimitTokens, telemetry.remainingTokens, telemetry.resetTokens, telemetry.blockedUntil]);
+  }, [telemetry.rateLimitTokens, telemetry.remainingTokens, telemetry.resetTokens, telemetry.resetAt, telemetry.blockedUntil]);
 
   React.useEffect(() => {
     fetch("/api/auth/me").then(r => r.json()).then(data => {
@@ -236,13 +243,19 @@ function App() {
     const now = Date.now();
     const minimumAiTokens = isMissionRequest ? 6500 : (isResearchRequest ? 5500 : 6000);
     const telemetryFresh = Number.isFinite(telemetry.observedAt) && (now - telemetry.observedAt) <= 120000;
+    const resetWindowActive = Number.isFinite(telemetry.resetAt) && telemetry.resetAt > now;
+    const knownRemaining = Number.isFinite(telemetry.remainingTokens);
 
     if (!isStatusRequest) {
       if (telemetry.blockedUntil > now) {
         setMessages(items => [...items,{role:"agent",text:"Rate-limit guard: AI request not sent. Wait for the provider reset window. No model tokens were consumed."}]);
         setStatus("RATE_LIMITED"); return;
       }
-      if (telemetryFresh && Number.isFinite(telemetry.remainingTokens) && telemetry.remainingTokens < minimumAiTokens) {
+      if (!knownRemaining || (!telemetryFresh && !resetWindowActive)) {
+        setMessages(items => [...items,{role:"agent",text:"Rate-limit guard: safe TPM state is unknown/stale. Request was not sent. No model tokens were consumed."}]);
+        setStatus("RATE_LIMITED"); return;
+      }
+      if (knownRemaining < minimumAiTokens) {
         setMessages(items => [...items,{role:"agent",text:"Rate-limit preflight: available TPM is below this task's safe budget. Request was not sent and no model tokens were consumed."}]);
         setStatus("RATE_LIMITED"); return;
       }
@@ -257,7 +270,9 @@ function App() {
         clientRateLimit: {
           remainingTokens: telemetry.remainingTokens,
           blockedUntil: telemetry.blockedUntil,
-          observedAt: telemetry.observedAt
+          observedAt: telemetry.observedAt,
+          resetAt: telemetry.resetAt,
+          limitTokens: telemetry.rateLimitTokens
         }
       })});
       const data = await response.json(); applyTelemetry(data);
