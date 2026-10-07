@@ -17,9 +17,9 @@ Founder Agent must be usable every day without repeatedly sending the entire rep
 - Status: 700 max output tokens, no tools.
 - General: 1,600 max output tokens, no tools.
 - Decision: 1,800 max output tokens, no tools.
-- Research: 2,200 max output tokens, web search only.
+- Research: 600 max output tokens, web search only, no reasoning, one tool call.
 - Write: 2,200 max output tokens, GitHub tools only.
-- Mission 002: 4,500 max output tokens and max 8 tool calls.
+- Mission 002: 700 max output tokens, no reasoning, one web-search tool call.
 - Mission 002 processes at most 5 new prospects per execution.
 
 ## Token telemetry
@@ -29,6 +29,9 @@ The runtime reports input, output, total and cached tokens plus rate-limit heade
 - A 429 rate-limit response is surfaced as RATE_LIMITED.
 - The UI displays remaining tokens/reset information when available.
 - Never blindly retry a rate-limited request.
+- Web-research routes require a conservative 18,000-token remaining budget because web-search result context is part of the model request.
+- The client persists the last known TPM snapshot across refreshes; stale/unknown state fails closed instead of sending a request.
+- After a known reset, the UI re-bootstraps from the last provider-reported token limit.
 - Reduce request size or wait for the reported reset.
 
 ## Next optimization
