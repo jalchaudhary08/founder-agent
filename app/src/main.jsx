@@ -241,23 +241,28 @@ function App() {
     const isMissionRequest = /mission[ _-]?002|prospect/i.test(value);
     const isResearchRequest = /research|search|find|latest|current|verify|source|market/i.test(value);
     const now = Date.now();
-    const minimumAiTokens = (isMissionRequest || isResearchRequest) ? 18000 : 6000;
-    const telemetryFresh = Number.isFinite(telemetry.observedAt) && (now - telemetry.observedAt) <= 120000;
-    const resetWindowActive = Number.isFinite(telemetry.resetAt) && telemetry.resetAt > now;
+    const minimumAiTokens = (isMissionRequest || isResearchRequest) ? 15000 : 6000;
+    const resetPassed = Number.isFinite(telemetry.resetAt) && telemetry.resetAt > 0 && telemetry.resetAt <= now;
     const knownRemaining = Number.isFinite(telemetry.remainingTokens);
+    const effectiveRemaining = resetPassed && Number.isFinite(telemetry.rateLimitTokens)
+      ? telemetry.rateLimitTokens
+      : telemetry.remainingTokens;
 
     if (!isStatusRequest) {
       if (telemetry.blockedUntil > now) {
         setMessages(items => [...items,{role:"agent",text:"Rate-limit guard: AI request not sent. Wait for the provider reset window. No model tokens were consumed."}]);
         setStatus("RATE_LIMITED"); return;
       }
-      if (!knownRemaining || (!telemetryFresh && !resetWindowActive)) {
-        setMessages(items => [...items,{role:"agent",text:"Rate-limit guard: safe TPM state is unknown/stale. Request was not sent. No model tokens were consumed."}]);
+      if (!Number.isFinite(effectiveRemaining)) {
+        setMessages(items => [...items,{role:"agent",text:"Rate-limit guard: safe TPM state is unknown. Request was not sent. No model tokens were consumed."}]);
         setStatus("RATE_LIMITED"); return;
       }
-      if (knownRemaining < minimumAiTokens) {
+      if (effectiveRemaining < minimumAiTokens) {
         setMessages(items => [...items,{role:"agent",text:"Rate-limit preflight: available TPM is below this task's safe budget. Request was not sent and no model tokens were consumed."}]);
         setStatus("RATE_LIMITED"); return;
+      }
+      if (resetPassed && effectiveRemaining !== telemetry.remainingTokens) {
+        setTelemetry(current => ({...current, remainingTokens: effectiveRemaining, observedAt: Date.now(), blockedUntil: 0}));
       }
     }
 
