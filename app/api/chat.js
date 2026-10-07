@@ -28,9 +28,9 @@ const ROUTES = {
     tools: ["web_search"],
     historyMessages: 0,
     maxOutputTokens: 700,
-    reasoningEffort: "low",
+    reasoningEffort: null,
     maxToolCalls: 1,
-    minRemainingTokens: 6500
+    minRemainingTokens: 18000
   },
   research: {
     patterns: [/research/i, /search/i, /find/i, /latest/i, /current/i, /verify/i, /source/i, /market/i],
@@ -38,9 +38,9 @@ const ROUTES = {
     tools: ["web_search"],
     historyMessages: 0,
     maxOutputTokens: 600,
-    reasoningEffort: "low",
+    reasoningEffort: null,
     maxToolCalls: 1,
-    minRemainingTokens: 5500
+    minRemainingTokens: 18000
   },
   write: {
     patterns: [/create/i, /write/i, /update/i, /change/i, /edit/i, /build/i, /deploy/i, /github/i, /approve/i],
@@ -350,19 +350,31 @@ function getClientRateLimit(body) {
   const remaining = Number(source.remainingTokens);
   const observedAt = Number(source.observedAt);
   const blockedUntil = Number(source.blockedUntil);
+  const resetAt = Number(source.resetAt);
+  const limitTokens = Number(source.limitTokens);
   return {
     remainingTokens: Number.isFinite(remaining) ? remaining : null,
     observedAt: Number.isFinite(observedAt) ? observedAt : 0,
-    blockedUntil: Number.isFinite(blockedUntil) ? blockedUntil : 0
+    blockedUntil: Number.isFinite(blockedUntil) ? blockedUntil : 0,
+    resetAt: Number.isFinite(resetAt) ? resetAt : 0,
+    limitTokens: Number.isFinite(limitTokens) ? limitTokens : null
   };
 }
 
 function enforceRatePreflight(route, task, history, context, clientRateLimit) {
-  if (!route.minRemainingTokens || !clientRateLimit) return null;
+  if (!route.minRemainingTokens) return null;
 
   const now = Date.now();
-  const fresh = clientRateLimit.observedAt > 0 && (now - clientRateLimit.observedAt) <= 120000;
-  if (!fresh || !Number.isFinite(clientRateLimit.remainingTokens)) return null;
+  if (!clientRateLimit) {
+    const error = new Error("Rate-limit state is unknown. Request was not sent because the runtime cannot prove a safe token budget.");
+    error.statusCode = 429;
+    error.code = "RATE_STATE_UNKNOWN";
+    error.telemetry = {
+      usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 },
+      rateLimit: { preflight: true, state: "UNKNOWN" }
+    };
+    throw error;
+  }
 
   if (clientRateLimit.blockedUntil > now) {
     const error = new Error("Rate-limit guard: the last provider response reported a retry window. Request was not sent.");
@@ -370,32 +382,70 @@ function enforceRatePreflight(route, task, history, context, clientRateLimit) {
     error.code = "CLIENT_RATE_LIMIT_GUARD";
     error.telemetry = {
       usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 },
-      rateLimit: { remainingTokens: clientRateLimit.remainingTokens, retryAfter: Math.ceil((clientRateLimit.blockedUntil - now) / 1000) + "s" }
+      rateLimit: {
+        remainingTokens: clientRateLimit.remainingTokens,
+        retryAfter: Math.ceil((clientRateLimit.blockedUntil - now) / 1000) + "s",
+        preflight: true
+      }
+    };
+    throw error;
+  }
+
+  let remaining = clientRateLimit.remainingTokens;
+  const fresh = clientRateLimit.observedAt > 0 && (now - clientRateLimit.observedAt) <= 120000;
+
+  // A stale snapshot is still safe to use only while its known reset window is
+  // in the future. Otherwise the UI must re-bootstrap from a fresh provider response.
+  const resetWindowActive = clientRateLimit.resetAt > now;
+  if (!fresh && !resetWindowActive) {
+    const error = new Error("Rate-limit state is stale/unknown. Request was not sent. Wait for a known reset or obtain a fresh provider response.");
+    error.statusCode = 429;
+    error.code = "RATE_STATE_STALE";
+    error.telemetry = {
+      usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 },
+      rateLimit: {
+        remainingTokens: remaining,
+        resetAt: clientRateLimit.resetAt || null,
+        preflight: true,
+        state: "STALE"
+      }
+    };
+    throw error;
+  }
+
+  if (!Number.isFinite(remaining)) {
+    const error = new Error("Rate-limit remaining-token state is unavailable. Request was not sent.");
+    error.statusCode = 429;
+    error.code = "RATE_STATE_UNKNOWN";
+    error.telemetry = {
+      usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 },
+      rateLimit: { preflight: true, state: "UNKNOWN" }
     };
     throw error;
   }
 
   const estimatedTokens = estimateRequestTokens(task, history, route, context);
   const requiredRemainingTokens = Math.max(route.minRemainingTokens, estimatedTokens);
-  if (clientRateLimit.remainingTokens < requiredRemainingTokens) {
+  if (remaining < requiredRemainingTokens) {
     const error = new Error(
-      `Rate-limit preflight blocked this request before OpenAI. Available TPM: ${Math.floor(clientRateLimit.remainingTokens)}; estimated safe requirement: ${requiredRemainingTokens}. No model tokens were consumed.`
+      `Rate-limit preflight blocked this request before OpenAI. Available TPM: ${Math.floor(remaining)}; safe minimum: ${requiredRemainingTokens}. No model tokens were consumed.`
     );
     error.statusCode = 429;
     error.code = "RATE_PREFLIGHT_BLOCKED";
     error.telemetry = {
       usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 },
       rateLimit: {
-        remainingTokens: clientRateLimit.remainingTokens,
+        remainingTokens: remaining,
         preflight: true,
         estimatedTokens,
-        requiredRemainingTokens
+        requiredRemainingTokens,
+        resetAt: clientRateLimit.resetAt || null
       }
     };
     throw error;
   }
 
-  return { estimatedTokens, requiredRemainingTokens };
+  return { estimatedTokens, requiredRemainingTokens, rateState: fresh ? "FRESH" : "RESET_WINDOW_KNOWN" };
 }
 
 async function callOpenAI(task, history, route, context) {
@@ -430,7 +480,7 @@ async function callOpenAI(task, history, route, context) {
         instructions: buildInstructions(route, context),
         input,
         max_output_tokens: route.maxOutputTokens,
-        ...(route.tools.length ? { max_tool_calls: route.maxToolCalls ?? (route.name === "mission" ? 1 : 2) } : {}),
+        ...(route.tools.length ? { max_tool_calls: route.maxToolCalls ?? (route.name === "mission" ? 1 : 2), parallel_tool_calls: false } : {}),
         ...(route.reasoningEffort ? { reasoning: { effort: route.reasoningEffort } } : {}),
         ...(route.tools.includes("web_search") ? { prompt_cache_key: "founder-agent-" + route.name + "-v2", prompt_cache_retention: "24h" } : {}),
         ...(route.tools.includes("web_search") ? { tool_choice: "required" } : {}),
