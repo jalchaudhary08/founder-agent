@@ -720,7 +720,6 @@ export default async function handler(req, res) {
 
     const route = classifyTask(task);
     const context = await loadContext(route.files);
-    const clientRateLimit = body.clientRateLimit || null;
     const preflight = route.name === "status"
       ? null
       : enforceRatePreflight(route, task, history, context, getClientRateLimit(body));
