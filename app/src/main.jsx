@@ -241,7 +241,7 @@ function App() {
     const isMissionRequest = /mission[ _-]?002|prospect/i.test(value);
     const isResearchRequest = /research|search|find|latest|current|verify|source|market/i.test(value);
     const now = Date.now();
-    const minimumAiTokens = isMissionRequest ? 6500 : (isResearchRequest ? 5500 : 6000);
+    const minimumAiTokens = (isMissionRequest || isResearchRequest) ? 18000 : 6000;
     const telemetryFresh = Number.isFinite(telemetry.observedAt) && (now - telemetry.observedAt) <= 120000;
     const resetWindowActive = Number.isFinite(telemetry.resetAt) && telemetry.resetAt > now;
     const knownRemaining = Number.isFinite(telemetry.remainingTokens);
