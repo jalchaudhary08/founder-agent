@@ -22,8 +22,7 @@ const ROUTES = {
   mission: {
     patterns: [/mission[ _-]?002/i, /mission/i, /prospect/i],
     files: [
-      "MEMORY/STATE.md",
-      "MISSIONS/PROSPECT_RESEARCH_DATA.md"
+      "MEMORY/STATE.md"
     ],
     tools: ["web_search"],
     historyMessages: 0,
@@ -302,7 +301,7 @@ function buildMemoryCandidate({ task, route, status, evidence, nextStep }) {
 function buildInstructions(route, context) {
   const missionRules = route.name === "mission"
     ? `
-Mission 002 is resumable and batch-limited: process at most 5 new prospects per execution.
+Mission 002 runs through the bounded Research Worker: process at most 5 new prospects per execution.
 Target: India-based small packaged-food businesses (cookies, granola, protein snacks, sauces, spices, pickles and similar).
 For each prospect require: business name, website/social, product category, active product evidence, why relevant, public contact route, source/evidence URL, priority and verification status.
 Only record facts supported by public evidence. Missing evidence = UNVERIFIED. Never invent contacts, sources, customers, payments or verification.
@@ -339,9 +338,11 @@ function estimateRequestTokens(task, history, route, context) {
   const inputTokens = Math.ceil(inputChars / 4);
   const outputReserve = Number(route.maxOutputTokens || 0);
   const reasoningReserve = route.reasoningEffort === "medium" ? 900 : route.reasoningEffort === "low" ? 350 : 0;
-  const webReserve = route.tools.includes("web_search") ? 900 : 0;
-  const safetyReserve = 350;
-  return Math.ceil((inputTokens + outputReserve + reasoningReserve + webReserve + safetyReserve) * 1.2);
+  // Web-search requests reserve TPM for retrieved search content, not just the
+  // visible answer. Keep a large deterministic reserve so we block before 429s.
+  const webReserve = route.tools.includes("web_search") ? 10000 : 0;
+  const safetyReserve = 500;
+  return Math.ceil((inputTokens + outputReserve + reasoningReserve + webReserve + safetyReserve) * 1.35);
 }
 
 function getClientRateLimit(body) {
@@ -366,13 +367,10 @@ function enforceRatePreflight(route, task, history, context, clientRateLimit) {
 
   const now = Date.now();
   if (!clientRateLimit) {
-    const error = new Error("Rate-limit state is unknown. Request was not sent because the runtime cannot prove a safe token budget.");
-    error.statusCode = 429;
+    const error = new Error("Rate-limit state is unknown. Request was not sent because the runtime cannot safely estimate provider TPM.");
+    error.statusCode = 428;
     error.code = "RATE_STATE_UNKNOWN";
-    error.telemetry = {
-      usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 },
-      rateLimit: { preflight: true, state: "UNKNOWN" }
-    };
+    error.telemetry = { usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 }, rateLimit: { state: "UNKNOWN", preflight: true } };
     throw error;
   }
 
@@ -382,70 +380,55 @@ function enforceRatePreflight(route, task, history, context, clientRateLimit) {
     error.code = "CLIENT_RATE_LIMIT_GUARD";
     error.telemetry = {
       usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 },
-      rateLimit: {
-        remainingTokens: clientRateLimit.remainingTokens,
-        retryAfter: Math.ceil((clientRateLimit.blockedUntil - now) / 1000) + "s",
-        preflight: true
-      }
+      rateLimit: { remainingTokens: clientRateLimit.remainingTokens, retryAfter: Math.ceil((clientRateLimit.blockedUntil - now) / 1000) + "s", preflight: true }
     };
     throw error;
   }
 
-  let remaining = clientRateLimit.remainingTokens;
-  const fresh = clientRateLimit.observedAt > 0 && (now - clientRateLimit.observedAt) <= 120000;
+  let remainingTokens = Number(clientRateLimit.remainingTokens);
+  const resetAt = Number(clientRateLimit.resetAt);
+  const limitTokens = Number(clientRateLimit.limitTokens);
 
-  // A stale snapshot is still safe to use only while its known reset window is
-  // in the future. Otherwise the UI must re-bootstrap from a fresh provider response.
-  const resetWindowActive = clientRateLimit.resetAt > now;
-  if (!fresh && !resetWindowActive) {
-    const error = new Error("Rate-limit state is stale/unknown. Request was not sent. Wait for a known reset or obtain a fresh provider response.");
-    error.statusCode = 429;
-    error.code = "RATE_STATE_STALE";
-    error.telemetry = {
-      usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 },
-      rateLimit: {
-        remainingTokens: remaining,
-        resetAt: clientRateLimit.resetAt || null,
-        preflight: true,
-        state: "STALE"
-      }
-    };
-    throw error;
+  // A stale snapshot is a conservative lower bound while its reset window is
+  // active. Once the provider-reported reset has passed, re-bootstrap to the
+  // last known limit instead of blindly sending with an old low value.
+  if (Number.isFinite(resetAt) && resetAt > 0 && resetAt <= now && Number.isFinite(limitTokens)) {
+    remainingTokens = limitTokens;
   }
 
-  if (!Number.isFinite(remaining)) {
-    const error = new Error("Rate-limit remaining-token state is unavailable. Request was not sent.");
-    error.statusCode = 429;
+  if (!Number.isFinite(remainingTokens)) {
+    const error = new Error("Rate-limit state is unknown. Request was not sent because no safe remaining-token snapshot is available.");
+    error.statusCode = 428;
     error.code = "RATE_STATE_UNKNOWN";
     error.telemetry = {
       usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 },
-      rateLimit: { preflight: true, state: "UNKNOWN" }
+      rateLimit: { state: "UNKNOWN", preflight: true }
     };
     throw error;
   }
 
   const estimatedTokens = estimateRequestTokens(task, history, route, context);
   const requiredRemainingTokens = Math.max(route.minRemainingTokens, estimatedTokens);
-  if (remaining < requiredRemainingTokens) {
+  if (remainingTokens < requiredRemainingTokens) {
     const error = new Error(
-      `Rate-limit preflight blocked this request before OpenAI. Available TPM: ${Math.floor(remaining)}; safe minimum: ${requiredRemainingTokens}. No model tokens were consumed.`
+      `Rate-limit preflight blocked this request before OpenAI. Available TPM: ${Math.floor(remainingTokens)}; estimated safe requirement: ${requiredRemainingTokens}. No model tokens were consumed.`
     );
     error.statusCode = 429;
     error.code = "RATE_PREFLIGHT_BLOCKED";
     error.telemetry = {
       usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, cachedTokens: 0 },
       rateLimit: {
-        remainingTokens: remaining,
+        remainingTokens,
         preflight: true,
         estimatedTokens,
         requiredRemainingTokens,
-        resetAt: clientRateLimit.resetAt || null
+        resetAt: Number.isFinite(resetAt) ? resetAt : null
       }
     };
     throw error;
   }
 
-  return { estimatedTokens, requiredRemainingTokens, rateState: fresh ? "FRESH" : "RESET_WINDOW_KNOWN" };
+  return { estimatedTokens, requiredRemainingTokens, remainingTokens, state: "KNOWN_LOWER_BOUND" };
 }
 
 async function callOpenAI(task, history, route, context) {
