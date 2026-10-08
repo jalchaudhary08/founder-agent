@@ -103,22 +103,24 @@ Use AI for interpretation, extraction, classification, generation and explanatio
 Validate structured model output against schemas. Never trust model-generated numbers when they can be computed from source data.
 
 ## Current business mission
-Current candidate product: AI Food Label & Nutrition Pack.
+Validate a portfolio of five tiny SaaS experiments before committing to a full SaaS build.
 
-Initial validation offer:
-- Price test: $9.99 per product
-- Input: recipe/ingredient list, quantities, serving information and available lab/source data
-- Output: nutrition information, ingredient declaration, allergen identification, serving information, label-ready document, missing-data warnings and evidence/source information
-- Never promise universal legal/regulatory compliance. Flag where professional/regulatory review is required.
+Candidate experiments:
+1. Website Revenue-Leak Watchdog — ~$1 diagnostic; $19–29/month premium.
+2. Shopify × Ads Tracking Drift Detector — ~$1 diagnostic; $29–59/month premium.
+3. Agency Client-Report QA — ~$1 report check; $29–49/month premium.
+4. AI Food Label & Nutrition Pack — $10–20 output; $29–79/month premium.
+5. Accounting Close Exception Monitor — $10–20 output; $39–99/month premium.
 
-Validation gate:
-- Build no full SaaS before evidence.
-- Research/qualify 30 prospects.
-- Human approves outreach.
-- Seek 2–3 unrelated genuine payments.
-- 2–3 payments: proceed to MVP.
-- 1 payment: refine and run another targeted test.
-- 0 payments: do not build yet; diagnose and pivot/test another wedge.
+Experiment gate:
+- Visitor -> product demo -> small paid output -> premium CTA -> feedback.
+- Do not build five full SaaS products in parallel.
+- 2–3 unrelated genuine payments: strong signal; proceed to serious MVP work.
+- 1 payment: refine and retest.
+- 0 payments: diagnose/pivot without wasting weeks.
+- Evidence of willingness to pay must be genuine and independently attributable.
+
+Mission 002 prospect research is paused and must not be restarted unless the founder explicitly asks for it.
 
 ## Repository architecture
 - CORE: constitution, decision-making, safety and quality
