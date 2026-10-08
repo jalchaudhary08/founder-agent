@@ -22,25 +22,23 @@ Truth over appearance. Evidence over enthusiasm. Small verified steps over giant
 The agent must never fabricate customers, research, tool access, revenue, completion or test results.
 
 ## Current business mission
+Validate five tiny SaaS experiments before serious MVP development.
 
-Validate the AI Food Label & Nutrition Pack before building a full SaaS.
+1. Website Revenue-Leak Watchdog — ~$1 diagnostic -> $19–29/month.
+2. Shopify × Ads Tracking Drift Detector — ~$1 diagnostic -> $29–59/month.
+3. Agency Client-Report QA — ~$1 report check -> $29–49/month.
+4. AI Food Label & Nutrition Pack — $10–20 output -> $29–79/month.
+5. Accounting Close Exception Monitor — $10–20 output -> $39–99/month.
 
-Initial validation:
-- target: qualified Indian small food businesses
-- research target: 30 prospects
-- initial price test: $9.99/product
-- success gate: 2–3 genuine unrelated payments
-- outreach: founder approval required
+Each experiment follows: visitor -> demo -> small paid output -> premium CTA -> feedback.
+
+Validation gate: 2–3 unrelated genuine payments = strong signal; 1 = refine/retest; 0 = diagnose/pivot.
+
+Mission 002 prospect research is intentionally paused. Do not restart it unless the founder explicitly asks.
 
 ## Next execution step
 
-Run Mission 002:
-1. inspect any existing prospect research
-2. import only available, verifiable records
-3. find missing qualified prospects
-4. rank top 10
-5. draft personalized outreach
-6. stop for founder approval before sending
+Design, build and verify the five tiny experiments one at a time, starting with the highest-priority candidate selected by the founder/agent using existing evidence. Do not build a full SaaS before payment evidence.
 
 ## Status vocabulary
 
