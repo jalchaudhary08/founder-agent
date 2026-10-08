@@ -1,6 +1,58 @@
 const MAX_BYTES = 900000;
 const FETCH_TIMEOUT_MS = 9000;
 const ALLOWED_PROTOCOLS = new Set(["http:", "https:"]);
+const MAX_REDIRECTS = 3;
+const MAX_RESPONSE_BYTES = 1000000;
+const BLOCKED_HOSTNAMES = new Set(["localhost", "localhost.localdomain"]);
+const BLOCKED_IP_RANGES = [
+  /^127\\./, /^10\\./, /^192\\.168\\./, /^169\\.254\\./,
+  /^172\\.(1[6-9]|2\\d|3[0-1])\\./, /^0\\./
+];
+
+function isPrivateHostname(hostname) {
+  const host = String(hostname || "").toLowerCase().replace(/^\\[|\\]$/g, "");
+  if (BLOCKED_HOSTNAMES.has(host) || host.endsWith(".local") || host.endsWith(".internal")) return true;
+  return BLOCKED_IP_RANGES.some(pattern => pattern.test(host));
+}
+
+function assertSafeUrl(parsed) {
+  if (!ALLOWED_PROTOCOLS.has(parsed.protocol)) throw new Error("Only public http(s) websites are supported.");
+  if (parsed.username || parsed.password) throw new Error("URLs with embedded credentials are not supported.");
+  if (isPrivateHostname(parsed.hostname)) throw new Error("Private or local network addresses are not supported.");
+}
+
+async function fetchPublicHtml(initialUrl) {
+  let current = new URL(initialUrl);
+  for (let redirects = 0; redirects <= MAX_REDIRECTS; redirects++) {
+    assertSafeUrl(current);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    let response;
+    try {
+      response = await fetch(current.href, {
+        redirect:"manual",
+        signal:controller.signal,
+        headers:{"user-agent":"RevenueLeakDiagnostic/0.2 (+public-page-analysis)","accept":"text/html,application/xhtml+xml"}
+      });
+    } finally { clearTimeout(timeout); }
+
+    if ([301,302,303,307,308].includes(response.status)) {
+      const location = response.headers.get("location");
+      if (!location || redirects === MAX_REDIRECTS) throw new Error("The website redirected too many times.");
+      current = new URL(location, current.href);
+      continue;
+    }
+    if (!response.ok) throw new Error(`Website returned HTTP ${response.status}.`);
+    const type = response.headers.get("content-type") || "";
+    if (!/text\\/html|application\\/xhtml\\+xml/i.test(type)) throw new Error("The URL did not return an HTML page.");
+
+    const length = Number(response.headers.get("content-length") || 0);
+    if (length > MAX_RESPONSE_BYTES) throw new Error("The page is too large to inspect safely.");
+    const text = await response.text();
+    return {url:current.href, html:text.slice(0, MAX_BYTES)};
+  }
+  throw new Error("The website could not be fetched safely.");
+}
 
 function cleanText(value) {
   return String(value || "").replace(/\s+/g, " ").trim();
@@ -50,25 +102,14 @@ export default async function handler(req, res) {
     const {url, goal="Get more leads"} = req.body || {};
     let parsed;
     try { parsed = new URL(String(url || "").trim()); } catch { return res.status(400).json({ok:false,error:"Enter a valid public http(s) URL."}); }
-    if (!ALLOWED_PROTOCOLS.has(parsed.protocol)) return res.status(400).json({ok:false,error:"Only public http(s) websites are supported."});
-    if (parsed.username || parsed.password) return res.status(400).json({ok:false,error:"URLs with embedded credentials are not supported."});
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-    let response;
-    try {
-      response = await fetch(parsed.href, {redirect:"follow", signal:controller.signal, headers:{"user-agent":"RevenueLeakDiagnostic/0.1 (+public-page-analysis)","accept":"text/html,application/xhtml+xml"}});
-    } finally { clearTimeout(timeout); }
-    if (!response.ok) return res.status(502).json({ok:false,error:`Website returned HTTP ${response.status}.`});
-    const type = response.headers.get("content-type") || "";
-    if (!/text\\/html|application\\/xhtml\\+xml/i.test(type)) return res.status(415).json({ok:false,error:"The URL did not return an HTML page."});
-    const text = await response.text();
-    const html = text.slice(0, MAX_BYTES);
-    const signals = extractSignals(html, parsed.href);
+    assertSafeUrl(parsed);
+    const fetched = await fetchPublicHtml(parsed.href);
+    const signals = extractSignals(fetched.html, fetched.url);
     const findings = buildFindings(signals, String(goal));
     const score = clamp(100 - findings.reduce((n,f)=>n + ({HIGH:18,MEDIUM:10,LOW:4}[f.impact] || 0),0), 35, 96);
     return res.status(200).json({ok:true, url:parsed.href, goal, score, findings, signals:{title:signals.title,h1:signals.h1,ctaCount:signals.ctaCount,forms:signals.forms,trustDetected:signals.trustWords}, limitation:"This diagnostic uses publicly accessible page HTML. It does not claim to measure actual lost revenue or conversion rate."});
   } catch (error) {
-    const message = error?.name === "AbortError" ? "The website took too long to respond." : "We could not inspect that website safely.";
+    const message = error?.name === "AbortError" ? "The website took too long to respond." : (error?.message || "We could not inspect that website safely.");
     return res.status(502).json({ok:false,error:message});
   }
 }
