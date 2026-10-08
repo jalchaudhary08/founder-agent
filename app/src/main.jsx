@@ -5,6 +5,7 @@ import RevenueLeakExperiment from "./experiments/RevenueLeakExperiment.jsx";
 import TrackingDriftExperiment from "./experiments/TrackingDriftExperiment.jsx";
 import AgencyReportQAExperiment from "./experiments/AgencyReportQAExperiment.jsx";
 import FoodLabelExperiment from "./experiments/FoodLabelExperiment.jsx";
+import AccountingCloseExperiment from "./experiments/AccountingCloseExperiment.jsx";
 
 const starterMessages = [{
   role: "agent",
@@ -138,6 +139,9 @@ function App() {
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
+  if (pathname === "/experiments/accounting-close") {
+    return <AccountingCloseExperiment onBack={() => { window.history.pushState({}, "", "/"); setPathname("/"); }} />;
+  }
   if (pathname === "/experiments/food-label") {
     return <FoodLabelExperiment onBack={() => { window.history.pushState({}, "", "/"); setPathname("/"); }} />;
   }
@@ -418,6 +422,7 @@ function App() {
         <button onClick={()=>{window.history.pushState({}, "", "/experiments/tracking-drift");setPathname("/experiments/tracking-drift");}}><b>02</b><span>Tracking Drift</span><small>Open Experiment 02</small></button>
         <button onClick={()=>{window.history.pushState({}, "", "/experiments/agency-report-qa");setPathname("/experiments/agency-report-qa");}}><b>03</b><span>Report QA</span><small>Open Experiment 03</small></button>
         <button onClick={()=>{window.history.pushState({}, "", "/experiments/food-label");setPathname("/experiments/food-label");}}><b>04</b><span>Food Label</span><small>Open Experiment 04</small></button>
+        <button onClick={()=>{window.history.pushState({}, "", "/experiments/accounting-close");setPathname("/experiments/accounting-close");}}><b>05</b><span>Close Line</span><small>Open Experiment 05</small></button>
         <button onClick={()=>setActiveView("roadmap")}><b>☑</b><span>Master Roadmap</span><small>Pick the next task & build it</small></button>
         <button onClick={diagnosticsCheck}><b>✓</b><span>Diagnostics</span><small>Zero model tokens</small></button>
         <button onClick={()=>setActiveView("tools")}><b>⚙</b><span>System</span><small>Tools & security</small></button>
