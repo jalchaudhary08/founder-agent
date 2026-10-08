@@ -484,3 +484,25 @@ p,.sub{color:var(--fa-muted)!important}
   50%{transform:translateY(-5px) rotateX(7deg) rotateY(5deg)}
 }
 @media(prefers-reduced-motion:reduce){.hero-core{animation:none!important}}
+
+
+/* Experiment 01 — Revenue Leak Watchdog */
+.leak-page{min-height:100vh;background:#f4f0e7;color:#171817;font-family:Inter,ui-sans-serif,system-ui,sans-serif}
+.leak-nav{max-width:1180px;margin:auto;padding:24px 24px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #c9c4b9}
+.leak-wordmark{border:0;background:none;padding:0;font-weight:950;letter-spacing:.08em;font-size:14px;color:#171817;cursor:pointer}.leak-wordmark span{color:#d97732}
+.leak-nav-note,.leak-kicker{font-size:9px;letter-spacing:.16em;font-weight:850;color:#66635c}
+.leak-hero{max-width:1180px;margin:auto;padding:70px 24px 76px;display:grid;grid-template-columns:minmax(0,.9fr) minmax(420px,1.1fr);gap:70px;align-items:center}
+.leak-copy h1{font-size:clamp(48px,7vw,82px);line-height:.91;letter-spacing:-.07em;margin:14px 0 22px}.leak-copy h1 em{font-style:normal;color:#d97732}
+.leak-copy>p{max-width:560px;font-size:17px;line-height:1.6;color:#55524c}
+.leak-form{margin-top:30px}.leak-form label{display:block;font-size:9px;font-weight:850;letter-spacing:.13em;color:#69665f;margin-bottom:7px}
+.leak-input-row{display:flex;border:1px solid #969087;background:#fffdf8}.leak-input-row input{flex:1;min-width:0;border:0;background:transparent;padding:16px;outline:0;color:#171817}.leak-input-row button{border:0;background:#171817;color:#fffdf8;padding:0 19px;font-weight:800}.leak-input-row button:disabled{opacity:.55}
+.leak-goal{margin-top:14px;max-width:280px}.leak-goal select{width:100%;padding:11px;border:1px solid #b9b3a9;background:#fffdf8;color:#171817}.leak-form small{display:block;margin-top:13px;color:#77736b;font-size:10px;line-height:1.5}
+.leak-board{background:#fffdf8;border:1px solid #aaa49a;box-shadow:18px 18px 0 #d9d3c8;padding:22px;transform:rotate(.5deg)}
+.board-top,.board-score,.board-path{display:flex;justify-content:space-between;align-items:center}.board-top{font-size:8px;letter-spacing:.14em;border-bottom:1px solid #d4cfc5;padding-bottom:13px}.board-top b{color:#d97732}
+.board-path{justify-content:flex-start;gap:10px;padding:18px 0;font-size:8px;font-weight:800;color:#77736b}.board-path i{font-style:normal;color:#aaa49a}
+.board-score{border-top:1px solid #ded9d0;border-bottom:1px solid #ded9d0;padding:18px 0}.board-score small{display:block;font-size:8px;letter-spacing:.12em;color:#77736b}.board-score strong{font-size:48px;letter-spacing:-.06em}.board-score span{font-size:12px;color:#99938a}.board-stamp{font-size:8px;font-weight:850;letter-spacing:.1em;color:#d97732}
+.board-leaks{display:grid;gap:9px;margin-top:13px}.board-leak{border:1px solid #d8d2c8;padding:13px;background:#fbf8f1}.board-leak>span{font-size:7px;letter-spacing:.12em;color:#d97732;font-weight:850}.board-leak b{display:block;margin-top:6px;font-size:12px}.board-leak small{display:block;margin-top:5px;color:#6e6a62;font-size:9px;line-height:1.45}.board-leak div{display:flex;gap:6px;margin-top:8px}.board-leak i{font-style:normal;font-size:7px;border:1px solid #c5bfb5;padding:4px 5px;color:#5e5a53}
+.leak-explain{border-top:1px solid #c9c4b9;border-bottom:1px solid #c9c4b9;max-width:1180px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr)}.leak-explain>div{padding:28px 24px;border-right:1px solid #c9c4b9}.leak-explain>div:last-child{border-right:0}.leak-explain span{font-size:9px;color:#d97732;font-weight:900}.leak-explain h2{font-size:20px;margin:12px 0 8px;color:#171817!important}.leak-explain p{font-size:12px;line-height:1.55;color:#65615a}
+.leak-offer{max-width:1180px;margin:auto;padding:60px 24px 80px;display:flex;justify-content:space-between;gap:30px;align-items:end}.leak-offer h2{font-size:34px;letter-spacing:-.04em;margin:10px 0;color:#171817!important}.leak-offer p{max-width:600px;color:#65615a;line-height:1.55}.leak-offer button{white-space:nowrap;border:0;background:#d97732;color:#171817;padding:15px 19px;font-weight:900;cursor:pointer}.leak-offer small{color:#77736b;font-size:9px;max-width:220px}
+@media(max-width:800px){.leak-hero{grid-template-columns:1fr;gap:42px;padding-top:48px}.leak-board{transform:none}.leak-explain{grid-template-columns:1fr}.leak-explain>div{border-right:0;border-bottom:1px solid #c9c4b9}.leak-explain>div:last-child{border-bottom:0}.leak-offer{flex-direction:column;align-items:flex-start}.leak-input-row{display:block}.leak-input-row input{width:100%}.leak-input-row button{width:100%;padding:13px}.leak-nav{padding:18px 16px}}
+@media(prefers-reduced-motion:reduce){.leak-board{transform:none}}
