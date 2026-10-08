@@ -13,6 +13,29 @@ export default function RevenueLeakExperiment({ onBack }) {
   const [result, setResult] = React.useState(null);
   const [error, setError] = React.useState("");
 
+  async function requestUnlock() {
+    if (!result) return;
+    setError("");
+    try {
+      const response = await fetch("/api/experiments/revenue-leak", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({url, goal, mode:"full"})
+      });
+      const data = await response.json();
+      if (response.status === 402) {
+        setState("payment-pending");
+        setError("Checkout is not connected yet. The paid-report gate is working, but no charge was made.");
+        return;
+      }
+      if (!response.ok) throw new Error(data.error || "Unlock failed.");
+      setState("unlocked");
+    } catch (err) {
+      setError(err.message || "Unlock failed.");
+      setState("error");
+    }
+  }
+
   async function runPreview(event) {
     event.preventDefault();
     const target = url.trim();
@@ -89,6 +112,20 @@ export default function RevenueLeakExperiment({ onBack }) {
       <div><span>01</span><h2>Evidence before opinion.</h2><p>We inspect public page HTML and connect each finding to a concrete structural signal. Behavioral revenue loss still needs first-party data.</p></div>
       <div><span>02</span><h2>Priority before volume.</h2><p>You get the few fixes worth doing first, ranked by commercial impact and implementation effort.</p></div>
       <div><span>03</span><h2>Scenario, not fake certainty.</h2><p>When business numbers are unavailable, we do not invent lost-revenue figures. Assumptions stay visible.</p></div>
+    </section>
+
+    <section className="leak-report-preview">
+      <div>
+        <span className="leak-kicker">REPORT ARCHITECTURE</span>
+        <h2>The paid report goes deeper.</h2>
+        <p>The preview exposes the first three priorities. The full report is server-gated so findings cannot be unlocked by simply inspecting the browser.</p>
+      </div>
+      <div className="leak-report-grid">
+        <article><b>FULL FINDINGS</b><span>{result ? (result.remainingFindings + 3) : "—"}</span><small>ranked issues + fixes</small></article>
+        <article><b>EVIDENCE</b><span>✓</span><small>scan signals + source context</small></article>
+        <article><b>METHODOLOGY</b><span>{result?.reportMeta?.methodologyCount || "—"}</span><small>transparent scan steps</small></article>
+        <article><b>LIMITATIONS</b><span>{result?.reportMeta?.limitationCount || "—"}</span><small>what this scan cannot prove</small></article>
+      </div>
     </section>
 
     <section className="leak-offer">
