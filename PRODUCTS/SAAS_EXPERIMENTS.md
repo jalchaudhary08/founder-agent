@@ -19,8 +19,8 @@ Visitor -> product demo -> small paid output -> premium CTA -> feedback.
 - 1 payment: refine positioning/output and retest.
 - 0 payments: diagnose the failure and pivot/test another wedge.
 
-## Scope rule
-Never build all five full SaaS products in parallel. Build the smallest credible experiment, verify it, then use evidence to decide what deserves more engineering.
+## Portfolio build rule
+Build all five experiments to a defined MVP-quality portfolio baseline before deep optimization. Do not over-polish one product while the other four are still unbuilt. After the portfolio is live, Founder Agent operates the five products across traffic, payments, security, feedback and upgrades, with approval gates for high-risk production changes.
 
 ## Paused work
 Mission 002 prospect research is paused. It must not be restarted unless the founder explicitly asks.
