@@ -1,22 +1,29 @@
 # Founder Agent State
 
 ## Current status
-Phase: Mission 002 — Prospect Validation
-Mode: Validate the SaaS before building the full MVP
+Phase: 5 SaaS Experimental Web Validation
+Mode: Build tiny sellable experiments, measure payment signal, then commit to a winner
 Repository: jalchaudhary08/founder-agent
 Default branch: main
 
-## Current mission
-Validate the AI Food Label & Nutrition Pack with verified India-based small packaged-food prospects before full MVP build.
-
-## Current product candidate
-AI Food Label & Nutrition Pack
+## Current portfolio
+1. Website Revenue-Leak Watchdog
+2. Shopify × Ads Tracking Drift Detector
+3. Agency Client-Report QA
+4. AI Food Label & Nutrition Pack
+5. Accounting Close Exception Monitor
 
 ## Validation gate
-Target: 2–3 genuine unrelated paying customers before full MVP build.
+Visitor -> demo -> small paid output -> premium CTA -> feedback.
+2–3 unrelated genuine payments = strong signal.
+1 payment = refine/retest.
+0 payments = diagnose/pivot.
+
+## Paused work
+Mission 002 prospect research is paused. Do not restart it without explicit founder instruction.
 
 ## Current repository status
-Founder Agent runtime, security, memory, mission protocol and App 2.0 foundation are implemented and verified. Mission 002 prospect data is the next execution target; no prospect has been counted until independently verified.
+Founder Agent runtime, security, memory, mission protocol and web-design foundation are implemented. The current work is to make Design DNA and the Web Design Quality Gate operational for product experiments and keep the app state aligned with the five-experiment portfolio.
 
 ## Rules
 Do not claim a mission is complete without evidence.
