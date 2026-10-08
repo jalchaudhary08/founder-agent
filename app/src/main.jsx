@@ -22,12 +22,12 @@ function formatTokens(value) {
 function parseResetDuration(value) {
   if (!value) return null;
   const text = String(value).trim();
-  if (/^\\d+$/.test(text)) {
+  if (/^\d+$/.test(text)) {
     const numeric = Number(text);
     return numeric > 1000000000 ? numeric * 1000 : Date.now() + numeric * 1000;
   }
   let totalMs = 0;
-  const pattern = /(\\d+(?:\\.\\d+)?)(ms|s|m|h|d)/gi;
+  const pattern = /(\d+(?:\.\d+)?)(ms|s|m|h|d)/gi;
   let match;
   while ((match = pattern.exec(text))) {
     const amount = Number(match[1]);
@@ -132,6 +132,27 @@ function Roadmap({ roadmap, onRefresh, onStartTask }) {
   </section>;
 }
 
+function ExperimentButton({ number, title, price }) {
+  const routes = {
+    "01": "/experiments/revenue-leak",
+    "02": "/experiments/tracking-drift",
+    "03": "/experiments/agency-report-qa",
+    "04": "/experiments/food-label",
+    "05": "/experiments/accounting-close"
+  };
+  const openExperiment = () => {
+    const route = routes[number];
+    if (!route) return;
+    window.history.pushState({}, "", route);
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  };
+
+  return <div className="mission-card">
+    <div><span className="mission-status">EXPERIMENT {number}</span><h3>{title}</h3><p>{price}</p></div>
+    <button onClick={openExperiment}>Open Experiment →</button>
+  </div>;
+}
+
 function App() {
   const [pathname, setPathname] = React.useState(window.location.pathname);
   React.useEffect(() => {
@@ -175,8 +196,6 @@ function App() {
       const knownLimit = Number.isFinite(saved?.rateLimitTokens) ? saved.rateLimitTokens : null;
       const resetPassed = savedResetAt > 0 && savedResetAt <= now;
       const remaining = Number.isFinite(saved?.remainingTokens) ? saved.remainingTokens : null;
-      // Never erase a known low-budget snapshot just because the page was refreshed.
-      // After the known reset, re-bootstrap to the last provider-reported limit.
       const bootstrappedAfterReset = resetPassed && Number.isFinite(knownLimit) ? knownLimit : remaining;
       const effectiveObservedAt = bootstrappedAfterReset !== remaining ? now : (Number.isFinite(saved?.observedAt) ? saved.observedAt : 0);
       return { sessionTokens: 0, lastTokens: 0, cachedTokens: 0,
@@ -236,7 +255,6 @@ function App() {
     }));
   }
 
-
   function activateAgent() {
     setAgentActivated(true);
     setStatus("ACTIVE");
@@ -264,12 +282,11 @@ function App() {
     const value = input.trim();
     if (!value || status === "WORKING" || !authenticated) return;
     const isStatusRequest = /^(project )?status|current (project )?status|show me the current project status/i.test(value);
-    const isMissionRequest = /mission[ _-]?002|prospect/i.test(value); // legacy routing retained; paused mission is not shown as current UI work.
+    const isMissionRequest = /mission[ _-]?002|prospect/i.test(value);
     const isResearchRequest = /research|search|find|latest|current|verify|source|market/i.test(value);
     const now = Date.now();
     const minimumAiTokens = (isMissionRequest || isResearchRequest) ? 15000 : 6000;
     const resetPassed = Number.isFinite(telemetry.resetAt) && telemetry.resetAt > 0 && telemetry.resetAt <= now;
-    const knownRemaining = Number.isFinite(telemetry.remainingTokens);
     const effectiveRemaining = resetPassed && Number.isFinite(telemetry.rateLimitTokens)
       ? telemetry.rateLimitTokens
       : telemetry.remainingTokens;
@@ -296,23 +313,12 @@ function App() {
     setMessages(nextMessages); setInput(""); setStatus("WORKING");
     try {
       const response = await fetch("/api/chat", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
-        task:value,
-        history:messages,
-        clientRateLimit: {
-          remainingTokens: telemetry.remainingTokens,
-          blockedUntil: telemetry.blockedUntil,
-          observedAt: telemetry.observedAt,
-          resetAt: telemetry.resetAt,
-          limitTokens: telemetry.rateLimitTokens
-        }
+        task:value, history:messages,
+        clientRateLimit:{remainingTokens:telemetry.remainingTokens,blockedUntil:telemetry.blockedUntil,observedAt:telemetry.observedAt,resetAt:telemetry.resetAt,limitTokens:telemetry.rateLimitTokens}
       })});
       const data = await response.json(); applyTelemetry(data);
       if (response.status === 401) { setAuthenticated(false); throw new Error("Your Founder session expired. Unlock the agent again."); }
-      if (!response.ok) throw new Error(
-        (data.error || "Runtime request failed.")
-        + (data.rateLimit?.remainingTokens != null ? " Remaining TPM: " + formatTokens(data.rateLimit.remainingTokens) + "." : "")
-        + (data.rateLimit?.requiredRemainingTokens != null ? " Safe budget: " + formatTokens(data.rateLimit.requiredRemainingTokens) + "." : "")
-      );
+      if (!response.ok) throw new Error((data.error || "Runtime request failed.") + (data.rateLimit?.remainingTokens != null ? " Remaining TPM: " + formatTokens(data.rateLimit.remainingTokens) + "." : "") + (data.rateLimit?.requiredRemainingTokens != null ? " Safe budget: " + formatTokens(data.rateLimit.requiredRemainingTokens) + "." : ""));
       setMessages(items => [...items,{role:"agent",text:data.result || "Runtime completed without a text result."}]);
       setApproval(data.approval || null); setStatus(data.status || "IDLE"); loadRoadmap();
     } catch (error) {
@@ -334,8 +340,6 @@ function App() {
     finally { setApprovalBusy(false); }
   }
 
-
-
   async function recoveryCheck() {
     try {
       const response = await fetch("/api/chat?recovery=1");
@@ -355,7 +359,7 @@ function App() {
       const response = await fetch("/api/chat?diagnostics=1");
       const data = await response.json();
       const lines = (data.checks || []).map(check => (check.status === "PASS" ? "✓ " : "✕ ") + check.name);
-      setMessages(items => [...items, {role:"agent", text:"Runtime self-test: " + data.status + " (" + (data.passed ?? 0) + "/" + (data.total ?? 0) + ")\\n\\n" + lines.join("\\n") + "\\n\\nOpenAI probe: " + (data.openaiProbe || "NOT_RUN") + " | Tokens: " + (data.tokenUsage ?? 0)}]);
+      setMessages(items => [...items, {role:"agent", text:"Runtime self-test: " + data.status + " (" + (data.passed ?? 0) + "/" + (data.total ?? 0) + ")\n\n" + lines.join("\n") + "\n\nOpenAI probe: " + (data.openaiProbe || "NOT_RUN") + " | Tokens: " + (data.tokenUsage ?? 0)}]);
       setStatus(data.status === "SELF_TEST_PASS" ? "DONE" : "BLOCKED");
     } catch(error) {
       setMessages(items => [...items, {role:"agent", text:"Runtime self-test failed: " + error.message}]);
@@ -389,8 +393,7 @@ function App() {
     </header>
 
     <nav className="nav-scroll" aria-label="Main navigation">
-      {nav.map(([id,label]) => <button key={id} className={activeView===id?"nav-item active":"nav-item"} onClick={()=>setActiveView(id)}>{label}</button>)}
-    </nav>
+      {nav.map(([id,label]) => <button key={id} className={activeView===id?"nav-item active":"nav-item"} onClick={()=>setActiveView(id)}>{label}</button>)}</nav>
 
     <section className="token-bar">
       <div className="token-card"><span>TPM LIMIT</span><strong>{formatTokens(telemetry.rateLimitTokens)}</strong></div>
@@ -432,7 +435,13 @@ function App() {
 
     {activeView === "roadmap" && <Roadmap roadmap={roadmap} onRefresh={loadRoadmap} onStartTask={startRoadmapTask} />}
 
-    {activeView === "missions" && <section className="panel"><div className="section-head"><div><div className="eyebrow">EXPERIMENT CENTER</div><h2>5 SAAS EXPERIMENTS</h2><p>Five tiny sellable workflows. Build all five MVP-quality experiments first, then deploy and operate the portfolio through Founder Agent.</p></div></div>{[["01","Website Revenue-Leak Watchdog","~$1 diagnostic → $19–29/month"],["02","Shopify × Ads Tracking Drift Detector","~$1 diagnostic → $29–59/month"],["03","Agency Client-Report QA","~$1 report check → $29–49/month"],["04","AI Food Label & Nutrition Pack","$10–20 output → $29–79/month"],["05","Accounting Close Exception Monitor","$10–20 output → $39–99/month"]].map(([n,title,price])=><div className="mission-card" key={n}><div><span className="mission-status">EXPERIMENT {n}</span><h3>{title}</h3><p>{price}</p></div><button onClick={()=>{setActiveView("chat");setInput("Design and validate experiment "+n+": "+title+". Start by inspecting the repository and existing evidence.");}}>Open Experiment →</button></div>)}</section>}
+    {activeView === "missions" && <section className="panel"><div className="section-head"><div><div className="eyebrow">EXPERIMENT CENTER</div><h2>5 SAAS EXPERIMENTS</h2><p>Five tiny sellable workflows. Build all five MVP-quality experiments first, then deploy and operate the portfolio through Founder Agent.</p></div></div>
+      <ExperimentButton number="01" title="Website Revenue-Leak Watchdog" price="~$1 diagnostic → $19–29/month" />
+      <ExperimentButton number="02" title="Shopify × Ads Tracking Drift Detector" price="~$1 diagnostic → $29–59/month" />
+      <ExperimentButton number="03" title="Agency Client-Report QA" price="~$1 report check → $29–49/month" />
+      <ExperimentButton number="04" title="AI Food Label & Nutrition Pack" price="$10–20 output → $29–79/month" />
+      <ExperimentButton number="05" title="Accounting Close Exception Monitor" price="$10–20 output → $39–99/month" />
+    </section>}
 
     {activeView === "projects" && <section className="panel"><div className="section-head"><div><div className="eyebrow">PROJECT PORTFOLIO</div><h2>5 SAAS EXPERIMENTS</h2><p>Validation-first portfolio. The winner earns serious development.</p></div></div><div className="project-progress"><div><span>VALIDATION MODEL</span><strong>PAYMENT BEFORE MVP</strong></div><div className="progress-track"><div style={{width:"20%"}}/></div></div><div className="project-stats"><div><span>EXPERIMENTS</span><b>5</b></div><div><span>PAYMENT GATE</span><b>2–3</b></div><div><span>FULL MVP</span><b>PAUSED</b></div></div></section>}
 
