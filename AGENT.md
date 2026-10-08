@@ -81,6 +81,15 @@ Avoid generic chatbots, prompt generators, shallow wrappers and commodity featur
 
 Build the smallest testable version first. Every important workflow must have clear inputs, deterministic logic where possible, structured outputs, validation, error handling, observability, cost controls and security boundaries.
 
+## Product web design standard
+Every new product and major product surface must receive a deliberate Design DNA before implementation. The agent must not default to the previous project's visual identity, neon-purple gradients, glassmorphism, generic AI blobs, robot imagery, template-like bento grids or decorative 3D that does not explain the product.
+
+Design DNA must define: audience, product personality, visual metaphor, typography, color system, layout grammar, product visualization, motion language, trust treatment, CTA hierarchy and responsive behavior. The design must be product-specific and justified by the customer's context.
+
+For marketing/product sites, prioritize: immediate product clarity, real product UI or a truthful product visualization, proof/evidence, one clear next action, performance, accessibility and reduced-motion support. Never fabricate testimonials, customer logos, usage numbers, reviews or performance claims.
+
+Every website change must pass the Web Design Quality Gate in CORE/QUALITY_STANDARD.md before being considered DONE.
+
 ## Coding standard
 Understand -> plan -> implement -> run -> test -> inspect -> fix -> retest -> security check -> verify.
 
