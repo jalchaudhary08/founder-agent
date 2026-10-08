@@ -336,3 +336,151 @@ body{
   .agent-activated .hero-core,.agent-activated .orbit-one,.agent-activated .orbit-two,
   .agent-activated:before,.agent-activated:after,.activation-reply{animation:none}
 }
+
+
+/* FOUNDER AGENT — 2026 PRODUCT-SPECIFIC REDESIGN
+   Intent: instrument panel, not generic AI landing page.
+   Replaces the old neon-purple/glass-heavy visual language.
+*/
+:root{
+  --fa-bg:#0c0d0f;
+  --fa-surface:#141619;
+  --fa-surface-2:#191c20;
+  --fa-surface-3:#20242a;
+  --fa-text:#f1eee7;
+  --fa-muted:#969b9f;
+  --fa-dim:#666c71;
+  --fa-border:#2d3238;
+  --fa-accent:#e7a45b;
+  --fa-accent-strong:#f0b56b;
+  --fa-blue:#7fa6bd;
+  --fa-green:#76b894;
+  --fa-red:#cf7d7d;
+}
+html,body,#root{background:var(--fa-bg)!important;color:var(--fa-text)}
+body{
+  background:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.014) 1px,transparent 1px),
+    var(--fa-bg)!important;
+  background-size:32px 32px!important;
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:linear-gradient(180deg,rgba(255,255,255,.025),transparent 18%,rgba(0,0,0,.18));
+}
+.app-shell{max-width:1180px!important}
+.topbar{border-bottom:1px solid var(--fa-border)!important;padding-top:14px!important}
+.brand{letter-spacing:.12em!important}
+.brand span{color:var(--fa-accent)!important}
+.mini-orb{
+  background:var(--fa-surface-2)!important;
+  border:1px solid #3b4248!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.32)!important;
+}
+.nav-scroll{border-color:var(--fa-border)!important;background:var(--fa-surface)!important;box-shadow:none!important}
+.nav-item{color:#9da2a6!important;border-color:transparent!important;background:transparent!important}
+.nav-item.active{
+  color:#fff!important;background:#22262b!important;border-color:#3a4148!important;
+  box-shadow:inset 3px 0 0 var(--fa-accent)!important;
+}
+.token-bar{gap:8px!important}
+.token-card,.panel,.roadmap-panel,.overview-card,.recent-card,.phase-card,.mission-card,.project-progress,.memory-card,.tool-card,.settings-list,.chat-view{
+  background:var(--fa-surface)!important;
+  border-color:var(--fa-border)!important;
+  box-shadow:0 10px 30px rgba(0,0,0,.20)!important;
+  backdrop-filter:none!important;
+}
+.token-card:hover,.memory-card:hover,.tool-card:hover,.mission-card:hover{
+  transform:translateY(-1px)!important;
+  border-color:#444b52!important;
+  box-shadow:0 12px 34px rgba(0,0,0,.25)!important;
+}
+.status{background:#171a1d!important;border-color:#343a40!important;box-shadow:none!important}
+.status b,.status strong{color:var(--fa-accent)!important}
+.eyebrow{color:#8d9499!important;letter-spacing:.16em!important}
+h1,h2,h3{color:var(--fa-text)!important}
+p,.sub{color:var(--fa-muted)!important}
+.hero-card{
+  min-height:350px!important;padding:34px!important;
+  border:1px solid #3a4046!important;
+  background:
+    linear-gradient(135deg,#181b1f 0%,#111315 58%,#15181b 100%)!important;
+  box-shadow:0 24px 60px rgba(0,0,0,.28)!important;
+}
+.hero-card:after{display:none!important}
+.hero-card h1{font-weight:850!important;letter-spacing:-.055em!important}
+.hero-card p{font-size:13px!important}
+.hero-core-wrap{filter:none!important}
+.hero-core{
+  background:linear-gradient(145deg,#252a2f,#171a1d)!important;
+  border:1px solid #4a5158!important;
+  box-shadow:0 20px 45px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.08)!important;
+  animation:instrument-float 6s ease-in-out infinite!important;
+}
+.core-symbol{text-shadow:none!important;color:var(--fa-accent)!important}
+.hero-core b{color:#f3f0e8!important}
+.hero-core small{color:var(--fa-green)!important}
+.hero-orbit{border-color:#394047!important;box-shadow:none!important}
+.hero-metrics div{
+  background:#111417!important;border-color:#30363c!important;backdrop-filter:none!important;
+}
+.hero-metrics b{color:#e5e1d9!important}
+.quick-grid button{
+  background:#171a1d!important;border-color:#30363c!important;box-shadow:none!important;
+}
+.quick-grid button:hover{
+  background:#1d2125!important;border-color:#4a5158!important;
+}
+.quick-grid button b{color:var(--fa-accent)!important}
+.progress-track{background:#292e33!important}
+.progress-track div{background:var(--fa-accent)!important;box-shadow:none!important}
+.phase-badge.active,.live-pill{
+  color:var(--fa-accent)!important;border-color:#604a31!important;background:#211b15!important;
+}
+.phase-badge.done{color:var(--fa-green)!important}
+.task-start,.ghost-button{
+  color:var(--fa-accent)!important;border-color:#5a4630!important;background:#1e1a16!important;
+}
+.task-start:hover,.ghost-button:hover{background:#292119!important;border-color:#876943!important}
+.focus-task{
+  background:#181a1d!important;border-color:#4b4033!important;box-shadow:none!important;
+}
+.focus-task span{color:var(--fa-accent)!important}
+.composer{
+  background:#101214!important;border-color:#3a4046!important;backdrop-filter:none!important;box-shadow:0 14px 38px rgba(0,0,0,.38)!important;
+}
+.composer button{
+  background:var(--fa-accent)!important;color:#141414!important;box-shadow:none!important;
+}
+.quick button{background:#171a1d!important;border-color:#30363c!important;color:#aeb3b7!important}
+.bubble{background:#171a1d!important;border-color:#30363c!important}
+.row.user .bubble{background:#272019!important;border-color:#5a4630!important}
+.row.user .avatar{background:#30251b!important;color:var(--fa-accent)!important}
+.avatar{background:#171a1d!important;color:var(--fa-blue)!important}
+.approval-card{background:#1c1916!important;border-color:#6a5136!important}
+.approval-kicker{color:var(--fa-accent)!important}
+.approve-button{background:var(--fa-accent)!important;color:#171411!important}
+.boot-screen,.auth-shell{
+  background:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.014) 1px,transparent 1px),
+    var(--fa-bg)!important;
+  background-size:32px 32px!important;
+}
+.boot-core,.boot-mark{
+  background:var(--fa-surface-2)!important;
+  border:1px solid #41474d!important;
+  box-shadow:0 18px 45px rgba(0,0,0,.35)!important;
+}
+.boot-core span{color:var(--fa-accent)!important}
+.boot-title span{color:var(--fa-accent)!important}
+.auth-card{background:var(--fa-surface)!important;border-color:#363c42!important;box-shadow:0 20px 60px rgba(0,0,0,.4)!important}
+.auth-form input{background:#101214!important;border-color:#363c42!important}
+.auth-form button{background:var(--fa-accent)!important;color:#171411!important}
+.security-note{background:#15181a!important;border-color:#343a40!important}
+@keyframes instrument-float{
+  0%,100%{transform:translateY(0) rotateX(5deg) rotateY(-5deg)}
+  50%{transform:translateY(-5px) rotateX(7deg) rotateY(5deg)}
+}
+@media(prefers-reduced-motion:reduce){.hero-core{animation:none!important}}
