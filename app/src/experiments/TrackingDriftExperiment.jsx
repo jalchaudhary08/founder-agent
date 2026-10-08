@@ -10,6 +10,22 @@ const sampleRows = [
 export default function TrackingDriftExperiment({onBack}) {
   const [state,setState]=React.useState("sample");
   const [file,setFile]=React.useState(null);
+  const [error,setError]=React.useState("");
+  const [result,setResult]=React.useState(null);
+
+  async function analyzePaid() {
+    if (!file) return;
+    setError("");
+    setState("processing");
+    try {
+      const csv=await file.text();
+      const response=await fetch("/api/experiments/tracking-drift",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({shopifyCsv:csv,adsCsv:csv,mode:"paid_verified"})});
+      const data=await response.json();
+      if(response.status===402){setState("checkout");setError("Payment verification is not connected yet. No CSV was processed.");return;}
+      if(!response.ok) throw new Error(data.error||"Drift check failed.");
+      setResult(data);setState("result");
+    } catch(e){setError(e.message||"Drift check failed.");setState("error");}
+  }
 
   return <main className="drift-page">
     <header className="drift-nav">
@@ -29,20 +45,20 @@ export default function TrackingDriftExperiment({onBack}) {
           </label>
           <button className="drift-secondary" onClick={()=>setState("sample")}>See sample mismatch</button>
         </div>
-        <p className="drift-note">Your real data is not analyzed in the free sample. Paid analysis happens only after payment is verified.</p>
+        <p className="drift-note">Payment must be verified before real CSV data is processed. This prototype does not claim to charge you.</p>{file && <button className="drift-process" onClick={analyzePaid}>Process paid dataset</button>}{error && <span className="drift-error">{error}</span>}
       </div>
 
       <div className="drift-board">
         <div className="drift-board-head"><span>RECONCILIATION SAMPLE</span><b>4 ROWS</b></div>
         <div className="drift-ledgers"><strong>SHOPIFY ORDERS</strong><strong>ADS CONVERSIONS</strong></div>
         <div className="drift-summary">
-          <div><small>SHOPIFY</small><b>4</b></div>
-          <div className="drift-delta"><small>DELTA</small><b>+1</b><span>25% drift</span></div>
-          <div><small>ADS</small><b>5</b></div>
+          <div><small>SHOPIFY</small><b>{result?.summary?.shopCount ?? 4}</b></div>
+          <div className="drift-delta"><small>DELTA</small><b>{result ? (result.summary.countDelta>0?"+":"")+result.summary.countDelta : "+1"}</b><span>{result?.summary?.driftPct ?? 25}% drift</span></div>
+          <div><small>ADS</small><b>{result?.summary?.adsCount ?? 5}</b></div>
         </div>
         <div className="drift-rows">
-          {sampleRows.map(row=><div className={"drift-row "+row.state.toLowerCase()} key={row.id}>
-            <code>{row.id}</code><span>{row.shopify}</span><i>↔</i><span>{row.ads}</span><b>{row.state}</b>
+          {(result?.rows || sampleRows).map(row=><div className={"drift-row "+row.state.toLowerCase()} key={row.id}>
+            <code>{row.id}</code><span>{row.shopify ?? "—"}</span><i>↔</i><span>{row.ads ?? "—"}</span><b>{row.state}</b>
           </div>)}
         </div>
       </div>
@@ -57,7 +73,7 @@ export default function TrackingDriftExperiment({onBack}) {
     <section className="drift-offer">
       <div><small>SMALL PAID TEST</small><h2>Run the drift check for about $1.</h2><p>Get the mismatch summary, evidence, likely causes and a prioritized next-action sheet.</p></div>
       <button onClick={()=>setState("checkout")}>{state==="checkout"?"CHECKOUT NOT CONNECTED":"Run the $1 Drift Check"}</button>
-      {state==="checkout" && <small>Payment provider will be connected after the five-product MVP portfolio is built. No real data is uploaded or analyzed yet.</small>}
+      {state==="checkout" && <small>Payment provider is not connected yet. No charge is claimed.</small>}{state==="result" && <small>Analysis complete. Findings are based only on the supplied identifiers and values.</small>}
       {state==="ready" && <small>File selected. Payment must be verified before the real dataset is processed.</small>}
     </section>
   </main>;
