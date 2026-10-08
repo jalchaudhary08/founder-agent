@@ -37,3 +37,19 @@ Weak signal:
 - "I would use this"
 
 Never treat weak signals as revenue validation.
+
+
+## Web design quality gate
+Before marking a product website DONE, verify:
+- Design DNA exists and is specific to this product.
+- Visual identity is not copied from the previous product by default.
+- No automatic neon-purple/glassmorphism/AI-gradient treatment unless explicitly justified.
+- Hero communicates what the product does, who it is for and the primary action quickly.
+- Real product UI, truthful workflow visualization or product-specific visual metaphor is visible.
+- Typography, spacing, color contrast and hierarchy are coherent.
+- Motion demonstrates or supports the product; it is not decoration-only.
+- Reduced-motion behavior is implemented.
+- Mobile layout is intentionally designed, not merely shrunk.
+- No fake testimonials, logos, reviews, customer counts or unsupported claims.
+- No broken links, missing assets, console errors or obvious layout overflow.
+- Performance is checked before release; unnecessary heavy visual effects are removed.
