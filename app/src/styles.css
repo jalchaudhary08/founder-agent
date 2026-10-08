@@ -506,3 +506,18 @@ p,.sub{color:var(--fa-muted)!important}
 .leak-offer{max-width:1180px;margin:auto;padding:60px 24px 80px;display:flex;justify-content:space-between;gap:30px;align-items:end}.leak-offer h2{font-size:34px;letter-spacing:-.04em;margin:10px 0;color:#171817!important}.leak-offer p{max-width:600px;color:#65615a;line-height:1.55}.leak-offer button{white-space:nowrap;border:0;background:#d97732;color:#171817;padding:15px 19px;font-weight:900;cursor:pointer}.leak-offer small{color:#77736b;font-size:9px;max-width:220px}
 @media(max-width:800px){.leak-hero{grid-template-columns:1fr;gap:42px;padding-top:48px}.leak-board{transform:none}.leak-explain{grid-template-columns:1fr}.leak-explain>div{border-right:0;border-bottom:1px solid #c9c4b9}.leak-explain>div:last-child{border-bottom:0}.leak-offer{flex-direction:column;align-items:flex-start}.leak-input-row{display:block}.leak-input-row input{width:100%}.leak-input-row button{width:100%;padding:13px}.leak-nav{padding:18px 16px}}
 @media(prefers-reduced-motion:reduce){.leak-board{transform:none}}
+
+
+/* Revenue Leak paid-report layer */
+.leak-report-preview{margin:0 6vw 6vw;padding:32px;background:#171817;color:#f4f0e7;display:grid;grid-template-columns:1fr 1.4fr;gap:28px;border:1px solid rgba(244,240,231,.12)}
+.leak-report-preview h2{margin:.35rem 0 .7rem;font-size:clamp(1.8rem,3vw,3rem)}
+.leak-report-preview p{max-width:560px;color:rgba(244,240,231,.68);line-height:1.65}
+.leak-report-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.leak-report-grid article{min-height:120px;padding:18px;border:1px solid rgba(244,240,231,.14);display:flex;flex-direction:column;justify-content:space-between}
+.leak-report-grid b{font-size:.68rem;letter-spacing:.14em}
+.leak-report-grid span{font-size:1.8rem;font-variant-numeric:tabular-nums;color:#f28b2e}
+.leak-report-grid small{color:rgba(244,240,231,.55)}
+.leak-offer button:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:800px){.leak-report-preview{grid-template-columns:1fr;margin:0 5vw 12vw;padding:24px}.leak-report-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.leak-report-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.leak-report-preview *{animation:none!important;transition:none!important}}
