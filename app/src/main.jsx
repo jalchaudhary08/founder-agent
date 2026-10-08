@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
+import RevenueLeakExperiment from "./experiments/RevenueLeakExperiment.jsx";
 
 const starterMessages = [{
   role: "agent",
@@ -128,6 +129,15 @@ function Roadmap({ roadmap, onRefresh, onStartTask }) {
 }
 
 function App() {
+  const [pathname, setPathname] = React.useState(window.location.pathname);
+  React.useEffect(() => {
+    const onPop = () => setPathname(window.location.pathname);
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+  if (pathname === "/experiments/revenue-leak") {
+    return <RevenueLeakExperiment onBack={() => { window.history.pushState({}, "", "/"); setPathname("/"); }} />;
+  }
   const [authenticated, setAuthenticated] = React.useState(null);
   const [booting, setBooting] = React.useState(false);
   const [messages, setMessages] = React.useState(starterMessages);
@@ -392,7 +402,7 @@ function App() {
       </div>
       <div className="overview-card"><div className="eyebrow">FOUNDER OVERVIEW</div><div className="overview-row"><span>Current project</span><b>5 SaaS Experimental Web</b></div><div className="overview-row"><span>Validation model</span><b>Demo → Paid Output → Premium CTA</b></div><div className="overview-row"><span>Runtime</span><b className="good">● HEALTHY CHECK AVAILABLE</b></div></div>
       <div className="quick-grid">
-        <button onClick={()=>setActiveView("missions")}><b>🔎</b><span>Mission Center</span><small>Run and review missions</small></button>
+        <button onClick={()=>{window.history.pushState({}, "", "/experiments/revenue-leak");setPathname("/experiments/revenue-leak");}}><b>01</b><span>Revenue Leak</span><small>Open Experiment 01</small></button>
         <button onClick={()=>setActiveView("roadmap")}><b>☑</b><span>Master Roadmap</span><small>Pick the next task & build it</small></button>
         <button onClick={diagnosticsCheck}><b>✓</b><span>Diagnostics</span><small>Zero model tokens</small></button>
         <button onClick={()=>setActiveView("tools")}><b>⚙</b><span>System</span><small>Tools & security</small></button>
