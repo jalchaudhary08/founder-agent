@@ -1,0 +1,64 @@
+import React from "react";
+
+const sampleRows = [
+  {id:"A-1042", shopify:"1", ads:"1", state:"MATCH"},
+  {id:"A-1043", shopify:"1", ads:"2", state:"DRIFT"},
+  {id:"A-1044", shopify:"1", ads:"0", state:"MISSING"},
+  {id:"A-1045", shopify:"1", ads:"1", state:"MATCH"}
+];
+
+export default function TrackingDriftExperiment({onBack}) {
+  const [state,setState]=React.useState("sample");
+  const [file,setFile]=React.useState(null);
+
+  return <main className="drift-page">
+    <header className="drift-nav">
+      <button onClick={onBack} className="drift-wordmark">DRIFT<span>CHECK</span></button>
+      <span>EXPERIMENT 02 · RECONCILIATION</span>
+    </header>
+
+    <section className="drift-hero">
+      <div className="drift-copy">
+        <small>SHOPIFY × ADS TRACKING DRIFT DETECTOR</small>
+        <h1>When the numbers disagree,<br/><em>find out why.</em></h1>
+        <p>Compare Shopify orders with ad-platform conversions and surface the mismatches worth investigating—before bad tracking turns into bad decisions.</p>
+        <div className="drift-actions">
+          <label className="drift-upload">
+            <input type="file" accept=".csv,text/csv" onChange={e=>{setFile(e.target.files?.[0]||null);setState("ready")}} />
+            {file ? "File selected · Run $1 check" : "Choose CSV · Run $1 check"}
+          </label>
+          <button className="drift-secondary" onClick={()=>setState("sample")}>See sample mismatch</button>
+        </div>
+        <p className="drift-note">Your real data is not analyzed in the free sample. Paid analysis happens only after payment is verified.</p>
+      </div>
+
+      <div className="drift-board">
+        <div className="drift-board-head"><span>RECONCILIATION SAMPLE</span><b>4 ROWS</b></div>
+        <div className="drift-ledgers"><strong>SHOPIFY ORDERS</strong><strong>ADS CONVERSIONS</strong></div>
+        <div className="drift-summary">
+          <div><small>SHOPIFY</small><b>4</b></div>
+          <div className="drift-delta"><small>DELTA</small><b>+1</b><span>25% drift</span></div>
+          <div><small>ADS</small><b>5</b></div>
+        </div>
+        <div className="drift-rows">
+          {sampleRows.map(row=><div className={"drift-row "+row.state.toLowerCase()} key={row.id}>
+            <code>{row.id}</code><span>{row.shopify}</span><i>↔</i><span>{row.ads}</span><b>{row.state}</b>
+          </div>)}
+        </div>
+      </div>
+    </section>
+
+    <section className="drift-explain">
+      <article><b>01</b><h2>Reconcile</h2><p>Normalize the two exports and compare conversion counts and value.</p></article>
+      <article><b>02</b><h2>Explain</h2><p>Separate measurable drift from assumptions instead of guessing attribution.</p></article>
+      <article><b>03</b><h2>Fix first</h2><p>Get a short priority list instead of another giant analytics dashboard.</p></article>
+    </section>
+
+    <section className="drift-offer">
+      <div><small>SMALL PAID TEST</small><h2>Run the drift check for about $1.</h2><p>Get the mismatch summary, evidence, likely causes and a prioritized next-action sheet.</p></div>
+      <button onClick={()=>setState("checkout")}>{state==="checkout"?"CHECKOUT NOT CONNECTED":"Run the $1 Drift Check"}</button>
+      {state==="checkout" && <small>Payment provider will be connected after the five-product MVP portfolio is built. No real data is uploaded or analyzed yet.</small>}
+      {state==="ready" && <small>File selected. Payment must be verified before the real dataset is processed.</small>}
+    </section>
+  </main>;
+}
