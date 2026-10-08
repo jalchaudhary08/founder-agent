@@ -10,12 +10,33 @@ export default function RevenueLeakExperiment({ onBack }) {
   const [url, setUrl] = React.useState("");
   const [goal, setGoal] = React.useState("Get more leads");
   const [state, setState] = React.useState("idle");
+  const [result, setResult] = React.useState(null);
+  const [error, setError] = React.useState("");
 
-  function runPreview(event) {
+  async function runPreview(event) {
     event.preventDefault();
-    if (!/^https?:\/\//i.test(url.trim())) return;
+    const target = url.trim();
+    if (!/^https?:\\/\\//i.test(target)) {
+      setError("Enter a valid public website URL, including https://");
+      return;
+    }
+    setError("");
+    setResult(null);
     setState("scanning");
-    window.setTimeout(() => setState("preview"), 850);
+    try {
+      const response = await fetch("/api/experiments/revenue-leak", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({url: target, goal})
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Diagnosis failed.");
+      setResult(data);
+      setState("preview");
+    } catch (err) {
+      setState("error");
+      setError(err.message || "Diagnosis failed.");
+    }
   }
 
   return <main className="leak-page">
@@ -45,18 +66,19 @@ export default function RevenueLeakExperiment({ onBack }) {
             </select>
           </div>
           <small>Public page only · no login required for the preview · findings are evidence-based, not guaranteed revenue forecasts.</small>
+        {error && <div className="leak-error" role="alert">{error}</div>}
         </form>
       </div>
 
       <div className="leak-board" aria-label="Example diagnostic board">
         <div className="board-top"><span>EXAMPLE DIAGNOSTIC</span><b>3 PRIORITIES</b></div>
         <div className="board-path"><span>VISITOR</span><i>→</i><span>MESSAGE</span><i>→</i><span>TRUST</span><i>→</i><span>CTA</span></div>
-        <div className="board-score"><div><small>CONVERSION HEALTH</small><strong>{state==="preview" ? "62" : "—"}</strong><span>/100</span></div><div className="board-stamp">{state==="preview" ? "PREVIEW READY" : "WAITING FOR URL"}</div></div>
+        <div className="board-score"><div><small>CONVERSION HEALTH</small><strong>{result ? result.score : "—"}</strong><span>/100</span></div><div className="board-stamp">{state==="preview" ? "LIVE PREVIEW" : state==="error" ? "SCAN FAILED" : "WAITING FOR URL"}</div></div>
         <div className="board-leaks">
-          {leaks.map((leak,i)=><article key={leak.label} className="board-leak">
+          {(result?.findings || leaks).map((leak,i)=><article key={leak.label} className="board-leak">
             <span>{String(i+1).padStart(2,"0")} · {leak.label}</span>
-            <b>{state==="preview" ? leak.title : "Priority finding appears here"}</b>
-            <small>{state==="preview" ? leak.evidence : "Run the preview to reveal evidence and recommended action."}</small>
+            <b>{result ? leak.title : "Priority finding appears here"}</b>
+            <small>{result ? leak.evidence : "Run the preview to reveal evidence and recommended action."}</small>
             <div><i>{leak.impact} IMPACT</i><i>{leak.effort} EFFORT</i></div>
           </article>)}
         </div>
@@ -64,7 +86,7 @@ export default function RevenueLeakExperiment({ onBack }) {
     </section>
 
     <section className="leak-explain">
-      <div><span>01</span><h2>Evidence before opinion.</h2><p>We inspect what a first-time visitor can actually see and connect each finding to a concrete page element.</p></div>
+      <div><span>01</span><h2>Evidence before opinion.</h2><p>We inspect public page HTML and connect each finding to a concrete structural signal. Behavioral revenue loss still needs first-party data.</p></div>
       <div><span>02</span><h2>Priority before volume.</h2><p>You get the few fixes worth doing first, ranked by commercial impact and implementation effort.</p></div>
       <div><span>03</span><h2>Scenario, not fake certainty.</h2><p>When business numbers are unavailable, we do not invent lost-revenue figures. Assumptions stay visible.</p></div>
     </section>
