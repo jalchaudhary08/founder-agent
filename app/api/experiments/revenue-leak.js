@@ -79,7 +79,7 @@ function extractSignals(html, url) {
   return { url, title, h1, h1Count, linkCount: links.length, ctaCount: ctas.length, buttons, forms, trustWords, navLike, viewport, canonical, textLength: text.length };
 }
 
-function buildFindings(s, goal) {
+function buildFindings(s, goal, limit = 3) {
   const findings = [];
   if (!s.h1) findings.push({label:"MESSAGE", title:"No clear primary headline was detected", evidence:"The page has no detectable H1, so the first-screen value proposition may be unclear to a new visitor.", impact:"HIGH", effort:"LOW", fix:"Add one outcome-led H1 that says who the page is for and what result it delivers."});
   else if (s.h1.length > 95 || s.h1.length < 12) findings.push({label:"MESSAGE", title:"The primary headline may not communicate the outcome sharply", evidence:`Detected H1: “${s.h1.slice(0,140)}”`, impact:"HIGH", effort:"LOW", fix:"Rewrite the headline around the visitor’s desired outcome, not internal product language."});
@@ -93,21 +93,44 @@ function buildFindings(s, goal) {
   if (findings.length === 0) findings.push({label:"FRICTION", title:"No high-confidence structural leak was detected", evidence:"The public HTML contains a clear headline, conversion action and trust signal.", impact:"LOW", effort:"MEDIUM", fix:"Use first-party analytics and session data to investigate behavioral leaks that public HTML cannot prove."});
   const weight = {HIGH:3, MEDIUM:2, LOW:1};
   findings.sort((a,b)=>weight[b.impact]-weight[a.impact]);
-  return findings.slice(0,3);
+  return findings.slice(0, limit);
+}
+
+function buildReport({url, goal, fetchedUrl, signals, findings, score}) {
+  return {
+    reportVersion:"0.1",
+    generatedAt:new Date().toISOString(),
+    url,fetchedUrl,goal,score,findings,
+    summary:"Prioritized commercial friction visible in public page HTML.",
+    scan:{title:signals.title,h1:signals.h1,ctaCount:signals.ctaCount,forms:signals.forms,trustDetected:signals.trustWords,h1Count:signals.h1Count,linkCount:signals.linkCount,viewport:signals.viewport,canonical:signals.canonical},
+    methodology:[
+      "Fetch public HTML with redirect and private-network protections.",
+      "Extract headline, CTA, form and trust signals.",
+      "Rank findings by impact and implementation effort.",
+      "Keep uncertainty visible: public HTML cannot prove actual lost revenue."
+    ],
+    limitations:[
+      "No analytics, orders, ad spend or session recordings are used.",
+      "JavaScript-rendered content may not appear in an HTML-only scan.",
+      "Findings are diagnostic hypotheses, not guaranteed revenue forecasts."
+    ]
+  };
 }
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ok:false,error:"Method not allowed."});
   try {
-    const {url, goal="Get more leads"} = req.body || {};
+    const {url, goal="Get more leads", mode="preview"} = req.body || {};
     let parsed;
     try { parsed = new URL(String(url || "").trim()); } catch { return res.status(400).json({ok:false,error:"Enter a valid public http(s) URL."}); }
     assertSafeUrl(parsed);
     const fetched = await fetchPublicHtml(parsed.href);
     const signals = extractSignals(fetched.html, fetched.url);
-    const findings = buildFindings(signals, String(goal));
-    const score = clamp(100 - findings.reduce((n,f)=>n + ({HIGH:18,MEDIUM:10,LOW:4}[f.impact] || 0),0), 35, 96);
-    return res.status(200).json({ok:true, url:parsed.href, goal, score, findings, signals:{title:signals.title,h1:signals.h1,ctaCount:signals.ctaCount,forms:signals.forms,trustDetected:signals.trustWords}, limitation:"This diagnostic uses publicly accessible page HTML. It does not claim to measure actual lost revenue or conversion rate."});
+    const allFindings = buildFindings(signals, String(goal), 100);
+    const score = clamp(100 - allFindings.reduce((n,f)=>n + ({HIGH:18,MEDIUM:10,LOW:4}[f.impact] || 0),0), 35, 96);
+    const report = buildReport({url:parsed.href,goal:String(goal),fetchedUrl:fetched.url,signals,findings:allFindings,score});
+    if (mode === "full") return res.status(402).json({ok:false,code:"PAYMENT_REQUIRED",error:"The full diagnostic is locked until payment is verified.",checkoutStatus:"not_configured",reportVersion:report.reportVersion});
+    return res.status(200).json({ok:true, mode:"preview", url:parsed.href, goal, score, findings:allFindings.slice(0,3), remainingFindings:Math.max(0,allFindings.length-3), reportMeta:{reportVersion:report.reportVersion,generatedAt:report.generatedAt,methodologyCount:report.methodology.length,limitationCount:report.limitations.length}, signals:{title:signals.title,h1:signals.h1,ctaCount:signals.ctaCount,forms:signals.forms,trustDetected:signals.trustWords}, limitation:"This diagnostic uses publicly accessible page HTML. It does not claim to measure actual lost revenue or conversion rate."});
   } catch (error) {
     const message = error?.name === "AbortError" ? "The website took too long to respond." : (error?.message || "We could not inspect that website safely.");
     return res.status(502).json({ok:false,error:message});
