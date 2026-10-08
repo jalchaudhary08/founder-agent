@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./styles.css";
 import RevenueLeakExperiment from "./experiments/RevenueLeakExperiment.jsx";
 import TrackingDriftExperiment from "./experiments/TrackingDriftExperiment.jsx";
+import AgencyReportQAExperiment from "./experiments/AgencyReportQAExperiment.jsx";
 
 const starterMessages = [{
   role: "agent",
@@ -136,6 +137,9 @@ function App() {
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
+  if (pathname === "/experiments/agency-report-qa") {
+    return <AgencyReportQAExperiment onBack={() => { window.history.pushState({}, "", "/"); setPathname("/"); }} />;
+  }
   if (pathname === "/experiments/tracking-drift") {
     return <TrackingDriftExperiment onBack={() => { window.history.pushState({}, "", "/"); setPathname("/"); }} />;
   }
