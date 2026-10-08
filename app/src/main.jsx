@@ -2,6 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
 import RevenueLeakExperiment from "./experiments/RevenueLeakExperiment.jsx";
+import TrackingDriftExperiment from "./experiments/TrackingDriftExperiment.jsx";
 
 const starterMessages = [{
   role: "agent",
@@ -135,6 +136,9 @@ function App() {
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
+  if (pathname === "/experiments/tracking-drift") {
+    return <TrackingDriftExperiment onBack={() => { window.history.pushState({}, "", "/"); setPathname("/"); }} />;
+  }
   if (pathname === "/experiments/revenue-leak") {
     return <RevenueLeakExperiment onBack={() => { window.history.pushState({}, "", "/"); setPathname("/"); }} />;
   }
@@ -403,6 +407,7 @@ function App() {
       <div className="overview-card"><div className="eyebrow">FOUNDER OVERVIEW</div><div className="overview-row"><span>Current project</span><b>5 SaaS Experimental Web</b></div><div className="overview-row"><span>Validation model</span><b>Demo → Paid Output → Premium CTA</b></div><div className="overview-row"><span>Runtime</span><b className="good">● HEALTHY CHECK AVAILABLE</b></div></div>
       <div className="quick-grid">
         <button onClick={()=>{window.history.pushState({}, "", "/experiments/revenue-leak");setPathname("/experiments/revenue-leak");}}><b>01</b><span>Revenue Leak</span><small>Open Experiment 01</small></button>
+        <button onClick={()=>{window.history.pushState({}, "", "/experiments/tracking-drift");setPathname("/experiments/tracking-drift");}}><b>02</b><span>Tracking Drift</span><small>Open Experiment 02</small></button>
         <button onClick={()=>setActiveView("roadmap")}><b>☑</b><span>Master Roadmap</span><small>Pick the next task & build it</small></button>
         <button onClick={diagnosticsCheck}><b>✓</b><span>Diagnostics</span><small>Zero model tokens</small></button>
         <button onClick={()=>setActiveView("tools")}><b>⚙</b><span>System</span><small>Tools & security</small></button>
