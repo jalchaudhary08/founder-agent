@@ -13,54 +13,17 @@ export default function RevenueLeakExperiment({ onBack }) {
   const [result, setResult] = React.useState(null);
   const [error, setError] = React.useState("");
 
-  async function requestUnlock() {
-    if (!result) return;
+  function startCheckout() {
+    setState("checkout");
     setError("");
-    try {
-      const response = await fetch("/api/experiments/revenue-leak", {
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({url, goal, mode:"full"})
-      });
-      const data = await response.json();
-      if (response.status === 402) {
-        setState("payment-pending");
-        setError("Checkout is not connected yet. The paid-report gate is working, but no charge was made.");
-        return;
-      }
-      if (!response.ok) throw new Error(data.error || "Unlock failed.");
-      setState("unlocked");
-    } catch (err) {
-      setError(err.message || "Unlock failed.");
-      setState("error");
-    }
   }
 
-  async function runPreview(event) {
-    event.preventDefault();
-    const target = url.trim();
-    if (!/^https?:\\/\\//i.test(target)) {
-      setError("Enter a valid public website URL, including https://");
-      return;
-    }
-    setError("");
-    setResult(null);
-    setState("scanning");
-    try {
-      const response = await fetch("/api/experiments/revenue-leak", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({url: target, goal})
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Diagnosis failed.");
-      setResult(data);
-      setState("preview");
-    } catch (err) {
-      setState("error");
-      setError(err.message || "Diagnosis failed.");
-    }
-  }
+  const sampleResult = {
+    score: 62,
+    findings: leaks,
+    remainingFindings: 4,
+    reportMeta:{methodologyCount:4,limitationCount:3}
+  };
 
   return <main className="leak-page">
     <header className="leak-nav">
@@ -72,12 +35,12 @@ export default function RevenueLeakExperiment({ onBack }) {
       <div className="leak-copy">
         <div className="leak-kicker">WEBSITE REVENUE-LEAK WATCHDOG</div>
         <h1>Find the leak.<br/><em>Fix the first three.</em></h1>
-        <p>Paste a public website URL. Get a concise diagnosis of the conversion leaks most worth fixing—not a 200-item audit nobody reads.</p>
-        <form className="leak-form" onSubmit={runPreview}>
+        <p>See exactly what a revenue-leak diagnosis looks like, then pay only when you want us to scan your real website. No free scans. No account required.</p>
+        <div className="leak-form">
           <label htmlFor="leak-url">PUBLIC WEBSITE URL</label>
           <div className="leak-input-row">
             <input id="leak-url" value={url} onChange={e=>setUrl(e.target.value)} placeholder="https://yourwebsite.com" inputMode="url" />
-            <button type="submit" disabled={state==="scanning"}>{state==="scanning" ? "Scanning…" : "Run diagnosis"}</button>
+            <button type="button" onClick={startCheckout}>Get my report · ~$1</button>
           </div>
           <div className="leak-goal">
             <label htmlFor="leak-goal">PRIMARY CONVERSION GOAL</label>
@@ -88,20 +51,20 @@ export default function RevenueLeakExperiment({ onBack }) {
               <option>Get more signups</option>
             </select>
           </div>
-          <small>Public page only · no login required for the preview · findings are evidence-based, not guaranteed revenue forecasts.</small>
+          <small>Your URL is not fetched until payment is verified. The sample below uses fixed demo data.</small>
         {error && <div className="leak-error" role="alert">{error}</div>}
-        </form>
+        </div>
       </div>
 
       <div className="leak-board" aria-label="Example diagnostic board">
         <div className="board-top"><span>EXAMPLE DIAGNOSTIC</span><b>3 PRIORITIES</b></div>
         <div className="board-path"><span>VISITOR</span><i>→</i><span>MESSAGE</span><i>→</i><span>TRUST</span><i>→</i><span>CTA</span></div>
-        <div className="board-score"><div><small>CONVERSION HEALTH</small><strong>{result ? result.score : "—"}</strong><span>/100</span></div><div className="board-stamp">{state==="preview" ? "LIVE PREVIEW" : state==="error" ? "SCAN FAILED" : "WAITING FOR URL"}</div></div>
+        <div className="board-score"><div><small>CONVERSION HEALTH</small><strong>{sampleResult.score}</strong><span>/100</span></div><div className="board-stamp">{state==="checkout" ? "CHECKOUT NEXT" : "SAMPLE REPORT"}</div></div>
         <div className="board-leaks">
-          {(result?.findings || leaks).map((leak,i)=><article key={leak.label} className="board-leak">
+          {sampleResult.findings.map((leak,i)=><article key={leak.label} className="board-leak">
             <span>{String(i+1).padStart(2,"0")} · {leak.label}</span>
-            <b>{result ? leak.title : "Priority finding appears here"}</b>
-            <small>{result ? leak.evidence : "Run the preview to reveal evidence and recommended action."}</small>
+            <b>{leak.title}</b>
+            <small>{leak.evidence}</small>
             <div><i>{leak.impact} IMPACT</i><i>{leak.effort} EFFORT</i></div>
           </article>)}
         </div>
@@ -118,13 +81,13 @@ export default function RevenueLeakExperiment({ onBack }) {
       <div>
         <span className="leak-kicker">REPORT ARCHITECTURE</span>
         <h2>The paid report goes deeper.</h2>
-        <p>The preview exposes the first three priorities. The full report is server-gated so findings cannot be unlocked by simply inspecting the browser.</p>
+        <p>The sample shows the product output without spending API calls. Your real URL is scanned only after verified payment.</p>
       </div>
       <div className="leak-report-grid">
-        <article><b>FULL FINDINGS</b><span>{result ? (result.remainingFindings + 3) : "—"}</span><small>ranked issues + fixes</small></article>
+        <article><b>FULL FINDINGS</b><span>{sampleResult.remainingFindings + 3}</span><small>ranked issues + fixes</small></article>
         <article><b>EVIDENCE</b><span>✓</span><small>scan signals + source context</small></article>
-        <article><b>METHODOLOGY</b><span>{result?.reportMeta?.methodologyCount || "—"}</span><small>transparent scan steps</small></article>
-        <article><b>LIMITATIONS</b><span>{result?.reportMeta?.limitationCount || "—"}</span><small>what this scan cannot prove</small></article>
+        <article><b>METHODOLOGY</b><span>{sampleResult.reportMeta.methodologyCount}</span><small>transparent scan steps</small></article>
+        <article><b>LIMITATIONS</b><span>{sampleResult.reportMeta.limitationCount}</span><small>what this scan cannot prove</small></article>
       </div>
     </section>
 
