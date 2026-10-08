@@ -124,13 +124,21 @@ export default async function handler(req, res) {
     let parsed;
     try { parsed = new URL(String(url || "").trim()); } catch { return res.status(400).json({ok:false,error:"Enter a valid public http(s) URL."}); }
     assertSafeUrl(parsed);
+    if (mode !== "paid_verified") {
+      return res.status(402).json({
+        ok:false,
+        code:"PAYMENT_REQUIRED",
+        error:"A verified payment is required before the target website is scanned.",
+        checkoutStatus:"not_configured",
+        reportVersion:"0.1"
+      });
+    }
     const fetched = await fetchPublicHtml(parsed.href);
     const signals = extractSignals(fetched.html, fetched.url);
     const allFindings = buildFindings(signals, String(goal), 100);
     const score = clamp(100 - allFindings.reduce((n,f)=>n + ({HIGH:18,MEDIUM:10,LOW:4}[f.impact] || 0),0), 35, 96);
     const report = buildReport({url:parsed.href,goal:String(goal),fetchedUrl:fetched.url,signals,findings:allFindings,score});
-    if (mode === "full") return res.status(402).json({ok:false,code:"PAYMENT_REQUIRED",error:"The full diagnostic is locked until payment is verified.",checkoutStatus:"not_configured",reportVersion:report.reportVersion});
-    return res.status(200).json({ok:true, mode:"preview", url:parsed.href, goal, score, findings:allFindings.slice(0,3), remainingFindings:Math.max(0,allFindings.length-3), reportMeta:{reportVersion:report.reportVersion,generatedAt:report.generatedAt,methodologyCount:report.methodology.length,limitationCount:report.limitations.length}, signals:{title:signals.title,h1:signals.h1,ctaCount:signals.ctaCount,forms:signals.forms,trustDetected:signals.trustWords}, limitation:"This diagnostic uses publicly accessible page HTML. It does not claim to measure actual lost revenue or conversion rate."});
+    return res.status(200).json({ok:true, mode:"paid_verified", report});
   } catch (error) {
     const message = error?.name === "AbortError" ? "The website took too long to respond." : (error?.message || "We could not inspect that website safely.");
     return res.status(502).json({ok:false,error:message});
