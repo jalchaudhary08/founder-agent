@@ -2,7 +2,7 @@ import React from "react";
 
 const samplePack={
  product:"Cocoa Oat Bites",
- servings:10,
+ servings:null,
  nutrition:{calories:142,protein:4.2,carbs:19.6,fat:5.8},
  ingredients:"Oats, cocoa powder, peanut butter, dates, sunflower seeds, salt",
  allergens:["PEANUT"],
@@ -36,7 +36,7 @@ export default function FoodLabelExperiment({onBack}){
    <div className="labelkit-copy">
     <small>FOOD PRODUCT PREPARATION</small>
     <h1>Turn product data into a <em>label-ready first draft.</em></h1>
-    <p>Build a reviewable pack with nutrition, ingredients, allergen screening and product copy—without pretending a software check is regulatory approval.</p>
+    <p>Build a reviewable pack with nutrition, ingredients, allergen screening and a product-copy draft—without pretending a software check is regulatory approval.</p>
     <div className="labelkit-form">
      <label>PRODUCT NAME<input value={product} onChange={e=>setProduct(e.target.value)} placeholder="e.g. Cocoa Oat Bites"/></label>
      <label>INGREDIENTS / PRODUCT DATA<textarea value={ingredients} onChange={e=>setIngredients(e.target.value)} placeholder="e.g. oats, cocoa powder, peanut butter, dates"/></label>
@@ -48,7 +48,7 @@ export default function FoodLabelExperiment({onBack}){
 
    <div className="labelkit-proof">
     <div className="labelkit-proof-head"><span>PACKAGING PROOF</span><b>{result?"LIVE OUTPUT":"SAMPLE"}</b></div>
-    <div className="labelkit-label"><small>PRODUCT</small><h2>{pack.product}</h2><div className="labelkit-serving">{pack.servings} SERVINGS · REVIEW DRAFT</div><div className="labelkit-nutrition"><b>NUTRITION SNAPSHOT</b><strong>{pack.nutrition.calories} kcal</strong><div><span>PROTEIN <b>{pack.nutrition.protein}g</b></span><span>CARBS <b>{pack.nutrition.carbs}g</b></span><span>FAT <b>{pack.nutrition.fat}g</b></span></div></div><div className="labelkit-ingredients"><b>INGREDIENTS</b><p>{pack.ingredients}</p></div></div>
+    <div className="labelkit-label"><small>PRODUCT</small><h2>{pack.product}</h2><div className="labelkit-serving">{pack.servings ? pack.servings+" SERVINGS" : "SERVING SIZE NOT SET"} · REVIEW DRAFT</div><div className="labelkit-nutrition"><b>NUTRITION SNAPSHOT</b><strong>{pack.nutrition.calories} kcal</strong><div><span>PROTEIN <b>{pack.nutrition.protein}g</b></span><span>CARBS <b>{pack.nutrition.carbs}g</b></span><span>FAT <b>{pack.nutrition.fat}g</b></span></div></div><div className="labelkit-ingredients"><b>INGREDIENTS</b><p>{pack.ingredients}</p></div></div>
    </div>
   </section>
 
@@ -58,7 +58,7 @@ export default function FoodLabelExperiment({onBack}){
     <article><b>01</b><h3>Nutrition</h3><p>Aggregated from supplied nutrition inputs. Missing values stay missing.</p></article>
     <article><b>02</b><h3>Ingredients</h3><p>A clean ingredient-list draft that remains editable before publication.</p></article>
     <article><b>03</b><h3>Allergen screen</h3><p>Flags declared common allergens as a review signal—not a legal certification.</p></article>
-    <article><b>04</b><h3>Product copy</h3><p>Short packaging/e-commerce copy generated from the supplied product information.</p></article>
+    <article><b>04</b><h3>Product copy</h3><p>Short packaging/e-commerce copy drafted from the supplied product information.</p></article>
    </div>
   </section>
 
