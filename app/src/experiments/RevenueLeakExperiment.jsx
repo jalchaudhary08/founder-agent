@@ -110,5 +110,13 @@ export default function RevenueLeakExperiment({ onBack }) {
       <button onClick={()=>setState("payment-pending")}>Unlock full diagnostic · ~$1</button>
       {state==="payment-pending" && <small>Request prepared for “{url.trim()}” · goal: {goal}. Checkout is not connected, so no scan ran and no payment was taken.</small>}
     </section>
+  <section className="product-faq" id="faq">
+    <div className="product-faq-heading"><small>FAQ & LIMITATIONS</small><h2>What this diagnostic can—and cannot—tell you.</h2></div>
+    <details><summary>Does the sample scan my website?</summary><p>No. The visible report uses fixed illustrative data. Your URL has not been fetched.</p></details>
+    <details><summary>Can I pay for the real diagnostic right now?</summary><p>Not yet. Checkout and payment verification are not connected, so no scan runs and no charge is taken.</p></details>
+    <details><summary>Does a finding prove lost revenue?</summary><p>No. The scan can identify observable page and conversion-path friction. Revenue impact requires first-party analytics and business data.</p></details>
+    <details><summary>Is the $1 diagnostic a subscription?</summary><p>The current MVP offer is a one-time diagnostic test. Recurring monitoring and its price are not being sold in this prototype.</p></details>
+  </section>
+  <footer className="product-footer"><b>REVENUELEAK</b><span>Evidence before estimates. Findings are diagnostic signals, not guaranteed conversion gains.</span><button onClick={onBack}>← Founder Agent</button></footer>
   </main>;
 }
