@@ -44,5 +44,13 @@ export default function AccountingCloseExperiment({onBack}){
   <section className="closeline-method"><article><b>01</b><h3>Detect</h3><p>Scan only the fields actually present in the export.</p></article><article><b>02</b><h3>Explain</h3><p>Every flag carries observable evidence and a review reason.</p></article><article><b>03</b><h3>Review</h3><p>An exception is not proof of fraud or error. A human makes the final call.</p></article></section>
 
   <section className="closeline-offer"><div><small>PAID PRODUCT TEST</small><h2>Run one close check for $15.</h2><p>Get a focused exception queue instead of manually scanning every transaction.</p></div><button onClick={()=>setState("checkout")}>{state==="checkout"?"CHECKOUT NOT CONNECTED":"Run the $15 Close Check"}</button>{state==="checkout"&&<small>Payment provider is not connected yet. No charge is claimed.</small>}</section>
- </main>;
+   <section className="product-faq" id="faq">
+   <div className="product-faq-heading"><small>FAQ & LIMITATIONS</small><h2>Exceptions to review, not automated accounting judgments.</h2></div>
+   <details><summary>Is this a real ledger preview?</summary><p>No. The visible queue uses illustrative sample transactions and is not customer data.</p></details>
+   <details><summary>Can I process my CSV now?</summary><p>Not yet. Payment verification is not connected, so the server blocks processing and no charge is taken.</p></details>
+   <details><summary>Does an exception mean fraud?</summary><p>No. A duplicate-like row, missing field or outlier is a review signal. Confirm it against source documents and your accounting policy.</p></details>
+   <details><summary>What does the $15 offer mean?</summary><p>It is the planned one-time close-check test. Checkout is not connected in this prototype, so it is not currently purchasable.</p></details>
+  </section>
+  <footer className="product-footer"><b>CLOSELINE</b><span>Evidence-first exception review. This tool does not issue an audit opinion.</span><button onClick={onBack}>← Founder Agent</button></footer>
+</main>;
 }
