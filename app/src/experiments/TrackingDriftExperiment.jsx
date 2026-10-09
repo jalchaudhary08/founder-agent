@@ -25,8 +25,9 @@ export default function TrackingDriftExperiment({onBack}) {
       <button onClick={onBack} className="drift-wordmark">DRIFT<span>CHECK</span></button>
       <span>EXPERIMENT 02 · RECONCILIATION</span>
     </header>
+    <nav className="product-subnav" aria-label="Page sections"><a href="#overview">Overview</a><a href="#method">Methodology</a><a href="#sample">Sample reconciliation</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a></nav>
 
-    <section className="drift-hero">
+    <section className="drift-hero" id="overview">
       <div className="drift-copy">
         <small>SHOPIFY × ADS TRACKING DRIFT DETECTOR</small>
         <h1>When the numbers disagree,<br/><em>find out why.</em></h1>
@@ -41,7 +42,7 @@ export default function TrackingDriftExperiment({onBack}) {
         <p className="drift-note">Illustrative sample only. Real CSV data stays unprocessed until payment verification is connected; this prototype does not claim to charge you.</p>{shopifyFile && adsFile && <button className="drift-process" onClick={analyzePaid}>Checkout not connected</button>}{error && <span className="drift-error">{error}</span>}
       </div>
 
-      <div className="drift-board">
+      <div className="drift-board" id="sample">
         <div className="drift-board-head"><span>ILLUSTRATIVE DEMO DATA</span><b>5 ROWS</b></div>
         <div className="drift-ledgers"><strong>SHOPIFY ORDERS</strong><strong>ADS CONVERSIONS</strong></div>
         <div className="drift-summary">
@@ -57,13 +58,13 @@ export default function TrackingDriftExperiment({onBack}) {
       </div>
     </section>
 
-    <section className="drift-explain">
+    <section className="drift-explain" id="method">
       <article><b>01</b><h2>Reconcile</h2><p>Normalize the two exports and compare conversion counts and value.</p></article>
       <article><b>02</b><h2>Explain</h2><p>Separate measurable drift from assumptions instead of guessing attribution.</p></article>
       <article><b>03</b><h2>Fix first</h2><p>Get a short priority list instead of another giant analytics dashboard.</p></article>
     </section>
 
-    <section className="drift-offer">
+    <section className="drift-offer" id="pricing">
       <div><small>SMALL PAID TEST</small><h2>Run the drift check for about $1.</h2><p>Get the mismatch summary, evidence, likely causes and a prioritized next-action sheet.</p></div>
       <button onClick={()=>setState("checkout")}>{state==="checkout"?"CHECKOUT NOT CONNECTED":"Run the $1 Drift Check"}</button>
       {state==="checkout" && <small>Payment provider is not connected yet. No charge is claimed.</small>}{state==="result" && <small>Analysis complete. Findings are based only on the supplied identifiers and values.</small>}
