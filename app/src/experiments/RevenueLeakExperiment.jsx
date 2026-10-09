@@ -14,8 +14,22 @@ export default function RevenueLeakExperiment({ onBack }) {
   const [error, setError] = React.useState("");
 
   function startCheckout() {
-    setState("checkout");
     setError("");
+    const candidate = url.trim();
+    if (!candidate) {
+      setError("Enter a public website URL first.");
+      return;
+    }
+    try {
+      const parsed = new URL(candidate);
+      if (!["http:", "https:"].includes(parsed.protocol) || !parsed.hostname.includes(".")) {
+        throw new Error("invalid URL");
+      }
+    } catch {
+      setError("Enter a valid public URL beginning with https://");
+      return;
+    }
+    setState("payment-pending");
   }
 
   const sampleResult = {
@@ -59,7 +73,7 @@ export default function RevenueLeakExperiment({ onBack }) {
       <div className="leak-board" aria-label="Example diagnostic board">
         <div className="board-top"><span>ILLUSTRATIVE DEMO DATA</span><b>3 EXAMPLE PRIORITIES</b></div>
         <div className="board-path"><span>VISITOR</span><i>→</i><span>MESSAGE</span><i>→</i><span>TRUST</span><i>→</i><span>CTA</span></div>
-        <div className="board-score"><div><small>CONVERSION HEALTH</small><strong>{sampleResult.score}</strong><span>/100</span></div><div className="board-stamp">{state==="checkout" ? "CHECKOUT NEXT" : "SAMPLE REPORT"}</div></div>
+        <div className="board-score"><div><small>CONVERSION HEALTH</small><strong>{sampleResult.score}</strong><span>/100</span></div><div className="board-stamp">{state==="payment-pending" ? "PAYMENT NOT CONNECTED" : "ILLUSTRATIVE SAMPLE"}</div></div>
         <div className="board-leaks">
           {sampleResult.findings.map((leak,i)=><article key={leak.label} className="board-leak">
             <span>{String(i+1).padStart(2,"0")} · {leak.label}</span>
@@ -94,7 +108,7 @@ export default function RevenueLeakExperiment({ onBack }) {
     <section className="leak-offer">
       <div><span className="leak-kicker">SMALL PAID TEST</span><h2>See the full diagnosis for about $1.</h2><p>Unlock the complete finding set, evidence notes and a prioritized fix sheet. Recurring monitoring comes later—only if the diagnosis proves useful.</p></div>
       <button onClick={()=>setState("payment-pending")}>Unlock full diagnostic · ~$1</button>
-      {state==="payment-pending" && <small>Payment integration is the next implementation step; this prototype does not claim to have charged you.</small>}
+      {state==="payment-pending" && <small>Request prepared for “{url.trim()}” · goal: {goal}. Checkout is not connected, so no scan ran and no payment was taken.</small>}
     </section>
   </main>;
 }
