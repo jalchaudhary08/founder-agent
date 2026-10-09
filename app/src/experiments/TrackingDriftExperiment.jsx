@@ -4,7 +4,8 @@ const sampleRows = [
   {id:"A-1042", shopify:"1", ads:"1", state:"MATCH"},
   {id:"A-1043", shopify:"1", ads:"2", state:"DRIFT"},
   {id:"A-1044", shopify:"1", ads:"0", state:"MISSING"},
-  {id:"A-1045", shopify:"1", ads:"1", state:"MATCH"}
+  {id:"A-1045", shopify:"1", ads:"1", state:"MATCH"},
+  {id:"A-1046", shopify:"0", ads:"1", state:"EXTRA_AD"}
 ];
 
 export default function TrackingDriftExperiment({onBack}) {
@@ -47,11 +48,11 @@ export default function TrackingDriftExperiment({onBack}) {
           </label>
           <label className="drift-upload"><input type="file" accept=".csv,text/csv" onChange={e=>{setAdsFile(e.target.files?.[0]||null);setState("ready")}} />{adsFile ? "Ads CSV selected" : "Choose Ads CSV"}</label><button className="drift-secondary" onClick={()=>setState("sample")}>See sample mismatch</button>
         </div>
-        <p className="drift-note">Payment must be verified before real CSV data is processed. This prototype does not claim to charge you.</p>{shopifyFile && adsFile && <button className="drift-process" onClick={analyzePaid}>Process paid dataset</button>}{error && <span className="drift-error">{error}</span>}
+        <p className="drift-note">Illustrative sample only. Real CSV data stays unprocessed until payment verification is connected; this prototype does not claim to charge you.</p>{shopifyFile && adsFile && <button className="drift-process" onClick={analyzePaid}>Process paid dataset</button>}{error && <span className="drift-error">{error}</span>}
       </div>
 
       <div className="drift-board">
-        <div className="drift-board-head"><span>RECONCILIATION SAMPLE</span><b>4 ROWS</b></div>
+        <div className="drift-board-head"><span>ILLUSTRATIVE DEMO DATA</span><b>5 ROWS</b></div>
         <div className="drift-ledgers"><strong>SHOPIFY ORDERS</strong><strong>ADS CONVERSIONS</strong></div>
         <div className="drift-summary">
           <div><small>SHOPIFY</small><b>{result?.summary?.shopCount ?? 4}</b></div>
