@@ -51,13 +51,13 @@ export default function RevenueLeakExperiment({ onBack }) {
               <option>Get more signups</option>
             </select>
           </div>
-          <small>Your URL is not fetched until payment is verified. The sample below uses fixed demo data.</small>
+          <small>Your URL is not fetched. Payment verification is not connected yet. The sample below uses fixed illustrative data.</small>
         {error && <div className="leak-error" role="alert">{error}</div>}
         </div>
       </div>
 
       <div className="leak-board" aria-label="Example diagnostic board">
-        <div className="board-top"><span>EXAMPLE DIAGNOSTIC</span><b>3 PRIORITIES</b></div>
+        <div className="board-top"><span>ILLUSTRATIVE DEMO DATA</span><b>3 EXAMPLE PRIORITIES</b></div>
         <div className="board-path"><span>VISITOR</span><i>→</i><span>MESSAGE</span><i>→</i><span>TRUST</span><i>→</i><span>CTA</span></div>
         <div className="board-score"><div><small>CONVERSION HEALTH</small><strong>{sampleResult.score}</strong><span>/100</span></div><div className="board-stamp">{state==="checkout" ? "CHECKOUT NEXT" : "SAMPLE REPORT"}</div></div>
         <div className="board-leaks">
@@ -81,10 +81,10 @@ export default function RevenueLeakExperiment({ onBack }) {
       <div>
         <span className="leak-kicker">REPORT ARCHITECTURE</span>
         <h2>The paid report goes deeper.</h2>
-        <p>The sample shows the product output without spending API calls. Your real URL is scanned only after verified payment.</p>
+        <p>Illustrative demo output only; not a customer result. The real URL scan remains locked until payment verification is connected.</p>
       </div>
       <div className="leak-report-grid">
-        <article><b>FULL FINDINGS</b><span>{sampleResult.remainingFindings + 3}</span><small>ranked issues + fixes</small></article>
+        <article><b>EXAMPLE FINDINGS</b><span>{sampleResult.remainingFindings + 3}</span><small>illustrative count, not a performance claim</small></article>
         <article><b>EVIDENCE</b><span>✓</span><small>scan signals + source context</small></article>
         <article><b>METHODOLOGY</b><span>{sampleResult.reportMeta.methodologyCount}</span><small>transparent scan steps</small></article>
         <article><b>LIMITATIONS</b><span>{sampleResult.reportMeta.limitationCount}</span><small>what this scan cannot prove</small></article>
