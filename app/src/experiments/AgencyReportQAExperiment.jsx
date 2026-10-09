@@ -8,16 +8,9 @@ const sampleFindings=[
 
 export default function AgencyReportQAExperiment({onBack}){
  const[file,setFile]=React.useState(null),[state,setState]=React.useState("sample"),[result,setResult]=React.useState(null),[error,setError]=React.useState("");
- async function runCheck(){
-  if(!file)return;setError("");setState("processing");
-  try{
-   const csv=await file.text();
-   const response=await fetch("/api/experiments/agency-report-qa",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({csv,mode:"paid_verified"})});
-   const data=await response.json();
-   if(response.status===402){setState("checkout");setError("Payment verification is not connected yet. No report data was processed.");return;}
-   if(!response.ok)throw new Error(data.error||"Report check failed.");
-   setResult(data);setState("result");
-  }catch(e){setError(e.message||"Report check failed.");setState("error");}
+ function runCheck(){
+  setState("checkout");
+  setError("Checkout and payment verification are not connected. Your CSV has not been read or sent to the server.");
  }
  const findings=result?.findings||sampleFindings;
  const status=result?(result.summary.criticalCount?"HOLD":result.summary.issueCount?"REVIEW":"SEND"):"HOLD";
@@ -26,7 +19,7 @@ export default function AgencyReportQAExperiment({onBack}){
   <section className="reportqa-hero">
    <div className="reportqa-copy"><small>AGENCY REPORT QUALITY CONTROL</small><h1>Catch the number<br/><em>before the client does.</em></h1><p>A pre-send QA pass for agency reports. Check arithmetic, dates, missing metrics, duplicates and suspicious changes before a polished report hides a small mistake. Preview findings are illustrative examples.</p>
     <div className="reportqa-upload"><label><span>{file?"CSV selected":"Choose report CSV"}</span><input type="file" accept=".csv,text/csv" onChange={e=>{setFile(e.target.files?.[0]||null);setState("ready");setError("");}}/></label><button onClick={runCheck} disabled={!file||state==="processing"}>{state==="processing"?"Checking…":"Run paid check"}</button></div>
-    {file&&<div className="reportqa-file">{file.name} · real data stays unprocessed until payment is verified.</div>}{error&&<div className="reportqa-error">{error}</div>}
+    {file&&<div className="reportqa-file">{file.name} · the CSV stays in this page and is not sent or processed until checkout is connected.</div>}{error&&<div className="reportqa-error">{error}</div>}
    </div>
    <div className={"reportqa-stamp "+status.toLowerCase()}><span>PRE-SEND STATUS</span><strong>{status}</strong><small>{result?result.summary.issueCount+" issue(s) found":"Illustrative demo data · not customer results"}</small></div>
   </section>
