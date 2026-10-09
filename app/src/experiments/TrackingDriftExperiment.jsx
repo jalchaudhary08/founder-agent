@@ -15,19 +15,9 @@ export default function TrackingDriftExperiment({onBack}) {
   const [error,setError]=React.useState("");
   const [result,setResult]=React.useState(null);
 
-  async function analyzePaid() {
-    if (!shopifyFile || !adsFile) return;
-    setError("");
-    setState("processing");
-    try {
-      const shopifyCsv=await shopifyFile.text();
-      const adsCsv=await adsFile.text();
-      const response=await fetch("/api/experiments/tracking-drift",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({shopifyCsv,adsCsv,mode:"paid_verified"})});
-      const data=await response.json();
-      if(response.status===402){setState("checkout");setError("Payment verification is not connected yet. No CSV was processed.");return;}
-      if(!response.ok) throw new Error(data.error||"Drift check failed.");
-      setResult(data);setState("result");
-    } catch(e){setError(e.message||"Drift check failed.");setState("error");}
+  function analyzePaid() {
+    setState("checkout");
+    setError("Checkout and payment verification are not connected. Your CSV has not been read or sent to the server.");
   }
 
   return <main className="drift-page">
@@ -48,7 +38,7 @@ export default function TrackingDriftExperiment({onBack}) {
           </label>
           <label className="drift-upload"><input type="file" accept=".csv,text/csv" onChange={e=>{setAdsFile(e.target.files?.[0]||null);setState("ready")}} />{adsFile ? "Ads CSV selected" : "Choose Ads CSV"}</label><button className="drift-secondary" onClick={()=>setState("sample")}>See sample mismatch</button>
         </div>
-        <p className="drift-note">Illustrative sample only. Real CSV data stays unprocessed until payment verification is connected; this prototype does not claim to charge you.</p>{shopifyFile && adsFile && <button className="drift-process" onClick={analyzePaid}>Process paid dataset</button>}{error && <span className="drift-error">{error}</span>}
+        <p className="drift-note">Illustrative sample only. Real CSV data stays unprocessed until payment verification is connected; this prototype does not claim to charge you.</p>{shopifyFile && adsFile && <button className="drift-process" onClick={analyzePaid}>Checkout not connected</button>}{error && <span className="drift-error">{error}</span>}
       </div>
 
       <div className="drift-board">
