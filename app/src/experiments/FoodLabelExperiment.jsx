@@ -68,5 +68,13 @@ export default function FoodLabelExperiment({onBack}){
   </section>
 
   <section className="labelkit-offer"><div><small>PAID PRODUCT TEST</small><h2>Build one product pack for $15.</h2><p>Structured outputs, visible assumptions and a human-review checklist. No compliance guarantee.</p></div><button onClick={()=>setState("checkout")}>{state==="checkout"?"CHECKOUT NOT CONNECTED":"Build the $15 Product Pack"}</button>{state==="checkout"&&<small>Payment provider is not connected yet. No charge is claimed.</small>}</section>
- </main>;
+   <section className="product-faq" id="faq">
+   <div className="product-faq-heading"><small>FAQ & LIMITATIONS</small><h2>A draft for review—not regulatory approval.</h2></div>
+   <details><summary>Are the nutrition values verified?</summary><p>No. The visible values belong to an illustrative sample product and are not verified product facts.</p></details>
+   <details><summary>Can I build a real product pack now?</summary><p>Not yet. Payment verification is not connected, so real product data is not processed and no charge is taken.</p></details>
+   <details><summary>Does LABELKIT certify my label?</summary><p>No. It prepares a reviewable draft and flags items to verify. Check the applicable local rules and have a qualified human review the label before publication.</p></details>
+   <details><summary>What does the $15 offer include?</summary><p>The planned one-time product-pack test. Checkout is not connected in this prototype, and the offer is not currently purchasable.</p></details>
+  </section>
+  <footer className="product-footer"><b>LABELKIT</b><span>Missing information stays visible. Verify all nutrition, ingredient and allergen details before use.</span><button onClick={onBack}>← Founder Agent</button></footer>
+</main>;
 }
