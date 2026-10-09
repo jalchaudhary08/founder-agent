@@ -29,15 +29,15 @@ export default function AccountingCloseExperiment({onBack}){
   <section className="closeline-hero">
    <div className="closeline-copy"><small>MONTH-END CONTROL</small><h1>Close the books.<br/><em>Not your eyes.</em></h1><p>Find the transactions worth reviewing before month-end close. Evidence-first checks for duplicates, missing fields, unusual amounts and other observable exceptions.</p>
     <div className="closeline-upload"><label><span>{file?file.name:"Choose transaction CSV"}</span><input type="file" accept=".csv,text/csv" onChange={e=>{setFile(e.target.files?.[0]||null);setState("ready");setError("");}}/></label><button disabled={!file||state==="processing"} onClick={runCheck}>{state==="processing"?"CHECKING…":"Run $15 Close Check"}</button></div>
-    <div className="closeline-note">Static sample is free. Real transaction data is processed only after verified payment.</div>
+    <div className="closeline-note">Illustrative sample only—not a real client ledger. Real transaction data remains unprocessed until payment verification is connected.</div>
     {error&&<div className="closeline-error">{error}</div>}
    </div>
-   <div className={"closeline-status "+status.toLowerCase()}><small>CLOSE STATUS</small><strong>{status}</strong><span>{result?summary.exceptionCount+" exception(s) found":"Sample queue shown"}</span></div>
+   <div className={"closeline-status "+status.toLowerCase()}><small>CLOSE STATUS</small><strong>{status}</strong><span>{result?summary.exceptionCount+" exception(s) found":"Illustrative demo queue · not customer results"}</span></div>
   </section>
 
   <section className="closeline-kpis"><div><small>ROWS CHECKED</small><b>{summary.rowsChecked}</b></div><div><small>EXCEPTIONS</small><b>{summary.exceptionCount}</b></div><div><small>HIGH PRIORITY</small><b>{summary.highCount}</b></div><div><small>DATA QUALITY</small><b>{result?result.summary.dataQuality:"SAMPLE"}</b></div></section>
 
-  <section className="closeline-queue"><div className="closeline-head"><div><small>EXCEPTION QUEUE</small><h2>REVIEW BEFORE CLOSE</h2></div><span>RULE → EVIDENCE → ACTION</span></div>
+  <section className="closeline-queue"><div className="closeline-head"><div><small>EXCEPTION QUEUE</small><h2>REVIEW BEFORE CLOSE</h2></div><span>ILLUSTRATIVE DEMO · RULE → EVIDENCE → ACTION</span></div>
    <div className="closeline-list">{exceptions.map((x,i)=><article className={"closeline-row "+x.severity.toLowerCase()} key={i}><div className="closeline-sev">{x.severity}</div><div><small>{x.rule}</small><h3>{x.title}</h3><p>{x.evidence}</p></div><strong>{x.action}</strong></article>)}</div>
   </section>
 
