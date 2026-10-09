@@ -16,16 +16,9 @@ export default function FoodLabelExperiment({onBack}){
  const [result,setResult]=React.useState(null);
  const [error,setError]=React.useState("");
 
- async function buildPack(){
-  if(!product.trim()||!ingredients.trim())return;
-  setError("");setState("processing");
-  try{
-   const response=await fetch("/api/experiments/food-label",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({mode:"paid_verified",product:product.trim(),ingredients:ingredients.trim()})});
-   const data=await response.json();
-   if(response.status===402){setState("checkout");setError("Payment verification is not connected yet. No real product data was processed.");return;}
-   if(!response.ok)throw new Error(data.error||"Product pack failed.");
-   setResult(data);setState("result");
-  }catch(e){setError(e.message||"Product pack failed.");setState("error");}
+ function buildPack(){
+  setState("checkout");
+  setError("Checkout and payment verification are not connected. Your product inputs have not been sent to the server.");
  }
 
  const pack=result||samplePack;
