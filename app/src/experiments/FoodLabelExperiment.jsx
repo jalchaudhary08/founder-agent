@@ -24,8 +24,9 @@ export default function FoodLabelExperiment({onBack}){
  const pack=result||samplePack;
  return <main className="labelkit-page">
   <header className="labelkit-nav"><button className="labelkit-wordmark" onClick={onBack}>LABEL<span>KIT</span></button><span>EXPERIMENT 04 · FOOD PRODUCT PACK</span></header>
+    <nav className="product-subnav" aria-label="Page sections"><a href="#overview">Overview</a><a href="#workflow">Pack contents</a><a href="#sample">Sample pack</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a></nav>
 
-  <section className="labelkit-hero">
+  <section className="labelkit-hero" id="overview">
    <div className="labelkit-copy">
     <small>FOOD PRODUCT PREPARATION</small>
     <h1>Turn product data into a <em>label-ready first draft.</em></h1>
@@ -39,13 +40,13 @@ export default function FoodLabelExperiment({onBack}){
     {error&&<div className="labelkit-error">{error}</div>}
    </div>
 
-   <div className="labelkit-proof">
+   <div className="labelkit-proof" id="sample">
     <div className="labelkit-proof-head"><span>PACKAGING PROOF</span><b>{result?"LIVE OUTPUT":"ILLUSTRATIVE DEMO"}</b></div>
     <div className="labelkit-label"><small>ILLUSTRATIVE PRODUCT EXAMPLE</small><h2>{pack.product}</h2><div className="labelkit-serving">{pack.servings ? pack.servings+" SERVINGS" : "SERVING SIZE NOT SET"} · REVIEW DRAFT</div><div className="labelkit-nutrition"><b>NUTRITION SNAPSHOT</b><strong>{pack.nutrition.calories} kcal</strong><div><span>PROTEIN <b>{pack.nutrition.protein}g</b></span><span>CARBS <b>{pack.nutrition.carbs}g</b></span><span>FAT <b>{pack.nutrition.fat}g</b></span></div></div><div className="labelkit-ingredients"><b>INGREDIENTS</b><p>{pack.ingredients}</p></div></div>
    </div>
   </section>
 
-  <section className="labelkit-pack">
+  <section className="labelkit-pack" id="workflow">
    <div><small>PACK CONTENTS</small><h2>One product. Four useful outputs.</h2></div>
    <div className="labelkit-cards">
     <article><b>01</b><h3>Nutrition</h3><p>Aggregated from supplied nutrition inputs. Missing values stay missing.</p></article>
@@ -60,7 +61,7 @@ export default function FoodLabelExperiment({onBack}){
    <div>{(pack.flags||samplePack.flags).map((flag,i)=><div className="labelkit-flag" key={i}><span>REVIEW</span><b>{flag}</b></div>)}{(pack.allergens||samplePack.allergens).map((a,i)=><div className="labelkit-flag allergen" key={"a"+i}><span>ALLERGEN</span><b>{a}</b></div>)}</div>
   </section>
 
-  <section className="labelkit-offer"><div><small>PAID PRODUCT TEST</small><h2>Build one product pack for $15.</h2><p>Structured outputs, visible assumptions and a human-review checklist. No compliance guarantee.</p></div><button onClick={()=>setState("checkout")}>{state==="checkout"?"CHECKOUT NOT CONNECTED":"Build the $15 Product Pack"}</button>{state==="checkout"&&<small>Payment provider is not connected yet. No charge is claimed.</small>}</section>
+  <section className="labelkit-offer" id="pricing"><div><small>PAID PRODUCT TEST</small><h2>Build one product pack for $15.</h2><p>Structured outputs, visible assumptions and a human-review checklist. No compliance guarantee.</p></div><button onClick={()=>setState("checkout")}>{state==="checkout"?"CHECKOUT NOT CONNECTED":"Build the $15 Product Pack"}</button>{state==="checkout"&&<small>Payment provider is not connected yet. No charge is claimed.</small>}</section>
    <section className="product-faq" id="faq">
    <div className="product-faq-heading"><small>FAQ & LIMITATIONS</small><h2>A draft for review—not regulatory approval.</h2></div>
    <details><summary>Are the nutrition values verified?</summary><p>No. The visible values belong to an illustrative sample product and are not verified product facts.</p></details>
