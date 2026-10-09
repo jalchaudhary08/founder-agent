@@ -42,13 +42,13 @@ export default function FoodLabelExperiment({onBack}){
      <label>INGREDIENTS / PRODUCT DATA<textarea value={ingredients} onChange={e=>setIngredients(e.target.value)} placeholder="e.g. oats, cocoa powder, peanut butter, dates"/></label>
      <button onClick={buildPack} disabled={!product.trim()||!ingredients.trim()||state==="processing"}>{state==="processing"?"BUILDING…":"Build $15 Product Pack"}</button>
     </div>
-    <div className="labelkit-note">Static sample is free. Real product data is processed only after verified payment.</div>
+    <div className="labelkit-note">Illustrative nutrition values only—not verified product data. Real product data remains unprocessed until payment verification is connected.</div>
     {error&&<div className="labelkit-error">{error}</div>}
    </div>
 
    <div className="labelkit-proof">
-    <div className="labelkit-proof-head"><span>PACKAGING PROOF</span><b>{result?"LIVE OUTPUT":"SAMPLE"}</b></div>
-    <div className="labelkit-label"><small>PRODUCT</small><h2>{pack.product}</h2><div className="labelkit-serving">{pack.servings ? pack.servings+" SERVINGS" : "SERVING SIZE NOT SET"} · REVIEW DRAFT</div><div className="labelkit-nutrition"><b>NUTRITION SNAPSHOT</b><strong>{pack.nutrition.calories} kcal</strong><div><span>PROTEIN <b>{pack.nutrition.protein}g</b></span><span>CARBS <b>{pack.nutrition.carbs}g</b></span><span>FAT <b>{pack.nutrition.fat}g</b></span></div></div><div className="labelkit-ingredients"><b>INGREDIENTS</b><p>{pack.ingredients}</p></div></div>
+    <div className="labelkit-proof-head"><span>PACKAGING PROOF</span><b>{result?"LIVE OUTPUT":"ILLUSTRATIVE DEMO"}</b></div>
+    <div className="labelkit-label"><small>ILLUSTRATIVE PRODUCT EXAMPLE</small><h2>{pack.product}</h2><div className="labelkit-serving">{pack.servings ? pack.servings+" SERVINGS" : "SERVING SIZE NOT SET"} · REVIEW DRAFT</div><div className="labelkit-nutrition"><b>NUTRITION SNAPSHOT</b><strong>{pack.nutrition.calories} kcal</strong><div><span>PROTEIN <b>{pack.nutrition.protein}g</b></span><span>CARBS <b>{pack.nutrition.carbs}g</b></span><span>FAT <b>{pack.nutrition.fat}g</b></span></div></div><div className="labelkit-ingredients"><b>INGREDIENTS</b><p>{pack.ingredients}</p></div></div>
    </div>
   </section>
 
