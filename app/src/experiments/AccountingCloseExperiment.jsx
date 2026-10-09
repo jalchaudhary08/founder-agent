@@ -8,17 +8,9 @@ const sampleExceptions=[
 
 export default function AccountingCloseExperiment({onBack}){
  const[file,setFile]=React.useState(null),[state,setState]=React.useState("sample"),[result,setResult]=React.useState(null),[error,setError]=React.useState("");
- async function runCheck(){
-  if(!file)return;
-  setError("");setState("processing");
-  try{
-   const csv=await file.text();
-   const response=await fetch("/api/experiments/accounting-close",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({csv,mode:"paid_verified"})});
-   const data=await response.json();
-   if(response.status===402){setState("checkout");setError("Payment verification is not connected yet. No transaction data was processed.");return;}
-   if(!response.ok)throw new Error(data.error||"Close check failed.");
-   setResult(data);setState("result");
-  }catch(e){setError(e.message||"Close check failed.");setState("error");}
+ function runCheck(){
+  setState("checkout");
+  setError("Checkout and payment verification are not connected. Your transaction CSV has not been read or sent to the server.");
  }
  const exceptions=result?.exceptions||sampleExceptions;
  const summary=result?.summary||{rowsChecked:"SAMPLE",exceptionCount:3,highCount:1};
