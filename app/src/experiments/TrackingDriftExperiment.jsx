@@ -79,5 +79,13 @@ export default function TrackingDriftExperiment({onBack}) {
       {state==="checkout" && <small>Payment provider is not connected yet. No charge is claimed.</small>}{state==="result" && <small>Analysis complete. Findings are based only on the supplied identifiers and values.</small>}
       {state==="ready" && <small>File selected. Payment must be verified before the real dataset is processed.</small>}
     </section>
+  <section className="product-faq" id="faq">
+    <div className="product-faq-heading"><small>FAQ & LIMITATIONS</small><h2>Reconciliation is a signal, not an attribution verdict.</h2></div>
+    <details><summary>Which files does the sample use?</summary><p>The preview uses fixed illustrative rows. It does not read or upload your CSV files.</p></details>
+    <details><summary>Can I process my actual exports now?</summary><p>Not yet. Payment verification is not connected, so the API blocks processing and no charge is taken.</p></details>
+    <details><summary>Will this tell me which platform is right?</summary><p>It compares the fields present in the exports. Attribution windows, consent, time zones and platform rules may explain differences and need review.</p></details>
+    <details><summary>Is the $1 check recurring?</summary><p>No recurring subscription is being sold in this prototype. The $1 offer is a one-time test.</p></details>
+  </section>
+  <footer className="product-footer"><b>DRIFTCHECK</b><span>Compare the exports you have. Review every flagged mismatch before changing budgets.</span><button onClick={onBack}>← Founder Agent</button></footer>
   </main>;
 }
