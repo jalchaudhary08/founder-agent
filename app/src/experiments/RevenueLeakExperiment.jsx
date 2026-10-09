@@ -44,8 +44,9 @@ export default function RevenueLeakExperiment({ onBack }) {
       <button className="leak-wordmark" onClick={onBack}>REVENUE<span>LEAK</span></button>
       <div className="leak-nav-note">EXPERIMENT 01 · DIAGNOSTIC</div>
     </header>
+    <nav className="product-subnav" aria-label="Page sections"><a href="#overview">Overview</a><a href="#method">Methodology</a><a href="#sample">Sample dossier</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a></nav>
 
-    <section className="leak-hero">
+    <section className="leak-hero" id="overview">
       <div className="leak-copy">
         <div className="leak-kicker">WEBSITE REVENUE-LEAK WATCHDOG</div>
         <h1>Find the leak.<br/><em>Fix the first three.</em></h1>
@@ -85,13 +86,13 @@ export default function RevenueLeakExperiment({ onBack }) {
       </div>
     </section>
 
-    <section className="leak-explain">
+    <section className="leak-explain" id="method">
       <div><span>01</span><h2>Evidence before opinion.</h2><p>We inspect public page HTML and connect each finding to a concrete structural signal. Behavioral revenue loss still needs first-party data.</p></div>
       <div><span>02</span><h2>Priority before volume.</h2><p>You get the few fixes worth doing first, ranked by commercial impact and implementation effort.</p></div>
       <div><span>03</span><h2>Scenario, not fake certainty.</h2><p>When business numbers are unavailable, we do not invent lost-revenue figures. Assumptions stay visible.</p></div>
     </section>
 
-    <section className="leak-report-preview">
+    <section className="leak-report-preview" id="sample">
       <div>
         <span className="leak-kicker">REPORT ARCHITECTURE</span>
         <h2>The paid report goes deeper.</h2>
@@ -105,7 +106,7 @@ export default function RevenueLeakExperiment({ onBack }) {
       </div>
     </section>
 
-    <section className="leak-offer">
+    <section className="leak-offer" id="pricing">
       <div><span className="leak-kicker">SMALL PAID TEST</span><h2>See the full diagnosis for about $1.</h2><p>Unlock the complete finding set, evidence notes and a prioritized fix sheet. Recurring monitoring comes later—only if the diagnosis proves useful.</p></div>
       <button onClick={()=>setState("payment-pending")}>Unlock full diagnostic · ~$1</button>
       {state==="payment-pending" && <small>Request prepared for “{url.trim()}” · goal: {goal}. Checkout is not connected, so no scan ran and no payment was taken.</small>}
