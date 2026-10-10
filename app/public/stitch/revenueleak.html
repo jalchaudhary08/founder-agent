@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>REVENUELEAK — Independent Web Audit Desk</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,600;1,8..60,600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-tertiary-fixed": "#00210f", "on-primary-fixed-variant": "#2e4962", "background": "#fbf9f7", "tertiary-fixed": "#bceec9", "surface-dim": "#dbdad8", "on-secondary": "#ffffff", "on-primary-container": "#89a4c0", "on-background": "#1b1c1b", "outline-variant": "#c3c7cd", "secondary": "#aa3612", "inverse-primary": "#aec9e7", "error": "#ba1a1a", "surface-container-lowest": "#ffffff", "on-primary": "#ffffff", "surface-container-highest": "#e4e2e0", "surface": "#fbf9f7", "surface-container-high": "#e9e8e6", "tertiary": "#002914", "primary-fixed-dim": "#aec9e7", "surface-bright": "#fbf9f7", "on-tertiary": "#ffffff", "on-secondary-fixed": "#3b0900", "surface-container": "#efeeeb", "secondary-container": "#ff734b", "on-primary-fixed": "#001d32", "outline": "#73777d", "surface-variant": "#e4e2e0", "on-surface": "#1b1c1b", "tertiary-container": "#114026", "on-error-container": "#93000a", "on-error": "#ffffff", "on-secondary-container": "#681700", "error-container": "#ffdad6", "primary": "#04243b", "inverse-on-surface": "#f2f0ee", "on-tertiary-fixed-variant": "#224f34", "primary-container": "#1e3a52", "primary-fixed": "#cee5ff", "on-tertiary-container": "#7cac8a", "inverse-surface": "#30312f", "tertiary-fixed-dim": "#a1d2ae", "secondary-fixed": "#ffdbd1", "surface-tint": "#46617b", "surface-container-low": "#f5f3f1", "secondary-fixed-dim": "#ffb5a0", "on-secondary-fixed-variant": "#872100", "on-surface-variant": "#43474d" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-2xl": "3.5rem", "space-lg": "1.5rem", "margin": "1rem", "space-xl": "2.25rem", "space-md": "1rem", "margin-desktop": "3rem", "margin-tablet": "2rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "gutter-desktop": "1.5rem", "gutter": "1.25rem" }, "fontFamily": { "headline-lg-mobile": [ "\"Source Serif 4\"" ], "headline-md": [ "\"Source Serif 4\"" ], "headline-xl": [ "\"Source Serif 4\"" ], "headline-lg": [ "\"Source Serif 4\"" ], "headline-sm": [ "\"Source Serif 4\"" ], "tabular-metric": [ "Inter" ], "body-lg": [ "Inter" ], "body-sm": [ "Inter" ], "headline-xl-mobile": [ "\"Source Serif 4\"" ], "body-md": [ "Inter" ], "label-code": [ "Inter" ], "label-caps": [ "Inter" ] }, "fontSize": { "headline-lg-mobile": [ "1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "headline-md": [ "1.5rem", { "lineHeight": "1.875rem", "fontWeight": "600" } ], "headline-xl": [ "2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "headline-lg": [ "2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "headline-sm": [ "1.25rem", { "lineHeight": "1.625rem", "fontWeight": "600" } ], "tabular-metric": [ "1.5rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.03em", "fontWeight": "600" } ], "body-lg": [ "1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" } ], "body-sm": [ "0.8125rem", { "lineHeight": "1.25rem", "fontWeight": "400" } ], "headline-xl-mobile": [ "1.875rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "body-md": [ "0.9375rem", { "lineHeight": "1.5rem", "fontWeight": "400" } ], "label-code": [ "0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.06em", "fontWeight": "600" } ], "label-caps": [ "0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.05em", "fontWeight": "600" } ] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md border-b border-outline-variant"><div class="bg-surface-container-high border-b border-outline-variant py-space-xs px-margin lg:px-margin-desktop"><div class="max-w-[1440px] mx-auto flex items-center justify-between font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider"><span>INDEPENDENT WEB AUDIT DESK • REAL-TIME EVIDENCE-BASED DIAGNOSTICS • $1 VERIFIED DISCOVERY</span><div class="hidden md:flex items-center gap-space-md text-label-code font-label-code"><span>DISPATCH: SEC-F38</span><span>STATUS: MONITORED</span></div></div></div><div class="h-20 max-w-[1440px] mx-auto px-margin lg:px-margin-desktop flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-md"><img alt="REVENUELEAK Brandmark" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Urloy3exTU9EAUMxc2BFmiRA2AC_PNf8y7_F0o4v-hIrOrTEeWtK5_ylzzs2Fo49PXmrBctxeVdt_Jdmuxbj4kN4ztyJvIqJgZnLlUvjdGS24dCPN81O-WnfpHymfFGsNexCFu0cNfDT2zk-fqvarX17e9D1CGsLBabi_GkJl0g6cFTZA_-m_nOdy25X0O2v8h3GwWpYXsi4H6NJcG-EylJznJao_mYxuuFCxHWjxa60Zcv9z9qr0V2w"/><div class="flex flex-col border-l border-outline-variant pl-space-md"><span class="font-headline-sm text-headline-sm text-primary tracking-tight font-semibold">REVENUELEAK</span><span class="font-label-code text-label-code uppercase tracking-widest text-on-surface-variant">Forensic Balance &amp; Loss Desk</span></div></div><nav class="hidden xl:flex items-center gap-space-lg" data-active-classes="text-primary font-semibold border-b-2 border-primary"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors pb-1" data-path="home-and-methodology" href="#">Home &amp; Methodology</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors pb-1" data-path="live-diagnostic" href="#">Live Diagnostic</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors pb-1" data-path="sample-dossier" href="#">Sample Dossier (Demo)</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors pb-1" data-path="pricing-and-guarantee" href="#">Pricing &amp; Guarantee</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors pb-1" data-path="faq-and-limitations" href="#">FAQ &amp; Limitations</a></nav><div class="flex items-center gap-space-md"><a class="hidden sm:inline-block font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4" data-path="client-portal" href="#">Client Portal / Sign In</a><a class="inline-flex items-center justify-center bg-secondary hover:bg-on-secondary-fixed-variant text-on-secondary font-label-caps text-label-caps uppercase px-space-md py-space-sm rounded-lg transition-colors shadow-[1px_1px_0px_#171817]" data-path="live-diagnostic" href="#">$1 Diagnostic</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-28 bg-surface min-h-[calc(100vh-160px)]"><div class="flex flex-col w-full">
+<!-- MASTHEAD / EDITORIAL HEADER STRIP -->
+<section class="max-w-[1440px] mx-auto w-full px-margin lg:px-margin-desktop py-space-xl">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md pb-space-lg">
+<div class="space-y-space-xs">
+<div class="inline-flex items-center gap-space-sm bg-surface-container px-space-sm py-space-xs text-on-surface">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-code text-label-code tracking-widest uppercase text-on-surface-variant">FORENSIC COMMERCE AUDIT • ISSUE VOL. 24</span>
+</div>
+<p class="font-label-code text-label-code text-on-surface-variant uppercase">DEPT: TECHNICAL TELEMETRY &amp; BOTTLENECK DISCOVERY</p>
+</div>
+<div class="flex items-center gap-space-lg text-right font-label-code text-label-code text-on-surface-variant">
+<div><span class="text-on-surface font-semibold">LEDGER CODE:</span> RL-AUD-2024</div>
+<div class="hidden sm:block"><span class="text-on-surface font-semibold">VERIFICATION:</span> PROTOCOL 4-AGENTS</div>
+</div>
+</div>
+<!-- MAIN EDITORIAL HEADLINE -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop pt-space-lg pb-space-xl">
+<div class="lg:col-span-8">
+<h1 class="font-headline-xl text-headline-xl text-primary tracking-tight leading-[1.08] mb-space-md">
+          Your website may be leaking conversions.<br/>
+<span class="text-secondary italic">Find the leak.</span> Fix the first three.
+        </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl leading-relaxed">
+          An uncompromising diagnostic engineered for small SaaS companies, DTC ecommerce stores, and high-ticket service firms. No vanity metrics or generic scorecards—just verified friction points and immediate corrective prescriptions.
+        </p>
+</div>
+<div class="lg:col-span-4 flex flex-col justify-between bg-surface-container-low p-space-lg shadow-sm">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between text-on-surface">
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant">Audit Queue Load</span>
+<span class="font-label-code text-label-code text-secondary font-semibold">LIVE • DEMO QUEUE · NOT LIVE</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 overflow-hidden">
+<div class="bg-secondary h-full w-[94.2%]"></div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Next micro-scan executes in parallel across 3 geographically distributed Chromium instances to detect geographical payment drag.
+          </p>
+</div>
+<div class="pt-space-md mt-space-md flex items-center justify-between font-label-code text-label-code text-on-surface-variant">
+<span>PII INGESTION: 0.00%</span>
+<span>DISCLOSURE LEVEL: PUBLIC AUDIT</span>
+</div>
+</div>
+</div>
+</section>
+<!-- MODULE 1: URL & CONVERSION-GOAL DIAGNOSTIC FORM (HERO MODULE) -->
+<section class="max-w-[1440px] mx-auto w-full px-margin lg:px-margin-desktop pb-space-2xl">
+<div class="bg-surface-container-lowest p-space-lg lg:p-space-xl shadow-md relative">
+<!-- Decorative Forensic Corner Markers -->
+<span class="absolute top-2 left-2 text-label-code font-label-code text-outline-variant select-none">+0.00</span>
+<span class="absolute top-2 right-2 text-label-code font-label-code text-outline-variant select-none">SCAN_TERMINAL</span>
+<span class="absolute bottom-2 left-2 text-label-code font-label-code text-outline-variant select-none">PORT: 443</span>
+<span class="absolute bottom-2 right-2 text-label-code font-label-code text-outline-variant select-none">SEC_SHA256</span>
+<div class="mb-space-lg">
+<span class="font-label-caps text-label-caps uppercase text-secondary font-semibold tracking-wider">INVESTIGATIVE TERMINAL [DIAGNOSTIC DISPATCH]</span>
+<h2 class="font-headline-md text-headline-md text-primary mt-1">Specify Target Asset &amp; Friction Objective</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Submit the public URL. Our multi-agent browser tests responsive viewport flows, DOM paint metrics, and payment gateway field locks.</p>
+</div>
+<form class="space-y-space-lg" id="diagnostic-form" onsubmit="event.preventDefault(); triggerSimulation();">
+<!-- URL Input Field -->
+<div class="space-y-space-xs">
+<label class="block font-label-caps text-label-caps uppercase text-on-surface tracking-wider font-semibold" for="target-url">
+            Target Domain or Checkout Path URL
+          </label>
+<div class="relative flex items-center">
+<span class="absolute left-space-md font-label-code text-label-code text-on-surface-variant select-none">HTTPS://</span>
+<input class="w-full bg-surface-container-low text-on-surface font-tabular-metric text-body-md pl-24 pr-space-md py-space-md focus:outline-none focus:bg-surface-container-lowest transition-colors shadow-inner" id="target-url" placeholder="acme-analytics.io or yourstore.com/checkout" required="" type="text" value="luminary-apparel.com"/>
+</div>
+</div>
+<!-- Conversion Goal Selector Pills -->
+<div class="space-y-space-xs">
+<label class="block font-label-caps text-label-caps uppercase text-on-surface tracking-wider font-semibold">
+            Primary Conversion Bottleneck Under Review
+          </label>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-sm" id="goal-pills">
+<button class="goal-btn text-left p-space-md bg-surface-container-high text-primary font-body-sm transition-colors shadow-sm" data-goal="b2b-leads" onclick="selectGoal(this)" type="button">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-code text-label-code font-semibold tracking-wide uppercase">[GOAL-01]</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">check_circle</span>
+</div>
+<div class="font-semibold text-primary">Qualified B2B Leads</div>
+<div class="font-body-sm text-label-code text-on-surface-variant mt-0.5">Demo booking &amp; intake forms</div>
+</button>
+<button class="goal-btn text-left p-space-md bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm transition-colors" data-goal="cart-purchases" onclick="selectGoal(this)" type="button">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-code text-label-code font-semibold tracking-wide uppercase text-on-surface-variant">[GOAL-02]</span>
+<span class="material-symbols-outlined text-[16px] text-outline-variant">radio_button_unchecked</span>
+</div>
+<div class="font-semibold text-on-surface">Direct Cart Checkout</div>
+<div class="font-body-sm text-label-code text-on-surface-variant mt-0.5">DTC &amp; e-commerce velocity</div>
+</button>
+<button class="goal-btn text-left p-space-md bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm transition-colors" data-goal="trial-dropoff" onclick="selectGoal(this)" type="button">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-code text-label-code font-semibold tracking-wide uppercase text-on-surface-variant">[GOAL-03]</span>
+<span class="material-symbols-outlined text-[16px] text-outline-variant">radio_button_unchecked</span>
+</div>
+<div class="font-semibold text-on-surface">Mid-Funnel SaaS Trial</div>
+<div class="font-body-sm text-label-code text-on-surface-variant mt-0.5">Onboarding activation drop</div>
+</button>
+<button class="goal-btn text-left p-space-md bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm transition-colors" data-goal="high-ticket" onclick="selectGoal(this)" type="button">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-code text-label-code font-semibold tracking-wide uppercase text-on-surface-variant">[GOAL-04]</span>
+<span class="material-symbols-outlined text-[16px] text-outline-variant">radio_button_unchecked</span>
+</div>
+<div class="font-semibold text-on-surface">High-Ticket Inbound</div>
+<div class="font-body-sm text-label-code text-on-surface-variant mt-0.5">Executive consultation calls</div>
+</button>
+</div>
+</div>
+<!-- Action & Reassurance Block -->
+<div class="bg-surface-container p-space-md lg:p-space-lg flex flex-col md:flex-row items-stretch md:items-center justify-between gap-space-lg">
+<div class="space-y-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-sm text-headline-sm font-semibold text-primary">$1.00 USD</span>
+<span class="bg-tertiary-container text-on-tertiary-container font-label-code text-label-code px-space-xs py-0.5 uppercase">VERIFICATION TOKEN ONLY</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Independently verified scan • Starts immediately upon $1 verification • Illustrative refund guarantee if no friction leaks are identified.
+            </p>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-space-sm flex-shrink-0">
+<button class="w-full sm:w-auto inline-flex items-center justify-center gap-space-sm bg-secondary hover:bg-on-secondary-fixed-variant text-on-secondary font-label-caps text-label-caps uppercase px-space-xl py-space-md rounded-lg shadow-md transition-all active:translate-y-0.5" id="submit-btn" type="submit">
+<span class="material-symbols-outlined text-[18px]">biotech</span>
+<span id="btn-text">Run Diagnostic for $1.00</span>
+</button>
+</div>
+</div>
+</form>
+<!-- SIMULATION PROGRESS DRAWER (HIDDEN INITIALLY) -->
+<div class="hidden mt-space-lg p-space-md bg-surface-container-high transition-all" id="simulation-panel">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-code text-label-code uppercase text-primary font-semibold">RUNNING FORENSIC TELEMETRY PROTOCOL...</span>
+<span class="font-label-code text-label-code text-secondary" id="sim-pct">12%</span>
+</div>
+<div class="w-full bg-surface-container h-2 mb-space-md overflow-hidden">
+<div class="bg-primary h-full w-[12%] transition-all duration-300" id="sim-bar"></div>
+</div>
+<div class="font-label-code text-label-code text-on-surface-variant grid grid-cols-1 sm:grid-cols-3 gap-space-sm" id="sim-log">
+<div>&gt; Parsing DOM tree... [OK]</div>
+<div>&gt; Simulating synthetic mobile swipe... [ACTIVE]</div>
+<div>&gt; Checking autocomplete matrix... [PENDING]</div>
+</div>
+</div>
+</div>
+</section>
+<!-- MODULE 2: INTERACTIVE-LOOKING STATIC SAMPLE REPORT -->
+<section class="max-w-[1440px] mx-auto w-full px-margin lg:px-margin-desktop pb-space-2xl">
+<!-- Banner Stamp -->
+<div class="bg-primary text-on-primary px-space-lg py-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-sm shadow-sm">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary-container">folder_open</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider font-semibold">
+          DEMO AUDIT DOSSIER — LIVE PREVIEW BASED ON E-COMMERCE SAMPLE STORE [DEMO-REF #9418]
+        </span>
+</div>
+<div class="font-label-code text-label-code text-on-primary-container uppercase">
+        TARGET: LUMINARY-APPAREL.COM/CART • AUDIT DATE: TODAY
+      </div>
+</div>
+<!-- Executive Summary Dashboard Bar -->
+<div class="bg-surface-container-high p-space-lg grid grid-cols-1 md:grid-cols-3 gap-space-lg shadow-sm">
+<div class="bg-surface-container-lowest p-space-md shadow-sm">
+<span class="font-label-code text-label-code text-on-surface-variant uppercase tracking-wider block mb-space-xs">ESTIMATED MONTHLY LEAKAGE</span>
+<div class="font-headline-md text-headline-md text-secondary font-semibold">High Friction Detected</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-1 block">Projected 18.4% ARR uncollected at mobile checkout stage</span>
+</div>
+<div class="bg-surface-container-lowest p-space-md shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-code text-label-code text-on-surface-variant uppercase tracking-wider block mb-space-xs">AUDIT INTEGRITY SCORE</span>
+<span class="font-label-code text-label-code text-error font-semibold">FAIL GRADE</span>
+</div>
+<div class="flex items-baseline gap-space-sm">
+<span class="font-tabular-metric text-headline-xl text-primary font-bold">42</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">/ 100 Behavioral Parity</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-1 block">Baseline threshold for sector is 78/100</span>
+</div>
+<div class="bg-surface-container-lowest p-space-md shadow-sm">
+<span class="font-label-code text-label-code text-on-surface-variant uppercase tracking-wider block mb-space-xs">TIME-TO-REMEDIATE</span>
+<div class="font-headline-md text-headline-md text-primary font-semibold">~4.5 Engineering Hours</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-1 block">3 atomic code updates without redesigning architecture</span>
+</div>
+</div>
+<!-- Rich Visual: Inline Anomaly Telemetry Visualizer -->
+<div class="bg-surface-container p-space-lg my-space-md shadow-sm">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm mb-space-md">
+<div>
+<span class="font-label-caps text-label-caps uppercase text-primary font-semibold">SYNTHETIC BEHAVIORAL DROP CURVE (N=1,200 SIMULATED CARTS)</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Telemetry mapping user session dropoffs through the checkout sequence.</p>
+</div>
+<div class="flex items-center gap-space-md font-label-code text-label-code text-on-surface-variant">
+<div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-secondary inline-block"></span> Obs. Dropoff</div>
+<div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-primary inline-block"></span> Clean Baseline</div>
+</div>
+</div>
+<!-- SVG Visualization -->
+<div class="w-full bg-surface-container-lowest p-space-md shadow-inner overflow-x-auto">
+<svg class="w-full h-44 text-on-surface" preserveaspectratio="none" viewbox="0 0 900 180">
+<!-- Horizontal Gridlines -->
+<line stroke="currentColor" stroke-dasharray="4" stroke-opacity="0.08" x1="40" x2="880" y1="20" y2="20"></line>
+<line stroke="currentColor" stroke-dasharray="4" stroke-opacity="0.08" x1="40" x2="880" y1="60" y2="60"></line>
+<line stroke="currentColor" stroke-dasharray="4" stroke-opacity="0.08" x1="40" x2="880" y1="100" y2="100"></line>
+<line stroke="currentColor" stroke-dasharray="4" stroke-opacity="0.08" x1="40" x2="880" y1="140" y2="140"></line>
+<!-- Baseline Curve (Primary Blue) -->
+<polyline class="text-primary" fill="none" points="60,30 240,48 480,62 700,75 860,82" stroke="currentColor" stroke-width="2.5"></polyline>
+<!-- Actual Leaking Curve (Burnt Orange) -->
+<polyline class="text-secondary" fill="none" points="60,30 240,55 480,128 700,146 860,158" stroke="currentColor" stroke-width="3"></polyline>
+<!-- Anomaly Pinpoint Indicator -->
+<circle class="text-secondary fill-current" cx="480" cy="128" r="6"></circle>
+<line class="text-secondary" stroke="currentColor" stroke-dasharray="3" stroke-width="1.5" x1="480" x2="480" y1="30" y2="128"></line>
+<text class="fill-current text-secondary font-label-code" font-size="11" font-weight="600" x="495" y="45">[CRITICAL CLIFF: -34% LEAK]</text>
+<!-- Stage Labels -->
+<text class="fill-current text-on-surface-variant font-label-code" font-size="10" x="60" y="165">PRODUCT VIEW</text>
+<text class="fill-current text-on-surface-variant font-label-code" font-size="10" x="240" y="165">ADD TO CART</text>
+<text class="fill-current text-secondary font-label-code font-bold" font-size="10" x="480" y="165">SHIPPING FORM [LEAK-01]</text>
+<text class="fill-current text-on-surface-variant font-label-code" font-size="10" x="700" y="165">PAYMENT GATEWAY</text>
+<text class="fill-current text-on-surface-variant font-label-code" font-size="10" x="830" y="165">CONFIRMATION</text>
+</svg>
+</div>
+</div>
+<!-- The Three Priority Fix Cards -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter-desktop mt-space-md">
+<!-- Card 1: Critical -->
+<div class="bg-surface-container-lowest p-space-lg flex flex-col justify-between shadow-md">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-code text-label-code bg-error-container text-on-error-container px-space-xs py-0.5 font-bold uppercase">
+              [LEAK-01] • SEVERITY: CRITICAL
+            </span>
+<span class="font-label-code text-label-code text-on-surface-variant">EFFORT: 45 MIN</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-space-xs">
+            Silent Form Abandonment on Mobile Checkout
+          </h3>
+<div class="grid grid-cols-2 gap-space-xs bg-surface-container-low p-space-sm mb-space-md font-label-code text-label-code">
+<div><span class="text-on-surface-variant">IMPACT:</span> <strong class="text-error">HIGH (-34%)</strong></div>
+<div><span class="text-on-surface-variant">DEVICE:</span> <strong>MOBILE IOS/AND</strong></div>
+<div><span class="text-on-surface-variant">FIELD:</span> <strong>AUTOCOMPLETE BLOCKED</strong></div>
+<div><span class="text-on-surface-variant">TIME SAVING:</span> <strong>~12 SEC / USER</strong></div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-md">
+            Missing autocomplete tags and iOS Safari autofill blockage causing <span class="text-on-surface font-semibold">34% dropoff between Cart and Payment</span>. Users face 14 manual keyboard re-entries.
+          </p>
+</div>
+<div class="border-t border-surface-container pt-space-md bg-surface-container-low p-space-sm">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-code text-label-code text-primary font-semibold uppercase">PRESCRIBED REMEDY</span>
+<span class="font-label-code text-label-code text-on-surface-variant">SNIPPET READY</span>
+</div>
+<code class="block font-label-code text-label-code text-primary-container bg-surface-container-highest p-space-xs overflow-x-auto">
+            autocomplete="shipping street-address" + inputmode="numeric"
+          </code>
+</div>
+</div>
+<!-- Card 2: High -->
+<div class="bg-surface-container-lowest p-space-lg flex flex-col justify-between shadow-md">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-code text-label-code bg-secondary-fixed text-on-secondary-fixed font-bold uppercase px-space-xs py-0.5">
+              [LEAK-02] • SEVERITY: HIGH
+            </span>
+<span class="font-label-code text-label-code text-on-surface-variant">EFFORT: 1.5 HRS</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-space-xs">
+            Hidden Value Proposition on Landing Viewport
+          </h3>
+<div class="grid grid-cols-2 gap-space-xs bg-surface-container-low p-space-sm mb-space-md font-label-code text-label-code">
+<div><span class="text-on-surface-variant">IMPACT:</span> <strong class="text-secondary">HIGH (-62%)</strong></div>
+<div><span class="text-on-surface-variant">AREA:</span> <strong>ABOVE-THE-FOLD</strong></div>
+<div><span class="text-on-surface-variant">BOUNCE RATE:</span> <strong>71.4% ON MOBILE</strong></div>
+<div><span class="text-on-surface-variant">SCROLL DEPTH:</span> <strong>&lt; 380PX</strong></div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-md">
+            The initial hero headline relies on an ambiguous poetic slogan. <span class="text-on-surface font-semibold">62% of incoming traffic bounces</span> before scrolling downward to the concrete product demonstration.
+          </p>
+</div>
+<div class="border-t border-surface-container pt-space-md bg-surface-container-low p-space-sm">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-code text-label-code text-primary font-semibold uppercase">PRESCRIBED REMEDY</span>
+<span class="font-label-code text-label-code text-on-surface-variant">COPY REFRAME</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface italic">
+            Replace "Crafting the Future of Presence" with concrete functional utility + 3 customer validation badges.
+          </p>
+</div>
+</div>
+<!-- Card 3: Moderate -->
+<div class="bg-surface-container-lowest p-space-lg flex flex-col justify-between shadow-md">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-code text-label-code bg-surface-container-high text-primary font-bold uppercase px-space-xs py-0.5">
+              [LEAK-03] • SEVERITY: MODERATE
+            </span>
+<span class="font-label-code text-label-code text-on-surface-variant">EFFORT: 30 MIN</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-space-xs">
+            Unindexed Shipping &amp; Guarantee Objections
+          </h3>
+<div class="grid grid-cols-2 gap-space-xs bg-surface-container-low p-space-sm mb-space-md font-label-code text-label-code">
+<div><span class="text-on-surface-variant">IMPACT:</span> <strong>MEDIUM (-14%)</strong></div>
+<div><span class="text-on-surface-variant">PLACEMENT:</span> <strong>PURCHASE BUTTON</strong></div>
+<div><span class="text-on-surface-variant">EXIT INTENT:</span> <strong>HIGH AT SUBMIT</strong></div>
+<div><span class="text-on-surface-variant">UNCERTAINTY:</span> <strong>RETURN POLICY</strong></div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-md">
+            Return policy and compliance guarantee badges are completely obscured below the checkout fold. Visitors abandon the flow to search footer links for assurance.
+          </p>
+</div>
+<div class="border-t border-surface-container pt-space-md bg-surface-container-low p-space-sm">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-code text-label-code text-primary font-semibold uppercase">PRESCRIBED REMEDY</span>
+<span class="font-label-code text-label-code text-on-surface-variant">UI INJECTION</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+            Embed an inline 30-day money-back micro-stamp directly beneath the final credit card submission trigger.
+          </p>
+</div>
+</div>
+</div>
+</section>
+<!-- EDITORIAL DIVIDER WITH ASYMMETRIC TEXTURE -->
+<section class="max-w-[1440px] mx-auto w-full px-margin lg:px-margin-desktop py-space-md">
+<div class="bg-surface-container-high p-space-md flex flex-col md:flex-row items-center justify-between gap-space-md text-on-surface-variant font-label-code text-label-code">
+<div>DISPATCH REGISTER // AUTOMATED EVIDENCE GENERATOR V4.1.8</div>
+<div class="flex items-center gap-space-lg">
+<span>ZERO PROPRIETARY PLUGINS NEEDED</span>
+<span>NO CODE MODIFICATIONS TO RUN SCAN</span>
+</div>
+</div>
+</section>
+<!-- MODULE 3: HOW THE DIAGNOSTIC WORKS (4-STEP EDITORIAL WORKFLOW) -->
+<section class="max-w-[1440px] mx-auto w-full px-margin lg:px-margin-desktop py-space-2xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop mb-space-xl">
+<div class="lg:col-span-5">
+<span class="font-label-caps text-label-caps uppercase text-secondary font-semibold">METHODICAL RECONNAISSANCE</span>
+<h2 class="font-headline-lg text-headline-lg text-primary mt-space-xs mb-space-md">
+          How our diagnostic uncovers unmonitored revenue slippage.
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          Traditional SEO checklists inspect meta tags. Standard analytics dashboards reveal *where* users leave, but never *why*. REVENUELEAK simulates human checkout physics to identify mechanical failures.
+        </p>
+<div class="mt-space-lg p-space-md bg-surface-container-low shadow-sm">
+<div class="font-label-code text-label-code text-primary font-semibold mb-1 uppercase">VERIFIABLE GUARANTEE</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            If our multi-agent diagnostic fails to uncover at least 3 concrete, addressable conversion bottlenecks, your $1 verification fee is refunded instantly without human intervention.
+          </p>
+</div>
+</div>
+<!-- 4 Step Broadsheet Timeline -->
+<div class="lg:col-span-7 space-y-space-md">
+<!-- Step 1 -->
+<div class="bg-surface-container-lowest p-space-lg shadow-sm flex flex-col sm:flex-row items-start gap-space-md">
+<span class="font-tabular-metric text-headline-md text-secondary font-bold flex-shrink-0">01</span>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-1">Telemetry Ingestion</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-space-xs">
+              Chromium workers ingest your DOM architecture, measuring sub-millisecond layout shifts (CLS), script blocking times on submit buttons, and synthetic mobile tap targets across 4 standard screen densities.
+            </p>
+<div class="font-label-code text-label-code text-on-surface-variant">MEASURED: DOM SPEED • PAYLOAD DRAG • INPUT LATENCY</div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="bg-surface-container-lowest p-space-lg shadow-sm flex flex-col sm:flex-row items-start gap-space-md">
+<span class="font-tabular-metric text-headline-md text-primary font-bold flex-shrink-0">02</span>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-1">Conversion Heuristic Matrix</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-space-xs">
+              Paths are evaluated against calibrated heuristics: micro-copy readability, price disclosure friction, coupon-code distraction impact, and single-click wallet readiness (Apple Pay/Google Pay availability).
+            </p>
+<div class="font-label-code text-label-code text-on-surface-variant">MEASURED: HEURISTIC FRICTION • OBJECTION INDEX • FORM CLARITY</div>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="bg-surface-container-lowest p-space-lg shadow-sm flex flex-col sm:flex-row items-start gap-space-md">
+<span class="font-tabular-metric text-headline-md text-secondary font-bold flex-shrink-0">03</span>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-1">Independent Payment Verification</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-space-xs">
+              At $1, automated spam and bot crawlers are filtered out entirely. This enables dedicated server compute clusters to perform uninterrupted, high-concurrency synthetic testing on your exact domain.
+            </p>
+<div class="font-label-code text-label-code text-on-surface-variant">SECURITY: STRIPE 3D-SECURE • ZERO SCRAPING ABUSE • REAL COMPUTE</div>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="bg-surface-container-lowest p-space-lg shadow-sm flex flex-col sm:flex-row items-start gap-space-md">
+<span class="font-tabular-metric text-headline-md text-primary font-bold flex-shrink-0">04</span>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-1">Priority-Three Dossier Delivery</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-space-xs">
+              Rather than an overwhelming 80-page generic audit that gathers dust, you receive a hyper-focused triage dossier detailing your top 3 highest-leverage leaks with ready-to-implement developer snippets.
+            </p>
+<div class="font-label-code text-label-code text-on-surface-variant">FORMAT: EDITORIAL DASHBOARD + MARKDOWN PULL REQUEST TEMPLATES</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- MODULE 4: TRANSPARENT METHODOLOGY & LIMITATIONS -->
+<section class="max-w-[1440px] mx-auto w-full px-margin lg:px-margin-desktop py-space-xl">
+<div class="bg-surface-container-low p-space-lg lg:p-space-xl shadow-md">
+<div class="max-w-2xl mb-space-xl">
+<span class="font-label-caps text-label-caps uppercase text-secondary font-semibold">STANDARDS &amp; GOVERNANCE</span>
+<h2 class="font-headline-lg text-headline-lg text-primary mt-1">Our Editorial &amp; Technical Code of Ethics</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs">
+          Auditing requires uncompromised independence. We maintain strict firewalls regarding our technical scope, expectations, and analytical boundaries.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter-desktop">
+<!-- What we do -->
+<div class="bg-surface-container-lowest p-space-lg shadow-sm">
+<div class="flex items-center gap-space-sm mb-space-md pb-space-sm bg-surface-container-high px-space-md py-space-xs">
+<span class="material-symbols-outlined text-tertiary-container">verified</span>
+<span class="font-label-caps text-label-caps uppercase text-primary font-semibold">WHAT WE AUDIT &amp; EXECUTE</span>
+</div>
+<ul class="space-y-space-md font-body-sm text-body-sm text-on-surface-variant">
+<li class="flex items-start gap-space-sm">
+<span class="font-label-code text-label-code text-secondary font-bold mt-0.5">[01]</span>
+<span><strong>Exhaustive DOM Structure Scan:</strong> Inspect semantic hierarchy, broken viewport breakpoints, keyboard focus locks, and form tag compliance.</span>
+</li>
+<li class="flex items-start gap-space-sm">
+<span class="font-label-code text-label-code text-secondary font-bold mt-0.5">[02]</span>
+<span><strong>Checkout Hurdle Simulation:</strong> Test multi-step cart friction against modern frictionless standards (e.g., Apple Pay sheets, guest checkout routing).</span>
+</li>
+<li class="flex items-start gap-space-sm">
+<span class="font-label-code text-label-code text-secondary font-bold mt-0.5">[03]</span>
+<span><strong>Heuristic Value Assessment:</strong> Evaluate proposition clarity, readability grade, objection proximity, and visual focal paths.</span>
+</li>
+<li class="flex items-start gap-space-sm">
+<span class="font-label-code text-label-code text-secondary font-bold mt-0.5">[04]</span>
+<span><strong>Synthesized Remediation Specs:</strong> Deliver actionable, engineering-ready instructions that your team can execute in hours, not weeks.</span>
+</li>
+</ul>
+</div>
+<!-- What we never do -->
+<div class="bg-surface-container-lowest p-space-lg shadow-sm">
+<div class="flex items-center gap-space-sm mb-space-md pb-space-sm bg-surface-container-high px-space-md py-space-xs">
+<span class="material-symbols-outlined text-secondary">block</span>
+<span class="font-label-caps text-label-caps uppercase text-secondary font-semibold">WHAT WE NEVER DO</span>
+</div>
+<ul class="space-y-space-md font-body-sm text-body-sm text-on-surface-variant">
+<li class="flex items-start gap-space-sm">
+<span class="font-label-code text-label-code text-error font-bold mt-0.5">[NO]</span>
+<span><strong>No Speculative '300% ARR' Guarantees:</strong> We never promise miraculous revenue multipliers. We identify verified mechanical leaks; your conversion lift depends on execution and market demand.</span>
+</li>
+<li class="flex items-start gap-space-sm">
+<span class="font-label-code text-label-code text-error font-bold mt-0.5">[NO]</span>
+<span><strong>No Fabricated Testimonials:</strong> We do not publish ghost-written case studies or vanity logos. Evidence is backed solely by code telemetry and audit logs.</span>
+</li>
+<li class="flex items-start gap-space-sm">
+<span class="font-label-code text-label-code text-error font-bold mt-0.5">[NO]</span>
+<span><strong>No Commercial Telemetry Reselling:</strong> Target URLs, session dumps, and performance benchmarks are encrypted and never monetized or provided to ad networks.</span>
+</li>
+<li class="flex items-start gap-space-sm">
+<span class="font-label-code text-label-code text-error font-bold mt-0.5">[NO]</span>
+<span><strong>No Invasive Code Injections:</strong> Scans run purely through headless client-side simulation. No DNS alteration or tracking scripts required on your servers.</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- MODULE 5: PRICING COMPARISON -->
+<section class="max-w-[1440px] mx-auto w-full px-margin lg:px-margin-desktop py-space-2xl">
+<div class="text-center max-w-2xl mx-auto mb-space-xl">
+<span class="font-label-caps text-label-caps uppercase text-secondary font-semibold">TRANSPARENT SCHEDULE OF FEES</span>
+<h2 class="font-headline-lg text-headline-lg text-primary mt-1">Inspection Tiers &amp; Commitments</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs">
+        Immediate low-barrier entry for independent operators, or recurring forensic monitoring for scaling merchants.
+      </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter-desktop max-w-4xl mx-auto items-stretch">
+<!-- Tier 1: $1 Diagnostic -->
+<div class="bg-surface-container-lowest p-space-lg lg:p-space-xl flex flex-col justify-between shadow-md relative">
+<div class="absolute -top-3 left-space-md bg-secondary text-on-secondary px-space-sm py-0.5 font-label-code text-label-code uppercase tracking-wider font-semibold">
+          MOST COMMONLY SELECTED
+        </div>
+<div>
+<div class="flex items-baseline justify-between mb-space-xs">
+<h3 class="font-headline-sm text-headline-sm text-primary">Discovery Diagnostic</h3>
+<span class="font-label-code text-label-code text-on-surface-variant uppercase">ONE-TIME FEE</span>
+</div>
+<div class="flex items-baseline gap-space-xs my-space-md">
+<span class="font-tabular-metric text-headline-xl text-primary font-bold">$1.00</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">USD / single site verification</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-lg">
+            Rapid multi-agent diagnostic isolating your site's 3 most glaring conversion bottlenecks, delivered within minutes.
+          </p>
+<ul class="space-y-space-sm font-body-sm text-body-sm text-on-surface-variant mb-space-xl">
+<li class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">check</span>
+<span>Full Synthetic DOM &amp; Latency Scan</span>
+</li>
+<li class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">check</span>
+<span>Top 3 High-Yield Leak Dossier</span>
+</li>
+<li class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">check</span>
+<span>Copy-paste remediation snippets</span>
+</li>
+<li class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">check</span>
+<span>Illustrative money-back guarantee if clean</span>
+</li>
+</ul>
+</div>
+<a class="w-full inline-flex items-center justify-center bg-secondary hover:bg-on-secondary-fixed-variant text-on-secondary font-label-caps text-label-caps uppercase py-space-md rounded-lg shadow-sm transition-colors text-center" href="#diagnostic-form">
+          Dispatch $1 Diagnostic
+        </a>
+</div>
+<!-- Tier 2: $49 Verified Retainer -->
+<div class="bg-surface-container-low p-space-lg lg:p-space-xl flex flex-col justify-between shadow-sm">
+<div>
+<div class="flex items-baseline justify-between mb-space-xs">
+<h3 class="font-headline-sm text-headline-sm text-primary">Continuous Retainer</h3>
+<span class="font-label-code text-label-code text-on-surface-variant uppercase">MONTHLY RETAINER</span>
+</div>
+<div class="flex items-baseline gap-space-xs my-space-md">
+<span class="font-tabular-metric text-headline-xl text-primary font-bold">$49.00</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">USD / month per checkout domain</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-lg">
+            Continuous background telemetry monitoring. Instantly alerts engineering teams if new deploys degrade checkout conversion.
+          </p>
+<ul class="space-y-space-sm font-body-sm text-body-sm text-on-surface-variant mb-space-xl">
+<li class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">check</span>
+<span>Continuous 24/7 checkout funnel monitoring</span>
+</li>
+<li class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">check</span>
+<span>Deploy-break regression alerts via Webhook</span>
+</li>
+<li class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">check</span>
+<span>Bi-weekly deep behavioral audit reports</span>
+</li>
+<li class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">check</span>
+<span>Priority analyst verification review</span>
+</li>
+</ul>
+</div>
+<button class="w-full inline-flex items-center justify-center bg-surface-container-highest hover:bg-surface-dim text-primary font-label-caps text-label-caps uppercase py-space-md rounded-lg shadow-sm transition-colors" type="button">
+          Enlist Continuous Retainer
+        </button>
+</div>
+</div>
+</section>
+<!-- MODULE 6: FAQ ACCORDION -->
+<section class="max-w-[1440px] mx-auto w-full px-margin lg:px-margin-desktop py-space-xl">
+<div class="max-w-3xl mx-auto">
+<div class="mb-space-lg text-center">
+<span class="font-label-caps text-label-caps uppercase text-secondary font-semibold">INVESTIGATIVE INQUIRIES</span>
+<h2 class="font-headline-lg text-headline-lg text-primary mt-1">Frequently Answered Questions</h2>
+</div>
+<div class="space-y-space-sm" id="faq-accordion">
+<!-- Question 1 -->
+<div class="bg-surface-container-lowest shadow-sm">
+<button class="w-full text-left p-space-md flex items-center justify-between text-primary font-headline-sm text-headline-sm focus:outline-none" onclick="toggleFaq(this)" type="button">
+<span>Why is the initial diagnostic priced at only $1?</span>
+<span class="material-symbols-outlined transition-transform duration-200">expand_more</span>
+</button>
+<div class="faq-content hidden px-space-md pb-space-md text-on-surface-variant font-body-md text-body-md">
+            The $1 nominal charge serves as an adversarial friction threshold. Completely free automated scanners are bombarded by web scrapers and competitor botnets, degrading diagnostic server capacity. Requiring a verified $1 Stripe authorization guarantees computational allocation is reserved exclusively for authentic business operators.
+          </div>
+</div>
+<!-- Question 2 -->
+<div class="bg-surface-container-lowest shadow-sm">
+<button class="w-full text-left p-space-md flex items-center justify-between text-primary font-headline-sm text-headline-sm focus:outline-none" onclick="toggleFaq(this)" type="button">
+<span>What happens immediately after payment verification?</span>
+<span class="material-symbols-outlined transition-transform duration-200">expand_more</span>
+</button>
+<div class="faq-content hidden px-space-md pb-space-md text-on-surface-variant font-body-md text-body-md">
+            Our multi-agent test cluster initiates an automated sequence. Three separate headless browsers load your page across simulated 4G mobile, desktop retina, and low-bandwidth connections. The DOM elements, autocomplete tags, button event listeners, and value hierarchy are evaluated against our 42-point conversion index.
+          </div>
+</div>
+<!-- Question 3 -->
+<div class="bg-surface-container-lowest shadow-sm">
+<button class="w-full text-left p-space-md flex items-center justify-between text-primary font-headline-sm text-headline-sm focus:outline-none" onclick="toggleFaq(this)" type="button">
+<span>How quickly are my findings produced?</span>
+<span class="material-symbols-outlined transition-transform duration-200">expand_more</span>
+</button>
+<div class="faq-content hidden px-space-md pb-space-md text-on-surface-variant font-body-md text-body-md">
+            The diagnostic renders on your screen in approximately 90 to 180 seconds. You receive a persistent secret link to access your Dossier, complete with the priority-three remediation cards and downloadable engineering markdown tickets.
+          </div>
+</div>
+<!-- Question 4 -->
+<div class="bg-surface-container-lowest shadow-sm">
+<button class="w-full text-left p-space-md flex items-center justify-between text-primary font-headline-sm text-headline-sm focus:outline-none" onclick="toggleFaq(this)" type="button">
+<span>Do you require access to our Google Analytics or code repo?</span>
+<span class="material-symbols-outlined transition-transform duration-200">expand_more</span>
+</button>
+<div class="faq-content hidden px-space-md pb-space-md text-on-surface-variant font-body-md text-body-md">
+            No. REVENUELEAK is completely non-invasive. We evaluate your website purely from the outside-in, exactly as a high-intent prospect or potential customer experiences it. Zero OAuth permissions, zero tracking tags, and zero access credentials required.
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- MODULE 7: FINAL EDITORIAL MASTHEAD CTA -->
+<section class="max-w-[1440px] mx-auto w-full px-margin lg:px-margin-desktop py-space-2xl">
+<div class="bg-primary text-on-primary p-space-xl lg:p-space-2xl shadow-xl relative overflow-hidden">
+<!-- Subtle angled background designator -->
+<div class="absolute right-0 top-0 bottom-0 w-1/3 bg-primary-container opacity-20 pointer-events-none transform -skew-x-12 translate-x-16"></div>
+<div class="max-w-3xl relative z-10 space-y-space-md">
+<span class="bg-secondary text-on-secondary font-label-code text-label-code uppercase tracking-widest px-space-xs py-0.5 font-bold">
+          AUDIT DESK DISPATCH READY
+        </span>
+<h2 class="font-headline-xl text-headline-xl text-on-primary font-semibold tracking-tight leading-tight">
+          Stop guessing which checkout step causes your traffic to abandon.
+        </h2>
+<p class="font-body-lg text-body-lg text-on-primary-container leading-relaxed">
+          Preview the illustrative diagnostic. Real scans are unavailable until checkout and secure processing are connected.
+        </p>
+<div class="pt-space-md flex flex-col sm:flex-row items-start sm:items-center gap-space-md">
+<a class="inline-flex items-center justify-center gap-space-sm bg-secondary hover:bg-on-secondary-fixed-variant text-on-secondary font-label-caps text-label-caps uppercase px-space-xl py-space-md rounded-lg shadow-md transition-colors" href="#diagnostic-form">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+<span>Begin $1 Diagnostic Scan</span>
+</a>
+<span class="font-label-code text-label-code text-on-primary-container uppercase">
+            DEMO PREVIEW • CHECKOUT NOT CONNECTED
+          </span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- CLIENT INTERACTIONS JAVASCRIPT -->
+<script>
+  function selectGoal(button) {
+    const container = document.getElementById('goal-pills');
+    const buttons = container.querySelectorAll('.goal-btn');
+
+    buttons.forEach(btn => {
+      btn.classList.remove('bg-surface-container-high', 'text-primary', 'shadow-sm');
+      btn.classList.add('bg-surface-container-low', 'text-on-surface');
+      const icon = btn.querySelector('.material-symbols-outlined');
+      if (icon) {
+        icon.textContent = 'radio_button_unchecked';
+        icon.classList.remove('text-secondary');
+        icon.classList.add('text-outline-variant');
+      }
+    });
+
+    button.classList.add('bg-surface-container-high', 'text-primary', 'shadow-sm');
+    button.classList.remove('bg-surface-container-low');
+    const activeIcon = button.querySelector('.material-symbols-outlined');
+    if (activeIcon) {
+      activeIcon.textContent = 'check_circle';
+      activeIcon.classList.remove('text-outline-variant');
+      activeIcon.classList.add('text-secondary');
+    }
+  }
+
+  function toggleFaq(btn) {
+    const content = btn.nextElementSibling;
+    const icon = btn.querySelector('.material-symbols-outlined');
+    const isOpen = !content.classList.contains('hidden');
+
+    if (isOpen) {
+      content.classList.add('hidden');
+      icon.style.transform = 'rotate(0deg)';
+    } else {
+      content.classList.remove('hidden');
+      icon.style.transform = 'rotate(180deg)';
+    }
+  }
+
+  function triggerSimulation() {
+    const panel = document.getElementById('simulation-panel');
+    const bar = document.getElementById('sim-bar');
+    const pct = document.getElementById('sim-pct');
+    const submitBtn = document.getElementById('submit-btn');
+    const btnText = document.getElementById('btn-text');
+
+    panel.classList.remove('hidden');
+    submitBtn.disabled = true;
+    btnText.textContent = "Processing Telemetry...";
+
+    let progress = 12;
+    const interval = setInterval(() => {
+      progress += Math.floor(Math.random() * 22) + 8;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        bar.style.width = 'Illustrative';
+        pct.textContent = 'Illustrative';
+        btnText.textContent = "Audit Initialized";
+        setTimeout(() => {
+          // Scroll smoothly down to the Demo Dossier
+          const dossier = document.querySelector('.bg-primary.text-on-primary');
+          if (dossier) {
+            dossier.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 500);
+      } else {
+        bar.style.width = progress + '%';
+        pct.textContent = progress + '%';
+      }
+    }, 240);
+  }
+</script></main><footer class="w-full bg-surface-container-low border-t border-outline-variant mt-space-2xl"><div class="max-w-[1440px] mx-auto px-margin lg:px-margin-desktop py-space-2xl"><div class="grid grid-cols-1 md:grid-cols-12 gap-gutter-desktop border-b border-outline-variant pb-space-2xl"><div class="md:col-span-5 pr-space-lg"><div class="flex items-center gap-space-sm mb-space-md"><span class="font-headline-sm text-headline-sm text-primary font-semibold">REVENUELEAK</span><span class="font-label-code text-label-code border border-outline-variant px-space-xs py-0.5 text-on-surface-variant">v4.1.8-FORENSIC</span></div><p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-space-md">REVENUELEAK operates an institutional-grade algorithmic inspection pipeline measuring frictionless checkouts, telemetry leaks, abandoned carts, and behavioral reconciliation matrices.</p><div class="p-space-md bg-surface-container border border-outline-variant"><p class="font-label-code text-label-code text-on-surface leading-tight font-semibold mb-1 uppercase tracking-wide">Mandatory Statutory Audit Disclaimer</p><p class="font-body-sm text-body-sm text-on-surface-variant leading-normal">REVENUELEAK is an independent diagnostic instrument. No speculative revenue claims; audit telemetry reflects observable behavioral friction, page performance, and checkout heuristics. Scans commence solely upon verified payment processing.</p></div></div><div class="md:col-span-3"><h4 class="font-label-caps text-label-caps text-primary uppercase mb-space-md tracking-wider font-semibold">Index of Methodologies</h4><ul class="space-y-space-sm font-body-sm text-body-sm text-on-surface-variant"><li><a class="hover:text-primary transition-colors" data-path="methodology-checkout-heuristics" href="#">M-01: Checkout Path Breakdown</a></li><li><a class="hover:text-primary transition-colors" data-path="methodology-telemetry-loss" href="#">M-02: Telemetry &amp; Beacon Audits</a></li><li><a class="hover:text-primary transition-colors" data-path="methodology-latency-drag" href="#">M-03: Gateway Latency Drag</a></li><li><a class="hover:text-primary transition-colors" data-path="methodology-form-friction" href="#">M-04: Micro-Friction Ledger</a></li><li><a class="hover:text-primary transition-colors" data-path="methodology-reconciliation" href="#">M-05: Cart Discrepancy Matrix</a></li></ul></div><div class="md:col-span-2"><h4 class="font-label-caps text-label-caps text-primary uppercase mb-space-md tracking-wider font-semibold">Evidence Desk</h4><ul class="space-y-space-sm font-body-sm text-body-sm text-on-surface-variant"><li><a class="hover:text-primary transition-colors" data-path="sample-dossier" href="#">Exemplar Dossiers</a></li><li><a class="hover:text-primary transition-colors" data-path="pricing-and-guarantee" href="#">Fee Schedule</a></li><li><a class="hover:text-primary transition-colors" data-path="client-portal" href="#">Audit Repository</a></li><li><a class="hover:text-primary transition-colors" data-path="faq-and-limitations" href="#">Technical Scope</a></li></ul></div><div class="md:col-span-2"><h4 class="font-label-caps text-label-caps text-primary uppercase mb-space-md tracking-wider font-semibold">Security Disclosures</h4><ul class="space-y-space-sm font-body-sm text-body-sm text-on-surface-variant"><li><a class="hover:text-primary transition-colors" data-path="soc2-attestation" href="#">SOC-2 Type II Desk</a></li><li><a class="hover:text-primary transition-colors" data-path="data-quarantine" href="#">Zero-PII Ingestion Protocol</a></li><li><a class="hover:text-primary transition-colors" data-path="terms-of-inspection" href="#">Terms of Inspection</a></li><li><a class="hover:text-primary transition-colors" data-path="cryptographic-verification" href="#">SHA-256 Ledger Signing</a></li></ul></div></div><div class="pt-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md font-label-code text-label-code text-on-surface-variant"><div>© 2026 REVENUELEAK INVESTIGATIVE DESK. ALL RIGHTS RESERVED. SEC-COMPLIANT ARCHIVAL STORAGE.</div><div class="flex items-center gap-space-md"><span>SYSTEM: ENCRYPTED</span><span>PING: 14MS</span><span>DISCOVERY DISPATCH ACTIVE</span></div></div></div></footer>
+<script>
+(function(){
+  const blocked = /get my report|begin \$1 diagnostic|unlock full diagnostic|run (?:the )?\$1|run paid check|build \$15 product pack|run \$15 close check|execute real-time scan|launch product builder|real-time anomaly scan|run the drift check/i;
+  document.addEventListener('click', function(e){
+    const el=e.target.closest('button,a,input[type="submit"]');
+    if(!el) return;
+    const label=(el.innerText||el.value||el.getAttribute('aria-label')||'').replace(/\s+/g,' ').trim();
+    if(blocked.test(label)){
+      e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+      alert('Checkout is not connected yet. No payment was taken and no real scan or product processing occurred.');
+    }
+  }, true);
+  document.addEventListener('submit',function(e){
+    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+    alert('Checkout is not connected yet. No payment was taken and no real scan or product processing occurred.');
+  },true);
+  document.addEventListener('change',function(e){
+    if(e.target && e.target.matches('input[type=file]')){
+      e.target.value='';
+      alert('Real file processing is currently disabled until verified checkout and secure processing are connected.');
+    }
+  },true);
+  document.querySelectorAll('a[href="#"]').forEach(function(a){
+    if(!a.dataset.path && !a.closest('nav')) a.addEventListener('click',function(e){e.preventDefault()});
+  });
+})();
+</script>
+</body></html>
