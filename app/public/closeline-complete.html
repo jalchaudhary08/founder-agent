@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLOSELINE — Accounting Close Exception Monitor</title>
+  <!-- Google Fonts: Editorial Serif + Ledger Monospace + Clean Work Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            parchment: {
+              50: '#FBF9F4',
+              100: '#F5F2EA',
+              200: '#EBE5D8',
+              300: '#DDD5C3',
+              400: '#C7BCA3'
+            },
+            ledger: {
+              ink: '#11171E',
+              navy: '#182535',
+              dark: '#0E141B',
+              slate: '#324357',
+              muted: '#637385',
+              border: '#DDD6C6',
+              borderDark: '#293545',
+              brass: '#B88636',
+              brassLight: '#D4A359',
+              red: '#9E2A2B',
+              redLight: '#FBEBEB',
+              green: '#2D6A4F',
+              greenLight: '#EBF4F0',
+              amber: '#B5651D'
+            }
+          },
+          fontFamily: {
+            serif: ['Newsreader', 'Georgia', 'serif'],
+            display: ['Cinzel', 'Georgia', 'serif'],
+            mono: ['"IBM Plex Mono"', 'monospace'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Ledger paper fine rules and tactile styling */
+    body {
+      background-color: #F8F5EE;
+      color: #11171E;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+    
+    .ledger-grid {
+      background-image: linear-gradient(to right, rgba(221, 214, 198, 0.4) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(221, 214, 198, 0.4) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    .ledger-table th {
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #4C5D70;
+      border-bottom: 2px solid #D5CBB9;
+    }
+
+    .ledger-table td {
+      border-bottom: 1px solid #EBE4D5;
+    }
+
+    .badge-critical {
+      background-color: #FDF1F0;
+      color: #9E2A2B;
+      border: 1px solid #F5C6C6;
+    }
+    .badge-warning {
+      background-color: #FDF8EE;
+      color: #A36214;
+      border: 1px solid #F1DEC0;
+    }
+    .badge-info {
+      background-color: #F0F4F8;
+      color: #234768;
+      border: 1px solid #CDDBE8;
+    }
+    .badge-resolved {
+      background-color: #EEF6F2;
+      color: #2D6A4F;
+      border: 1px solid #C4E2D3;
+    }
+
+    /* Custom scrollbars for data tables on mobile */
+    .table-responsive::-webkit-scrollbar {
+      height: 6px;
+    }
+    .table-responsive::-webkit-scrollbar-thumb {
+      background-color: #C8BFAB;
+      border-radius: 3px;
+    }
+
+    /* Tab active styles */
+    .tab-btn.active {
+      background-color: #182535;
+      color: #FBF9F4;
+      border-color: #182535;
+    }
+  </style>
+<style>
+  .prototype-disclosure{background:#fff4d8;color:#513b12;border-bottom:1px solid #d4a359;padding:10px 16px;font:12px 'IBM Plex Mono',monospace;text-align:center}
+  @media(max-width:640px){.ledger-table{min-width:680px}.prototype-disclosure{font-size:11px}}
+  </style></head>
+<body class="selection:bg-ledger-brass selection:text-white"><div class="prototype-disclosure">PRODUCT CONCEPT · All ledger figures are illustrative · Checkout and real CSV processing are disabled</div>
+
+  <!-- TOP RUNNING TICKER / ACCURACY DISCLOSURE -->
+  <aside class="bg-ledger-navy text-parchment-200 border-b border-ledger-borderDark text-xs py-2 px-4">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 font-mono">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-ledger-brass animate-pulse"></span>
+        <span class="text-parchment-300 font-semibold tracking-wide">CLOSELINE PRODUCT CONCEPT:</span>
+        <span class="text-parchment-400">Deterministic Rule-Based Anomaly Detection for Month-End Reconciliation</span>
+      </div>
+      <div class="flex items-center gap-4 text-[11px] text-parchment-400">
+        <span>No Real Customer Data Ingested in Demo</span>
+        <span class="hidden md:inline">|</span>
+        <span class="hidden md:inline">Security controls: implementation and verification pending</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 1. NAVIGATION BAR -->
+  <header class="sticky top-0 z-50 bg-[#F8F5EE]/95 backdrop-blur-md border-b border-ledger-border shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Brand Mark -->
+        <a href="#home" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded bg-ledger-navy border border-ledger-borderDark flex items-center justify-center text-parchment-100 shadow-inner group-hover:border-ledger-brass transition">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 19V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14" />
+              <path d="M4 9h16" />
+              <path d="M8 15h3" />
+              <path d="M15 15h1" />
+              <line x1="16" y1="3" x2="16" y2="21" stroke="#B88636" stroke-width="2.5" />
+            </svg>
+          </div>
+          <div>
+            <span class="font-display font-bold text-xl tracking-wider text-ledger-ink group-hover:text-ledger-navy">CLOSELINE</span>
+            <span class="block text-[10px] tracking-widest text-ledger-muted font-mono uppercase">Close Exception Monitor</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden lg:flex items-center space-x-7 text-sm font-medium text-ledger-slate">
+          <a href="#overview" class="hover:text-ledger-ink transition">Overview</a>
+          <a href="#features" class="hover:text-ledger-ink transition">Detection Rules</a>
+          <a href="#demo" class="hover:text-ledger-ink transition">Interactive Demo</a>
+          <a href="#methodology" class="hover:text-ledger-ink transition">Methodology</a>
+          <a href="#use-cases" class="hover:text-ledger-ink transition">Use Cases</a>
+          <a href="#pricing" class="hover:text-ledger-ink transition">Pricing</a>
+          <a href="#faq" class="hover:text-ledger-ink transition">FAQ</a>
+        </nav>
+
+        <!-- CTAs -->
+        <div class="hidden sm:flex items-center space-x-3">
+          <a href="#demo" class="px-3.5 py-2 text-xs font-mono font-semibold uppercase tracking-wider text-ledger-slate hover:text-ledger-ink border border-ledger-border rounded hover:bg-parchment-200 transition">
+            Test Demo CSV
+          </a>
+          <a href="#checkout" onclick="selectPlanForCheckout('starter', 'Starter Monthly', 39, 'month')" class="px-4 py-2 text-xs font-mono font-semibold uppercase tracking-wider bg-ledger-navy text-parchment-100 rounded border border-ledger-borderDark hover:bg-ledger-ink hover:border-ledger-brass shadow-sm transition">
+            Start Free Check
+          </a>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <div class="flex lg:hidden">
+          <button id="mobile-menu-btn" type="button" class="p-2 text-ledger-navy hover:text-ledger-ink border border-ledger-border rounded bg-parchment-100 focus:outline-none" aria-label="Toggle navigation">
+            <svg id="menu-icon" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile dropdown menu -->
+    <div id="mobile-menu" class="hidden lg:hidden border-b border-ledger-border bg-parchment-100 px-4 pt-3 pb-5 space-y-2 font-medium text-sm">
+      <a href="#overview" class="block py-2 text-ledger-navy border-b border-parchment-200 mobile-nav-link">Overview</a>
+      <a href="#features" class="block py-2 text-ledger-navy border-b border-parchment-200 mobile-nav-link">Detection Rules</a>
+      <a href="#demo" class="block py-2 text-ledger-navy border-b border-parchment-200 mobile-nav-link">Interactive Ledger Demo</a>
+      <a href="#methodology" class="block py-2 text-ledger-navy border-b border-parchment-200 mobile-nav-link">Methodology & Evidence</a>
+      <a href="#report-example" class="block py-2 text-ledger-navy border-b border-parchment-200 mobile-nav-link">Example Exception Report</a>
+      <a href="#use-cases" class="block py-2 text-ledger-navy border-b border-parchment-200 mobile-nav-link">Use Cases</a>
+      <a href="#security" class="block py-2 text-ledger-navy border-b border-parchment-200 mobile-nav-link">Security & Verification</a>
+      <a href="#pricing" class="block py-2 text-ledger-navy border-b border-parchment-200 mobile-nav-link">Plans & Hypotheses</a>
+      <a href="#faq" class="block py-2 text-ledger-navy border-b border-parchment-200 mobile-nav-link">FAQ</a>
+      <div class="pt-3 flex flex-col gap-2">
+        <a href="#demo" class="w-full text-center py-2.5 text-xs font-mono uppercase tracking-wider border border-ledger-border bg-white text-ledger-ink rounded mobile-nav-link">
+          Explore Live Demo
+        </a>
+        <a href="#checkout" onclick="selectPlanForCheckout('starter', 'Starter Monthly', 39, 'month')" class="w-full text-center py-2.5 text-xs font-mono uppercase tracking-wider bg-ledger-navy text-parchment-100 rounded mobile-nav-link">
+          Open Checkout Panel
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. HERO SECTION -->
+  <section id="overview" class="relative overflow-hidden pt-12 pb-20 border-b border-ledger-border ledger-grid">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Ledger Stamp Badge -->
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded bg-parchment-200/90 border border-ledger-border text-ledger-slate font-mono text-xs tracking-wider mb-6">
+        <span class="w-2 h-2 rounded-full bg-ledger-brass"></span>
+        <span>MONTH-END CONTROL ENGINE</span>
+        <span class="text-ledger-muted">|</span>
+        <span class="text-ledger-ink font-semibold">ZERO HALLUCINATED BALANCES</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- Left Column: Copy -->
+        <div class="lg:col-span-7">
+          <h1 class="text-3xl sm:text-5xl lg:text-5xl font-serif font-semibold tracking-tight text-ledger-ink leading-[1.15]">
+            Catch the hidden irregularities that break your <span class="italic underline decoration-ledger-brass decoration-2">financial close</span>.
+          </h1>
+          
+          <p class="mt-6 text-base sm:text-lg text-ledger-slate leading-relaxed font-sans max-w-2xl">
+            CLOSELINE monitors transaction ledgers for duplicate payments, mismatched invoice dates, orphaned general ledger accounts, and anomalous posting sizes before books are locked. Built for controllers, CPAs, and fractional finance teams who require verified audit evidence over black-box guesswork.
+          </p>
+
+          <!-- Core Value Metrics / Proof Points (Honest, Structural) -->
+          <div class="mt-8 grid grid-cols-3 gap-4 border-y border-ledger-border py-4 max-w-xl font-mono text-xs">
+            <div>
+              <div class="text-ledger-muted uppercase tracking-wider text-[10px]">Detection Mode</div>
+              <div class="text-ledger-ink font-semibold mt-1">Rule Determinism</div>
+            </div>
+            <div>
+              <div class="text-ledger-muted uppercase tracking-wider text-[10px]">File Support</div>
+              <div class="text-ledger-ink font-semibold mt-1">CSV / QBO / Xero</div>
+            </div>
+            <div>
+              <div class="text-ledger-muted uppercase tracking-wider text-[10px]">Data Storage</div>
+              <div class="text-ledger-ink font-semibold mt-1">Transient Memory</div>
+            </div>
+          </div>
+
+          <!-- CTA Buttons -->
+          <div class="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+            <a href="#demo" class="px-6 py-3.5 bg-ledger-navy hover:bg-ledger-ink text-parchment-100 font-mono text-xs font-semibold uppercase tracking-wider rounded border border-ledger-borderDark text-center transition shadow-sm flex items-center justify-center gap-2">
+              <span>Test Interactive Audit Demo</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+            <a href="#methodology" class="px-6 py-3.5 bg-parchment-100 hover:bg-parchment-200 text-ledger-ink font-mono text-xs font-semibold uppercase tracking-wider rounded border border-ledger-border text-center transition">
+              Read Verification Spec
+            </a>
+          </div>
+
+          <div class="mt-4 flex items-center gap-2 text-xs text-ledger-muted font-mono">
+            <svg class="w-4 h-4 text-ledger-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Hypothesis-driven early access. Proposed pricing only; checkout is not connected.</span>
+          </div>
+        </div>
+
+        <!-- Right Column: Visual Ledger Preview Widget -->
+        <div class="lg:col-span-5">
+          <div class="bg-white rounded-lg border border-ledger-border shadow-lg p-4 sm:p-5 relative">
+            <div class="flex items-center justify-between pb-3 border-b border-ledger-border font-mono text-xs">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-ledger-red"></span>
+                <span class="font-bold text-ledger-ink uppercase tracking-wider">Exception Summary</span>
+              </div>
+              <span class="text-ledger-muted">BATCH #2025-03-QBO</span>
+            </div>
+
+            <!-- Ledger Quick Stat Cards -->
+            <div class="grid grid-cols-2 gap-3 my-4">
+              <div class="bg-parchment-50 p-3 rounded border border-ledger-border">
+                <span class="text-[10px] font-mono text-ledger-muted uppercase">Scanned Rows</span>
+                <div class="text-xl font-bold font-mono text-ledger-ink mt-0.5">1,428*</div>
+                <div class="text-[10px] text-ledger-muted font-sans mt-0.5">Across 4 bank feeds</div>
+              </div>
+              <div class="bg-ledger-redLight p-3 rounded border border-red-200">
+                <span class="text-[10px] font-mono text-ledger-red uppercase font-semibold">Flagged Items</span>
+                <div class="text-xl font-bold font-mono text-ledger-red mt-0.5">Illustrative flags</div>
+                <div class="text-[10px] text-ledger-red font-sans mt-0.5">Illustrative sample amount; not measured exposure</div>
+              </div>
+            </div>
+
+            <!-- Mini Exception Stream Preview -->
+            <div class="space-y-2.5 text-xs font-mono">
+              <div class="p-2.5 rounded bg-parchment-100 border border-ledger-border hover:border-ledger-brass transition">
+                <div class="flex justify-between items-start">
+                  <span class="font-semibold text-ledger-ink">CRITICAL: DUPLICATE_INVOICE</span>
+                  <span class="text-ledger-red font-bold">$12,450.00</span>
+                </div>
+                <p class="text-[11px] font-sans text-ledger-muted mt-1">Vendor "Stripe Inc" matched exact dollar value & date span with #INV-9902.</p>
+              </div>
+
+              <div class="p-2.5 rounded bg-parchment-100 border border-ledger-border hover:border-ledger-brass transition">
+                <div class="flex justify-between items-start">
+                  <span class="font-semibold text-ledger-ink">WARNING: UNUSUAL_POSTING_DATE</span>
+                  <span class="text-ledger-amber font-bold">$4,890.00</span>
+                </div>
+                <p class="text-[11px] font-sans text-ledger-muted mt-1">Posting timestamp is 45 days after invoice period closure.</p>
+              </div>
+
+              <div class="p-2.5 rounded bg-parchment-100 border border-ledger-border hover:border-ledger-brass transition">
+                <div class="flex justify-between items-start">
+                  <span class="font-semibold text-ledger-ink">RESOLVED: ZERO_BALANCE_RECON</span>
+                  <span class="text-ledger-green font-bold">MATCHED</span>
+                </div>
+                <p class="text-[11px] font-sans text-ledger-muted mt-1">Payroll clearing account cleared to $0.00 as expected.</p>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-ledger-border text-center">
+              <span class="text-[11px] font-mono text-ledger-muted">Ready to audit your ledger? Import sample file below.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3. DETAILED LEDGER CONTROLS & CAPABILITIES (FEATURES) -->
+  <section id="features" class="py-20 bg-parchment-100 border-b border-ledger-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="max-w-3xl">
+        <span class="text-xs font-mono font-semibold uppercase tracking-widest text-ledger-brass">Control Mechanisms</span>
+        <h2 class="text-2xl sm:text-4xl font-serif font-semibold text-ledger-ink mt-2">
+          Engineered for the five blind spots of the month-end close.
+        </h2>
+        <p class="text-ledger-slate mt-3 text-base">
+          Accounting software is designed for record-keeping, not proactive anomaly surveillance. CLOSELINE layers explicit validation assertions across your ledger before you distribute trial balances to executives.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+        
+        <!-- Card 1 -->
+        <div class="bg-white p-6 rounded-lg border border-ledger-border hover:border-ledger-brass shadow-sm transition">
+          <div class="w-9 h-9 rounded bg-parchment-100 border border-ledger-border flex items-center justify-center text-ledger-navy mb-4 font-mono text-sm font-bold">
+            01
+          </div>
+          <h3 class="font-serif text-lg font-semibold text-ledger-ink">Twin-Entry & Duplicate Vendor Pay</h3>
+          <p class="text-sm text-ledger-slate mt-2 leading-relaxed">
+            Identifies twin payments submitted under slightly altered vendor aliases, staggered payment dates (within 72 hours), or matching invoice identifiers with inverted digits.
+          </p>
+          <div class="mt-4 pt-3 border-t border-parchment-200 font-mono text-xs text-ledger-muted flex items-center justify-between">
+            <span>Detection: Fuzzy & Exact</span>
+            <span class="text-ledger-navy font-semibold">Precision not yet measured</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-white p-6 rounded-lg border border-ledger-border hover:border-ledger-brass shadow-sm transition">
+          <div class="w-9 h-9 rounded bg-parchment-100 border border-ledger-border flex items-center justify-center text-ledger-navy mb-4 font-mono text-sm font-bold">
+            02
+          </div>
+          <h3 class="font-serif text-lg font-semibold text-ledger-ink">Out-of-Period Postings & Date Drifts</h3>
+          <p class="text-sm text-ledger-slate mt-2 leading-relaxed">
+            Flags journal entries back-dated into previously locked fiscal periods or forward-dated beyond the active close cycle, preventing inadvertent restatements.
+          </p>
+          <div class="mt-4 pt-3 border-t border-parchment-200 font-mono text-xs text-ledger-muted flex items-center justify-between">
+            <span>Detection: Period Anchor</span>
+            <span class="text-ledger-navy font-semibold">Boundary Lock</span>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="bg-white p-6 rounded-lg border border-ledger-border hover:border-ledger-brass shadow-sm transition">
+          <div class="w-9 h-9 rounded bg-parchment-100 border border-ledger-border flex items-center justify-center text-ledger-navy mb-4 font-mono text-sm font-bold">
+            03
+          </div>
+          <h3 class="font-serif text-lg font-semibold text-ledger-ink">Unusual Transaction Spikes & Outliers</h3>
+          <p class="text-sm text-ledger-slate mt-2 leading-relaxed">
+            Flags recurring operational expenses that deviate significantly from rolling 3-month medians without requiring complex ML training or opaque statistical black boxes.
+          </p>
+          <div class="mt-4 pt-3 border-t border-parchment-200 font-mono text-xs text-ledger-muted flex items-center justify-between">
+            <span>Detection: Dynamic StDev</span>
+            <span class="text-ledger-navy font-semibold">Configurable 2-4x</span>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="bg-white p-6 rounded-lg border border-ledger-border hover:border-ledger-brass shadow-sm transition">
+          <div class="w-9 h-9 rounded bg-parchment-100 border border-ledger-border flex items-center justify-center text-ledger-navy mb-4 font-mono text-sm font-bold">
+            04
+          </div>
+          <h3 class="font-serif text-lg font-semibold text-ledger-ink">Missing Fields & Unmapped Tax Codes</h3>
+          <p class="text-sm text-ledger-slate mt-2 leading-relaxed">
+            Spots unassigned department cost-centers, blank vendor tax IDs, unclassified customer accounts, and missing descriptions prior to management reporting.
+          </p>
+          <div class="mt-4 pt-3 border-t border-parchment-200 font-mono text-xs text-ledger-muted flex items-center justify-between">
+            <span>Detection: Schema Integrity</span>
+            <span class="text-ledger-navy font-semibold">Pre-Tax Review</span>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="bg-white p-6 rounded-lg border border-ledger-border hover:border-ledger-brass shadow-sm transition">
+          <div class="w-9 h-9 rounded bg-parchment-100 border border-ledger-border flex items-center justify-center text-ledger-navy mb-4 font-mono text-sm font-bold">
+            05
+          </div>
+          <h3 class="font-serif text-lg font-semibold text-ledger-ink">Suspense & Clearing Account Non-Zeroes</h3>
+          <p class="text-sm text-ledger-slate mt-2 leading-relaxed">
+            Warns immediately if Payroll Clearing, Undeposited Funds, or General Suspense hold persistent net balances that fail to wash down at midnight on close day.
+          </p>
+          <div class="mt-4 pt-3 border-t border-parchment-200 font-mono text-xs text-ledger-muted flex items-center justify-between">
+            <span>Detection: Zero-Balance Net</span>
+            <span class="text-ledger-navy font-semibold">Immediate Alarm</span>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="bg-white p-6 rounded-lg border border-ledger-border hover:border-ledger-brass shadow-sm transition">
+          <div class="w-9 h-9 rounded bg-parchment-100 border border-ledger-border flex items-center justify-center text-ledger-navy mb-4 font-mono text-sm font-bold">
+            06
+          </div>
+          <h3 class="font-serif text-lg font-semibold text-ledger-ink">Audit Evidence & Sign-off Export</h3>
+          <p class="text-sm text-ledger-slate mt-2 leading-relaxed">
+            Generates exportable reconciliation proof packets. Every exception has an timestamp field in illustrative report, detected reason, and recorded controller sign-off or mitigation note.
+          </p>
+          <div class="mt-4 pt-3 border-t border-parchment-200 font-mono text-xs text-ledger-muted flex items-center justify-between">
+            <span>Export: PDF & Formatted CSV</span>
+            <span class="text-ledger-navy font-semibold">Structured review export concept</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 4. HOW IT WORKS (STEP-BY-STEP WORKFLOW) -->
+  <section class="py-20 bg-white border-b border-ledger-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="text-xs font-mono font-semibold uppercase tracking-widest text-ledger-brass">Standard Operating Procedure</span>
+        <h2 class="text-2xl sm:text-4xl font-serif font-semibold text-ledger-ink mt-2">
+          From raw CSV export to signed-off close in three steps.
+        </h2>
+        <p class="text-ledger-slate mt-3 text-sm sm:text-base">
+          No engineering setups or invasive API tokens required. Simply export your ledger and run the close pass.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+        
+        <!-- Step 1 -->
+        <div class="border border-ledger-border rounded-lg p-6 bg-parchment-50 relative">
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-8 h-8 rounded-full bg-ledger-navy text-parchment-100 font-mono text-xs font-bold flex items-center justify-center">1</span>
+            <span class="font-mono text-xs text-ledger-muted uppercase">Stage 01</span>
+          </div>
+          <h3 class="font-serif text-lg font-semibold text-ledger-ink">Export General Ledger or Journal CSV</h3>
+          <p class="text-xs sm:text-sm text-ledger-slate mt-2 leading-relaxed">
+            Download your standard General Ledger, Unadjusted Trial Balance, or Bank Reconciliation dump from QuickBooks, Xero, NetSuite, or Sage Intacct.
+          </p>
+          <div class="mt-4 bg-white p-3 rounded border border-parchment-200 text-[11px] font-mono text-ledger-muted">
+            Accepted: .csv, .tsv, .xlsx (UTF-8 standard ledger headers)
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="border border-ledger-border rounded-lg p-6 bg-parchment-50 relative">
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-8 h-8 rounded-full bg-ledger-brass text-parchment-100 font-mono text-xs font-bold flex items-center justify-center">2</span>
+            <span class="font-mono text-xs text-ledger-muted uppercase">Stage 02</span>
+          </div>
+          <h3 class="font-serif text-lg font-semibold text-ledger-ink">Run Deterministic Exception Pass</h3>
+          <p class="text-xs sm:text-sm text-ledger-slate mt-2 leading-relaxed">
+            CLOSELINE evaluates your rows against a configurable set of accounting review rules. Calculations happen in transient client memory without permanent data storage.
+          </p>
+          <div class="mt-4 bg-white p-3 rounded border border-parchment-200 text-[11px] font-mono text-ledger-muted">
+            Runtime benchmark not yet measured
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="border border-ledger-border rounded-lg p-6 bg-parchment-50 relative">
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-8 h-8 rounded-full bg-ledger-green text-parchment-100 font-mono text-xs font-bold flex items-center justify-center">3</span>
+            <span class="font-mono text-xs text-ledger-muted uppercase">Stage 03</span>
+          </div>
+          <h3 class="font-serif text-lg font-semibold text-ledger-ink">Review, Annotate & Sign-off</h3>
+          <p class="text-xs sm:text-sm text-ledger-slate mt-2 leading-relaxed">
+            Investigate flagged exceptions with exact row references and recommended journal corrections. Mark false positives with audit explanations.
+          </p>
+          <div class="mt-4 bg-white p-3 rounded border border-parchment-200 text-[11px] font-mono text-ledger-muted">
+            Export signed binder: PDF sign-off document for external CPAs
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 5. INTERACTIVE PRODUCT DEMO -->
+  <section id="demo" class="py-20 bg-parchment-50 border-b border-ledger-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <span class="text-xs font-mono font-semibold uppercase tracking-widest text-ledger-brass">Live Working Sandbox</span>
+          <h2 class="text-2xl sm:text-3xl font-serif font-semibold text-ledger-ink mt-1">
+            Reconciliation & Exception Explorer
+          </h2>
+          <p class="text-xs sm:text-sm text-ledger-slate mt-1 max-w-xl">
+            Simulate an active close audit. Toggle filter criteria, load alternate ledger batches, or manually investigate row evidence.
+          </p>
+        </div>
+
+        <!-- Interactive Control Bar -->
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="load-standard-btn" onclick="loadLedgerDataset('standard')" class="px-3 py-1.5 text-xs font-mono font-semibold rounded border border-ledger-border bg-white text-ledger-ink hover:bg-parchment-100 transition shadow-sm active">
+            Batch A: Mid-Market SaaS (Q1)
+          </button>
+          <button id="load-highrisk-btn" onclick="loadLedgerDataset('highrisk')" class="px-3 py-1.5 text-xs font-mono font-semibold rounded border border-ledger-border bg-white text-ledger-slate hover:bg-parchment-100 transition shadow-sm">
+            Batch B: Multi-Entity Agency
+          </button>
+          <button id="reset-filter-btn" onclick="filterExceptions('all')" class="px-3 py-1.5 text-xs font-mono rounded border border-ledger-border bg-parchment-200 text-ledger-ink hover:bg-parchment-300 transition">
+            Reset Filters
+          </button>
+        </div>
+      </div>
+
+      <!-- DEMO CONTAINER -->
+      <div class="bg-white rounded-lg border border-ledger-border shadow-md overflow-hidden">
+        
+        <!-- Top Toolbar & Status -->
+        <div class="p-4 bg-parchment-100 border-b border-ledger-border flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs">
+          <div class="flex items-center gap-4">
+            <div>
+              <span class="text-ledger-muted">ACTIVE SET:</span>
+              <span id="demo-dataset-label" class="font-bold text-ledger-ink">Mid-Market SaaS Close (March 2025)</span>
+            </div>
+            <span class="hidden sm:inline text-ledger-border">|</span>
+            <div>
+              <span class="text-ledger-muted">STATUS:</span>
+              <span class="text-ledger-red font-semibold">● 4 Unresolved Exceptions</span>
+            </div>
+          </div>
+
+          <!-- Filter Pills -->
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span class="text-ledger-muted text-[11px] mr-1">Filter by:</span>
+            <button onclick="filterExceptions('all')" class="filter-chip active px-2.5 py-1 rounded bg-ledger-navy text-white text-[11px] font-semibold">All (7)</button>
+            <button onclick="filterExceptions('critical')" class="filter-chip px-2.5 py-1 rounded bg-white text-ledger-red border border-red-200 text-[11px] hover:bg-red-50">Critical (3)</button>
+            <button onclick="filterExceptions('warning')" class="filter-chip px-2.5 py-1 rounded bg-white text-ledger-amber border border-amber-200 text-[11px] hover:bg-amber-50">Warning (2)</button>
+            <button onclick="filterExceptions('resolved')" class="filter-chip px-2.5 py-1 rounded bg-white text-ledger-green border border-green-200 text-[11px] hover:bg-green-50">Cleared (2)</button>
+          </div>
+        </div>
+
+        <!-- Ledger Table Responsive Wrapper -->
+        <div class="overflow-x-auto table-responsive">
+          <table class="w-full text-left ledger-table min-w-[760px] text-xs">
+            <thead>
+              <tr class="bg-parchment-50">
+                <th class="py-3 px-4">Ref ID</th>
+                <th class="py-3 px-3">Date</th>
+                <th class="py-3 px-4">Account / Payee</th>
+                <th class="py-3 px-3">Category</th>
+                <th class="py-3 px-4 text-right">Debit / Credit</th>
+                <th class="py-3 px-4">Severity & Rule Trigger</th>
+                <th class="py-3 px-4 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody id="ledger-table-body" class="font-mono divide-y divide-parchment-200">
+              <!-- Dynamically populated via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Drawer/Detail Pane when item clicked -->
+        <div id="item-detail-panel" class="p-4 sm:p-5 bg-parchment-50 border-t border-ledger-border hidden">
+          <div class="flex items-start justify-between">
+            <div>
+              <span id="detail-badge" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider">CRITICAL EXCEPTION</span>
+              <h4 id="detail-title" class="font-serif font-semibold text-base sm:text-lg text-ledger-ink mt-1">Duplicate Wire Disbursement Detected</h4>
+              <p id="detail-desc" class="font-sans text-xs sm:text-sm text-ledger-slate mt-1 max-w-2xl">
+                Identical debit amount ($12,450.00) issued to "Stripe Inc Merchant" within 48 hours of Wire #TRX-9482. Both reference Invoice #INV-2025-881.
+              </p>
+            </div>
+            <button onclick="closeDetailPanel()" class="text-ledger-muted hover:text-ledger-ink p-1">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+
+          <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+            <div class="p-2.5 rounded bg-white border border-ledger-border">
+              <span class="text-[10px] text-ledger-muted uppercase">Recommended Action:</span>
+              <div id="detail-remedy" class="font-sans font-medium text-ledger-ink mt-0.5">Void second journal posting or flag for bank stop-payment.</div>
+            </div>
+            <div class="p-2.5 rounded bg-white border border-ledger-border">
+              <span class="text-[10px] text-ledger-muted uppercase">Impacted GL Account:</span>
+              <div id="detail-account" class="font-sans font-medium text-ledger-ink mt-0.5">2000 Accounts Payable / 1010 Operating Cash</div>
+            </div>
+            <div class="p-2.5 rounded bg-white border border-ledger-border flex items-center justify-between">
+              <div>
+                <span class="text-[10px] text-ledger-muted uppercase">Controller Sign-Off:</span>
+                <div id="detail-signoff" class="text-ledger-red font-semibold">Pending Review</div>
+              </div>
+              <button onclick="toggleSignoffCurrent()" class="px-3 py-1 text-xs bg-ledger-navy text-white rounded hover:bg-ledger-ink">
+                Sign Off
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer / CSV Simulation Upload Drawer -->
+        <div class="p-4 bg-white border-t border-ledger-border flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+          <div class="flex items-center gap-2 text-ledger-muted font-sans">
+            <svg class="w-4 h-4 text-ledger-brass" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>Click any table row to inspect audit evidence, recommended remedies, and GL impacts.</span>
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <button onclick="simulateUploadClick()" class="px-3 py-1.5 text-xs font-mono uppercase bg-parchment-100 hover:bg-parchment-200 border border-ledger-border rounded text-ledger-ink flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              <span>Import Custom CSV</span>
+            </button>
+            <input type="file" id="demo-csv-file" class="hidden" accept=".csv" onchange="handleSimulatedUpload(event)">
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 6. METHODOLOGY, LIMITATIONS & AUDIT EVIDENCE -->
+  <section id="methodology" class="py-20 bg-white border-b border-ledger-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="max-w-3xl mb-12">
+        <span class="text-xs font-mono font-semibold uppercase tracking-widest text-ledger-brass">Engineering & Governance</span>
+        <h2 class="text-2xl sm:text-4xl font-serif font-semibold text-ledger-ink mt-2">
+          Methodology: Why deterministic verification beats generative guesses.
+        </h2>
+        <p class="text-ledger-slate mt-3 text-base">
+          Large language models hallucinate tax laws and fabricate transaction balances. CLOSELINE relies on deterministic accounting assertions, clear boundary limitations, and human controller accountability.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <!-- Pillar 1 -->
+        <div class="border border-ledger-border rounded-lg p-6 bg-parchment-50">
+          <div class="flex items-center gap-2 mb-3 text-ledger-navy">
+            <svg class="w-5 h-5 text-ledger-brass" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <h3 class="font-serif text-lg font-semibold text-ledger-ink">Deterministic Rules</h3>
+          </div>
+          <p class="text-xs sm:text-sm text-ledger-slate leading-relaxed">
+            Every exception maps to an exact logical assertion: equal hash strings, date boundary windows, or standard deviation thresholds. The engine produces the exact same outcome on run #1 as run #10,000.
+          </p>
+          <div class="mt-4 pt-3 border-t border-parchment-200 text-xs font-mono text-ledger-muted">
+            Zero black-box training drift
+          </div>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="border border-ledger-border rounded-lg p-6 bg-parchment-50">
+          <div class="flex items-center gap-2 mb-3 text-ledger-navy">
+            <svg class="w-5 h-5 text-ledger-brass" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            <h3 class="font-serif text-lg font-semibold text-ledger-ink">Explicit Limitations</h3>
+          </div>
+          <p class="text-xs sm:text-sm text-ledger-slate leading-relaxed">
+            CLOSELINE cannot verify whether a vendor invoice was physically signed or legally legitimate in court. It monitors mathematical, temporal, and metadata consistency across reported transactions.
+          </p>
+          <div class="mt-4 pt-3 border-t border-parchment-200 text-xs font-mono text-ledger-muted">
+            Transparent tool boundaries
+          </div>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="border border-ledger-border rounded-lg p-6 bg-parchment-50">
+          <div class="flex items-center gap-2 mb-3 text-ledger-navy">
+            <svg class="w-5 h-5 text-ledger-brass" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            <h3 class="font-serif text-lg font-semibold text-ledger-ink">Human-in-the-Loop Sign-Off</h3>
+          </div>
+          <p class="text-xs sm:text-sm text-ledger-slate leading-relaxed">
+            Software surfaces the discrepancy; qualified accounting personnel make the adjustment. Every flagged item requires a documented disposition before close packet export.
+          </p>
+          <div class="mt-4 pt-3 border-t border-parchment-200 text-xs font-mono text-ledger-muted">
+            Enforces segregation of duties
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Specific Detection Rule Dictionary Preview -->
+      <div class="mt-12 bg-parchment-100 rounded-lg border border-ledger-border p-6">
+        <h4 class="font-serif font-semibold text-ledger-ink text-base mb-4">Core Validation Assertions Catalog</h4>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs">
+          <div class="p-3 bg-white rounded border border-ledger-border">
+            <span class="text-ledger-red font-bold">RULE #01: DUP_EXACT</span>
+            <p class="font-sans text-[11px] text-ledger-slate mt-1">Same vendor, same dollar amount, identical check/invoice reference.</p>
+          </div>
+          <div class="p-3 bg-white rounded border border-ledger-border">
+            <span class="text-ledger-amber font-bold">RULE #02: DUP_WINDOW</span>
+            <p class="font-sans text-[11px] text-ledger-slate mt-1">Same dollar amount within 72h window under alternate payment rail.</p>
+          </div>
+          <div class="p-3 bg-white rounded border border-ledger-border">
+            <span class="text-ledger-navy font-bold">RULE #03: DATE_POST_GAP</span>
+            <p class="font-sans text-[11px] text-ledger-slate mt-1">Posting date differs from document date by > 45 calendar days.</p>
+          </div>
+          <div class="p-3 bg-white rounded border border-ledger-border">
+            <span class="text-ledger-green font-bold">RULE #04: SUSPENSE_NONZERO</span>
+            <p class="font-sans text-[11px] text-ledger-slate mt-1">Suspense or Clearing account closing with balance &ne; $0.00.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 7. DETAILED EXAMPLE EXCEPTION REPORT -->
+  <section id="report-example" class="py-20 bg-parchment-100 border-b border-ledger-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="max-w-3xl mb-12">
+        <span class="text-xs font-mono font-semibold uppercase tracking-widest text-ledger-brass">Audit Package Specimen</span>
+        <h2 class="text-2xl sm:text-4xl font-serif font-semibold text-ledger-ink mt-2">
+          What your close committee actually receives.
+        </h2>
+        <p class="text-ledger-slate mt-3 text-base">
+          A structured, verifiable exception report with concrete row lineage, severity levels, and explicit ledger adjustments.
+        </p>
+      </div>
+
+      <!-- Report Card Document Styled Container -->
+      <div class="bg-white rounded-lg border-2 border-ledger-border shadow-md p-6 sm:p-8 max-w-4xl mx-auto">
+        
+        <!-- Header of Document -->
+        <div class="border-b-2 border-ledger-ink pb-6 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
+          <div>
+            <div class="text-[10px] font-mono uppercase tracking-widest text-ledger-muted">REPORT ID: AUD-2025-03-912</div>
+            <h3 class="text-xl sm:text-2xl font-serif font-bold text-ledger-ink">MONTH-END CLOSE EXCEPTION SUMMARY</h3>
+            <p class="text-xs text-ledger-slate mt-1 font-mono">Entity: Apex Logistics Holdings Inc. | Period: March 2025</p>
+          </div>
+          <div class="text-right font-mono text-xs">
+            <div class="text-ledger-muted">AUDIT DATE:</div>
+            <div class="font-bold text-ledger-ink">31-MAR-2025 23:59 UTC</div>
+          </div>
+        </div>
+
+        <!-- Key Metrics Summary -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 py-6 border-b border-ledger-border font-mono text-xs">
+          <div>
+            <span class="text-ledger-muted">TOTAL ROWS</span>
+            <div class="font-bold text-base text-ledger-ink mt-0.5">3,492*</div>
+          </div>
+          <div>
+            <span class="text-ledger-muted">FLAGGED EXCEPTIONS</span>
+            <div class="font-bold text-base text-ledger-red mt-0.5">Illustrative items</div>
+          </div>
+          <div>
+            <span class="text-ledger-muted">EXPOSURE VALUE</span>
+            <div class="font-bold text-base text-ledger-ink mt-0.5">Illustrative amount</div>
+          </div>
+          <div>
+            <span class="text-ledger-muted">SIGN-OFF STATUS</span>
+            <div class="font-bold text-base text-ledger-amber mt-0.5">In Review</div>
+          </div>
+        </div>
+
+        <!-- Line Item Detail -->
+        <div class="py-6 space-y-6">
+          
+          <!-- Item 1 -->
+          <div class="border-l-4 border-ledger-red pl-4 py-1">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="font-mono text-xs font-bold text-ledger-red uppercase">CRITICAL #1 — DUPLICATE WIRE ENTRY</span>
+              <span class="font-mono text-xs font-semibold text-ledger-ink">Amount: $14,200.00</span>
+            </div>
+            <p class="text-xs text-ledger-slate mt-1.5 leading-relaxed">
+              <strong>Ref:</strong> GL-Row #1094 vs GL-Row #1112 | <strong>Vendor:</strong> Oracle Cloud Infrastructure
+            </p>
+            <p class="text-xs text-ledger-slate mt-1">
+              <strong>Root Cause:</strong> Two separate journal vouchers created by Accounts Payable for identical semi-annual cloud infrastructure invoice.
+            </p>
+            <div class="mt-2 text-xs font-mono text-ledger-navy bg-parchment-100 p-2 rounded border border-parchment-200">
+              <strong>Remedy Action:</strong> Reverse Voucher #JV-8821 in QBO; contact treasury to confirm single ACH processed at Citibank.
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="border-l-4 border-ledger-amber pl-4 py-1">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="font-mono text-xs font-bold text-ledger-amber uppercase">WARNING #2 — OUT-OF-PERIOD REVENUE RECOGNITION</span>
+              <span class="font-mono text-xs font-semibold text-ledger-ink">Amount: $5,400.00</span>
+            </div>
+            <p class="text-xs text-ledger-slate mt-1.5 leading-relaxed">
+              <strong>Ref:</strong> GL-Row #2804 | <strong>Customer:</strong> Northwind Partners Retainer
+            </p>
+            <p class="text-xs text-ledger-slate mt-1">
+              <strong>Root Cause:</strong> Service delivery scheduled for April 2025 posted into March P&L rather than Deferred Revenue (Account 2400).
+            </p>
+            <div class="mt-2 text-xs font-mono text-ledger-navy bg-parchment-100 p-2 rounded border border-parchment-200">
+              <strong>Remedy Action:</strong> Reclassify $5,400 from 4010 Subscription Revenue to 2400 Unearned Revenue.
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="border-l-4 border-ledger-slate pl-4 py-1">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="font-mono text-xs font-bold text-ledger-slate uppercase">NOTICE #3 — UNRESOLVED CLEARING ACCOUNT LEFTOVER</span>
+              <span class="font-mono text-xs font-semibold text-ledger-ink">Amount: $2,230.00</span>
+            </div>
+            <p class="text-xs text-ledger-slate mt-1.5 leading-relaxed">
+              <strong>Ref:</strong> GL-Row #3109 | <strong>Account:</strong> 1099 Stripe Transit Clearing
+            </p>
+            <p class="text-xs text-ledger-slate mt-1">
+              <strong>Root Cause:</strong> End-of-month payout in transit from payment gateway failed auto-match against bank deposit feed.
+            </p>
+            <div class="mt-2 text-xs font-mono text-ledger-navy bg-parchment-100 p-2 rounded border border-parchment-200">
+              <strong>Remedy Action:</strong> Confirm April 1st bank settlement in transit; attach processor export as reconciliation proof.
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Signature Block -->
+        <div class="pt-6 border-t-2 border-ledger-border flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 text-xs font-mono">
+          <div>
+            <div class="text-ledger-muted uppercase text-[10px]">PREPARED BY:</div>
+            <div class="font-bold text-ledger-ink mt-1">Senior Accounting Lead (Verification ID: APX-441)</div>
+            <div class="text-ledger-muted text-[11px]">System Timestamp: 2025-03-31T23:59:12Z</div>
+          </div>
+          <div class="border-t border-dashed border-ledger-borderDark pt-2 sm:w-48 text-center sm:text-right">
+            <span class="text-ledger-muted text-[10px] uppercase block">CONTROLLER SIGNATURE</span>
+            <span class="font-serif italic text-sm text-ledger-navy font-semibold">J. Montgomery, CPA</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 8. USE CASES -->
+  <section id="use-cases" class="py-20 bg-white border-b border-ledger-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="text-xs font-mono font-semibold uppercase tracking-widest text-ledger-brass">Operational Fit</span>
+        <h2 class="text-2xl sm:text-4xl font-serif font-semibold text-ledger-ink mt-2">
+          Built for teams responsible for the final numbers.
+        </h2>
+        <p class="text-ledger-slate mt-3 text-sm sm:text-base">
+          Whether managing 20 client closes each month or protecting internal governance at a fast-growing startup.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Use Case 1 -->
+        <div class="p-6 rounded-lg border border-ledger-border bg-parchment-50">
+          <div class="text-xs font-mono uppercase text-ledger-brass font-bold mb-2">PRACTICE TEAMS</div>
+          <h3 class="font-serif text-xl font-semibold text-ledger-ink">Outsourced Bookkeepers</h3>
+          <p class="text-xs sm:text-sm text-ledger-slate mt-3 leading-relaxed">
+            Eliminate late-night spreadsheet squinting. Catch duplicate vendor billings and mismatched invoice numbers before sending monthly management packets to founders.
+          </p>
+          <ul class="mt-4 space-y-2 text-xs font-mono text-ledger-navy">
+            <li class="flex items-center gap-2">
+              <span class="text-ledger-green">✓</span> Batch scan across 5 to 50 client files
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-ledger-green">✓</span> Potential time savings not yet measured
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-ledger-green">✓</span> Professional audit reports branded to practice
+            </li>
+          </ul>
+        </div>
+
+        <!-- Use Case 2 -->
+        <div class="p-6 rounded-lg border border-ledger-border bg-parchment-50">
+          <div class="text-xs font-mono uppercase text-ledger-brass font-bold mb-2">GROWTH STAGE</div>
+          <h3 class="font-serif text-xl font-semibold text-ledger-ink">Fractional CFOs & Finance Leads</h3>
+          <p class="text-xs sm:text-sm text-ledger-slate mt-3 leading-relaxed">
+            Protect board presentation integrity. Verify that revenue cut-offs, prepaid amortization schedules, and clearing accounts hold water before presenting quarterly burn metrics.
+          </p>
+          <ul class="mt-4 space-y-2 text-xs font-mono text-ledger-navy">
+            <li class="flex items-center gap-2">
+              <span class="text-ledger-green">✓</span> Detect revenue timing mismatches
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-ledger-green">✓</span> Defend against investor diligence scrutiny
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-ledger-green">✓</span> Transparent evidence for audit partners
+            </li>
+          </ul>
+        </div>
+
+        <!-- Use Case 3 -->
+        <div class="p-6 rounded-lg border border-ledger-border bg-parchment-50">
+          <div class="text-xs font-mono uppercase text-ledger-brass font-bold mb-2">MID-MARKET ENTERPRISE</div>
+          <h3 class="font-serif text-xl font-semibold text-ledger-ink">Corporate Controllers</h3>
+          <p class="text-xs sm:text-sm text-ledger-slate mt-3 leading-relaxed">
+            Standardize month-end assertions across multi-subsidiary ledgers. Enforce segregation of duties and verify junior staff reconciliations without manual row-by-row sampling.
+          </p>
+          <ul class="mt-4 space-y-2 text-xs font-mono text-ledger-navy">
+            <li class="flex items-center gap-2">
+              <span class="text-ledger-green">✓</span> Multi-currency and entity separation
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-ledger-green">✓</span> Formal documented sign-off workflow
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-ledger-green">✓</span> SOX-aligned control consistency
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 9. SECURITY AND PRIVACY SECTION -->
+  <section id="security" class="py-20 bg-parchment-100 border-b border-ledger-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="max-w-3xl mb-12">
+        <span class="text-xs font-mono font-semibold uppercase tracking-widest text-ledger-brass">Data Privacy & Sovereignty</span>
+        <h2 class="text-2xl sm:text-4xl font-serif font-semibold text-ledger-ink mt-2">
+          Strictly verifiable claims. No fabricated badges.
+        </h2>
+        <p class="text-ledger-slate mt-3 text-base">
+          Accounting ledgers contain sensitive payroll, vendor banking, and revenue details. We do not make unsubstantiated claims or display unverifiable security seals. Here are our exact data mechanics.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <div class="bg-white p-6 rounded-lg border border-ledger-border">
+          <div class="font-mono text-xs font-bold text-ledger-navy uppercase mb-1">TRANSIENT IN-MEMORY EXECUTION</div>
+          <h3 class="font-serif text-lg font-semibold text-ledger-ink">No Database Storage of Financial Line Items</h3>
+          <p class="text-xs sm:text-sm text-ledger-slate mt-2 leading-relaxed">
+            When you run an audit pass, transaction data is parsed and evaluated in ephemeral runtime memory. Transactions are discarded upon report generation unless you explicitly save a persistent audit binder.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg border border-ledger-border">
+          <div class="font-mono text-xs font-bold text-ledger-navy uppercase mb-1">NO AI MODEL TRAINING</div>
+          <h3 class="font-serif text-lg font-semibold text-ledger-ink">Your Books Never Train External Models</h3>
+          <p class="text-xs sm:text-sm text-ledger-slate mt-2 leading-relaxed">
+            Because our core rules are deterministic heuristics and mathematical validations, customer data is never piped into external LLM training loops or third-party generative datasets.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg border border-ledger-border">
+          <div class="font-mono text-xs font-bold text-ledger-navy uppercase mb-1">TRANSPORT-LAYER ENCRYPTION</div>
+          <h3 class="font-serif text-lg font-semibold text-ledger-ink">Enforced TLS 1.3 in Transit</h3>
+          <p class="text-xs sm:text-sm text-ledger-slate mt-2 leading-relaxed">
+            All data transmitted between your browser and our edge validation workers is encrypted with TLS 1.3 using modern elliptic-curve cipher suites.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg border border-ledger-border">
+          <div class="font-mono text-xs font-bold text-ledger-navy uppercase mb-1">LOCAL REDACTION COMPATIBILITY</div>
+          <h3 class="font-serif text-lg font-semibold text-ledger-ink">Optional Client-Side Anonymization</h3>
+          <p class="text-xs sm:text-sm text-ledger-slate mt-2 leading-relaxed">
+            Need to mask employee payroll names? CLOSELINE supports pre-flight client-side tokenization, hashing employee identifiers before ingestion while preserving anomaly detection.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 10. PRICING SECTION (HONEST EARLY-STAGE HYPOTHESES) -->
+  <section id="pricing" class="py-20 bg-white border-b border-ledger-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-mono font-semibold uppercase tracking-widest text-ledger-brass">Commercial Hypothesis</span>
+        <h2 class="text-2xl sm:text-4xl font-serif font-semibold text-ledger-ink mt-2">
+          Transparent, predictable accounting close plans.
+        </h2>
+        <p class="text-ledger-slate mt-3 text-sm sm:text-base">
+          These rates reflect our current early-access business hypothesis. Pricing is simple, usage-based, and cancellable anytime.
+        </p>
+
+        <!-- Billing Frequency Toggle -->        <div class="mt-8 inline-flex items-center p-1 bg-parchment-100 rounded-lg border border-ledger-border">
+          <button id="billing-monthly-btn" onclick="setBillingCycle('monthly')" class="px-4 py-1.5 text-xs font-mono font-semibold rounded bg-ledger-navy text-white shadow-sm transition">
+            Monthly Billing
+          </button>
+          <button id="billing-annual-btn" onclick="setBillingCycle('annual')" class="px-4 py-1.5 text-xs font-mono font-semibold rounded text-ledger-slate hover:text-ledger-ink transition flex items-center gap-1.5">
+            <span>Annual Prepay</span>
+            <span class="bg-ledger-brass text-white text-[10px] px-1.5 py-0.2 rounded font-sans uppercase">Preview</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Pricing Plans Grid (4 Plans as Specified) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Plan 1: One-Time -->
+        <div class="border border-ledger-border rounded-lg p-6 bg-parchment-50 flex flex-col justify-between hover:border-ledger-slate transition">
+          <div>
+            <div class="font-mono text-xs text-ledger-muted uppercase tracking-wider">Spot Check</div>
+            <h3 class="font-serif text-xl font-bold text-ledger-ink mt-1">One-Time Pass</h3>
+            <p class="text-xs text-ledger-slate mt-2 leading-relaxed">
+              Ideal for a single critical quarterly close, audit prep, or historical ledger sanity verification.
+            </p>
+            <div class="my-6">
+              <span class="text-3xl font-mono font-bold text-ledger-ink">$15</span>
+              <span class="text-xs font-mono text-ledger-muted">/ single scan</span>
+            </div>
+            <ul class="space-y-2.5 text-xs font-mono text-ledger-slate border-t border-ledger-border pt-4">
+              <li class="flex items-center gap-2"><span>✓</span> 1 Ledger file scan</li>
+              <li class="flex items-center gap-2"><span>✓</span> Up to 5,000 line items</li>
+              <li class="flex items-center gap-2"><span>✓</span> 24 standard check rules</li>
+              <li class="flex items-center gap-2"><span>✓</span> PDF exception export</li>
+              <li class="flex items-center gap-2 text-ledger-muted"><span>✕</span> No persistent binder</li>
+            </ul>
+          </div>
+          <button onclick="selectPlanForCheckout('onetime', 'One-time Close Check', 15, 'one-time')" class="mt-6 w-full py-2.5 bg-white hover:bg-parchment-200 text-ledger-ink border border-ledger-border font-mono text-xs uppercase font-semibold rounded transition">
+            Buy One-Time Pass
+          </button>
+        </div>
+
+        <!-- Plan 2: Starter -->
+        <div class="border border-ledger-border rounded-lg p-6 bg-white flex flex-col justify-between hover:border-ledger-slate transition">
+          <div>
+            <div class="font-mono text-xs text-ledger-muted uppercase tracking-wider">Independent</div>
+            <h3 class="font-serif text-xl font-bold text-ledger-ink mt-1">Starter</h3>
+            <p class="text-xs text-ledger-slate mt-2 leading-relaxed">
+              For solo bookkeepers and individual companies running their own regular monthly close.
+            </p>
+            <div class="my-6">
+              <span class="plan-price text-3xl font-mono font-bold text-ledger-ink" data-monthly="39" data-annual="33">$39</span>
+              <span class="plan-period text-xs font-mono text-ledger-muted">/ month</span>
+            </div>
+            <ul class="space-y-2.5 text-xs font-mono text-ledger-slate border-t border-ledger-border pt-4">
+              <li class="flex items-center gap-2"><span>✓</span> Up to 3 Company Entities</li>
+              <li class="flex items-center gap-2"><span>✓</span> 25,000 rows / month</li>
+              <li class="flex items-center gap-2"><span>✓</span> Full exception rules engine</li>
+              <li class="flex items-center gap-2"><span>✓</span> Exportable CSV + PDF binders</li>
+              <li class="flex items-center gap-2"><span>✓</span> Email support</li>
+            </ul>
+          </div>
+          <button onclick="selectPlanForCheckout('starter', 'Starter Subscription', 39, 'month')" class="mt-6 w-full py-2.5 bg-ledger-navy hover:bg-ledger-ink text-parchment-100 font-mono text-xs uppercase font-semibold rounded transition shadow-sm">
+            Select Starter
+          </button>
+        </div>
+
+        <!-- Plan 3: Professional (Highlighted) -->
+        <div class="border-2 border-ledger-brass rounded-lg p-6 bg-parchment-50 relative flex flex-col justify-between shadow-md">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-ledger-brass text-white text-[10px] font-mono uppercase font-bold px-3 py-0.5 rounded tracking-wider">
+            Most Common Choice
+          </div>
+          <div>
+            <div class="font-mono text-xs text-ledger-brass font-bold uppercase tracking-wider">Finance Teams</div>
+            <h3 class="font-serif text-xl font-bold text-ledger-ink mt-1">Professional</h3>
+            <p class="text-xs text-ledger-slate mt-2 leading-relaxed">
+              For growing businesses with complex subsidiary structures, high transaction volume, and dual sign-off needs.
+            </p>
+            <div class="my-6">
+              <span class="plan-price text-3xl font-mono font-bold text-ledger-ink" data-monthly="69" data-annual="58">$69</span>
+              <span class="plan-period text-xs font-mono text-ledger-muted">/ month</span>
+            </div>
+            <ul class="space-y-2.5 text-xs font-mono text-ledger-slate border-t border-ledger-border pt-4">
+              <li class="flex items-center gap-2"><span>✓</span> Up to 10 Company Entities</li>
+              <li class="flex items-center gap-2"><span>✓</span> 100,000 rows / month</li>
+              <li class="flex items-center gap-2"><span>✓</span> Custom exception thresholds</li>
+              <li class="flex items-center gap-2"><span>✓</span> Multi-user reviewer sign-off</li>
+              <li class="flex items-center gap-2"><span>✓</span> Priority queue processing</li>
+            </ul>
+          </div>
+          <button onclick="selectPlanForCheckout('pro', 'Professional Subscription', 69, 'month')" class="mt-6 w-full py-2.5 bg-ledger-navy hover:bg-ledger-ink text-parchment-100 font-mono text-xs uppercase font-semibold rounded transition shadow-sm">
+            Select Professional
+          </button>
+        </div>
+
+        <!-- Plan 4: Agency -->
+        <div class="border border-ledger-border rounded-lg p-6 bg-white flex flex-col justify-between hover:border-ledger-slate transition">
+          <div>
+            <div class="font-mono text-xs text-ledger-muted uppercase tracking-wider">Accounting Practices</div>
+            <h3 class="font-serif text-xl font-bold text-ledger-ink mt-1">Agency</h3>
+            <p class="text-xs text-ledger-slate mt-2 leading-relaxed">
+              For fractional CFO firms and accounting agencies managing large client rosters simultaneously.
+            </p>
+            <div class="my-6">
+              <span class="plan-price text-3xl font-mono font-bold text-ledger-ink" data-monthly="99" data-annual="84">$99</span>
+              <span class="plan-period text-xs font-mono text-ledger-muted">/ month</span>
+            </div>
+            <ul class="space-y-2.5 text-xs font-mono text-ledger-slate border-t border-ledger-border pt-4">
+              <li class="flex items-center gap-2"><span>✓</span> Unlimited Client Entities</li>
+              <li class="flex items-center gap-2"><span>✓</span> 350,000 rows / month</li>
+              <li class="flex items-center gap-2"><span>✓</span> White-label binder exports</li>
+              <li class="flex items-center gap-2"><span>✓</span> Multi-account team seats (5)</li>
+              <li class="flex items-center gap-2"><span>✓</span> Dedicated accounting specialist</li>
+            </ul>
+          </div>
+          <button onclick="selectPlanForCheckout('agency', 'Agency Subscription', 99, 'month')" class="mt-6 w-full py-2.5 bg-white hover:bg-parchment-200 text-ledger-ink border border-ledger-border font-mono text-xs uppercase font-semibold rounded transition">
+            Select Agency
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Subscription Clarifications & Usage Guarantees -->
+      <div class="mt-12 bg-parchment-100 rounded-lg border border-ledger-border p-6 max-w-4xl mx-auto">
+        <h4 class="font-serif font-semibold text-ledger-ink text-sm sm:text-base mb-2">Subscription & Usage Policy Details</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-sans text-ledger-slate">
+          <div>
+            <strong class="font-mono text-ledger-ink block mb-1">Cancellations & Refunds:</strong>
+            Cancel anytime via self-service portal with one click. Prorated refunds available within 7 business days of billing cycle renewal.
+          </div>
+          <div>
+            <strong class="font-mono text-ledger-ink block mb-1">Usage Overage Protection:</strong>
+            We do not silently charge overages. If you reach row thresholds, you will be notified to either archive old sets or upgrade tiers.
+          </div>
+          <div>
+            <strong class="font-mono text-ledger-ink block mb-1">Payment Provider Scope:</strong>
+            The checkout below simulates our upcoming Stripe/Paddle recurring billing flow with mock validation for developer testing.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 11. CHECKOUT AND PAYMENT INTERFACE (DEMO SIMULATOR) -->
+  <section id="checkout" class="py-20 bg-parchment-50 border-b border-ledger-border">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-mono font-semibold uppercase tracking-widest text-ledger-brass">Secure Order Desk</span>
+        <h2 class="text-2xl sm:text-4xl font-serif font-semibold text-ledger-ink mt-2">
+          Subscription Checkout Simulator
+        </h2>
+        <p class="text-xs sm:text-sm text-ledger-slate mt-2">
+          Fully functioning front-end order interface. Test plan selection, billing validations, and order state handling.
+        </p>
+      </div>
+
+      <!-- DEMO DISCLOSURE BANNER -->
+      <div class="mb-6 bg-parchment-200 border-l-4 border-ledger-brass p-4 rounded-r text-xs font-mono text-ledger-slate">
+        <div class="flex items-center gap-2 text-ledger-ink font-semibold">
+          <svg class="w-4 h-4 text-ledger-brass flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span>DEMO CHECKOUT ENVIRONMENT:</span>
+        </div>
+        <p class="mt-1 font-sans text-[11px] text-ledger-slate">
+          This interface demonstrates the verified payment UX prior to live merchant gateway coupling. <strong>Do not enter real credit card numbers.</strong> Standard sandbox test card inputs are accepted for interaction testing.
+        </p>
+      </div>
+
+      <!-- Main Checkout Box -->
+      <div class="bg-white rounded-lg border border-ledger-border shadow-lg overflow-hidden">
+        
+        <div class="grid grid-cols-1 md:grid-cols-12 divide-y md:divide-y-0 md:divide-x divide-ledger-border">
+          
+          <!-- Left Column: Plan Summary -->
+          <div class="md:col-span-5 p-6 bg-parchment-100 flex flex-col justify-between">
+            <div>
+              <span class="text-[10px] font-mono text-ledger-muted uppercase tracking-wider">Order Summary</span>
+              <h3 id="checkout-plan-name" class="font-serif text-xl font-bold text-ledger-ink mt-1">Starter Subscription</h3>
+              <p id="checkout-plan-desc" class="text-xs text-ledger-slate mt-1 font-sans">
+                Full month-end close anomaly surveillance for up to 3 entities.
+              </p>
+
+              <!-- Line Items -->
+              <div class="mt-6 space-y-3 font-mono text-xs border-t border-ledger-border pt-4">
+                <div class="flex justify-between">
+                  <span class="text-ledger-slate">Base Plan:</span>
+                  <span id="checkout-base-price" class="font-semibold text-ledger-ink">$39.00</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-ledger-slate">Frequency:</span>
+                  <span id="checkout-frequency" class="font-semibold text-ledger-ink">Monthly</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-ledger-slate">Sales Tax / VAT:</span>
+                  <span class="text-ledger-muted">$0.00 (Calculated)</span>
+                </div>
+                <div class="flex justify-between border-t border-ledger-border pt-3 text-sm">
+                  <span class="font-bold text-ledger-ink">Due Today:</span>
+                  <span id="checkout-total-price" class="font-bold text-ledger-navy font-mono">$39.00</span>
+                </div>
+              </div>
+
+              <!-- Included checklist -->
+              <div class="mt-6 pt-4 border-t border-ledger-border">
+                <span class="text-[11px] font-mono text-ledger-muted uppercase block mb-2">Included with order:</span>
+                <ul class="space-y-1.5 text-xs text-ledger-slate font-sans">
+                  <li class="flex items-center gap-1.5">
+                    <span class="text-ledger-green">✓</span> Immediate access to validation engine
+                  </li>
+                  <li class="flex items-center gap-1.5">
+                    <span class="text-ledger-green">✓</span> 7-day money-back guarantee
+                  </li>
+                  <li class="flex items-center gap-1.5">
+                    <span class="text-ledger-green">✓</span> Self-service cancellation in billing panel
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-ledger-border text-[11px] font-mono text-ledger-muted">
+              <span>Security: 256-Bit SSL Mock Gateway</span>
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive Form & States -->
+          <div class="md:col-span-7 p-6 sm:p-8">
+            
+            <!-- STATE 1: Active Form -->
+            <div id="checkout-form-state">
+              <h4 class="font-serif font-bold text-lg text-ledger-ink mb-4">Billing & Contact Information</h4>
+              
+              <form id="checkout-form" onsubmit="handleCheckoutSubmit(event)" class="space-y-4" onsubmit="handleCheckoutSubmit(event)">
+                
+                <div>
+                  <label class="block text-xs font-mono font-medium text-ledger-slate mb-1">Company / Organization Name *</label>
+                  <input type="text" id="cust-company" required placeholder="e.g. Apex Holdings LLC" class="w-full px-3 py-2 text-xs border border-ledger-border rounded bg-parchment-50 focus:outline-none focus:border-ledger-brass font-sans">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-mono font-medium text-ledger-slate mb-1">Billing Work Email *</label>
+                    <input type="email" id="cust-email" required placeholder="finance@apex.com" class="w-full px-3 py-2 text-xs border border-ledger-border rounded bg-parchment-50 focus:outline-none focus:border-ledger-brass font-sans">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-mono font-medium text-ledger-slate mb-1">Country *</label>
+                    <select id="cust-country" class="w-full px-3 py-2 text-xs border border-ledger-border rounded bg-parchment-50 focus:outline-none focus:border-ledger-brass font-sans">
+                      <option>United States</option>
+                      <option>United Kingdom</option>
+                      <option>Canada</option>
+                      <option>Australia</option>
+                      <option>European Union</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Mock Card Inputs -->
+                <div class="p-3.5 rounded bg-parchment-50 border border-ledger-border space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-mono font-semibold text-ledger-ink">Payment Method (Test Mode)</span>
+                    <span class="text-[10px] font-mono text-ledger-brass bg-parchment-200 px-2 py-0.5 rounded">Mock Card</span>
+                  </div>
+
+                  <div>
+                    <label class="block text-[11px] font-mono text-ledger-muted mb-1">Card Number (Enter any 16 digits)</label>
+                    <input type="text" id="cust-card" required maxlength="19" placeholder="4242 •••• •••• 4242" class="w-full px-3 py-2 text-xs font-mono border border-ledger-border rounded bg-white focus:outline-none focus:border-ledger-brass">
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="block text-[11px] font-mono text-ledger-muted mb-1">Expires (MM/YY)</label>
+                      <input type="text" id="cust-exp" required maxlength="5" placeholder="12/28" class="w-full px-3 py-2 text-xs font-mono border border-ledger-border rounded bg-white focus:outline-none focus:border-ledger-brass">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-mono text-ledger-muted mb-1">CVC (3 digits)</label>
+                      <input type="text" id="cust-cvc" required maxlength="3" placeholder="882" class="w-full px-3 py-2 text-xs font-mono border border-ledger-border rounded bg-white focus:outline-none focus:border-ledger-brass">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Simulation Trigger Options -->
+                <div class="pt-2">
+                  <div class="text-[11px] font-mono text-ledger-muted mb-2">Simulate Outcome:</div>
+                  <div class="flex items-center gap-4 text-xs font-mono">
+                    <label class="flex items-center gap-1.5 cursor-pointer">
+                      <input type="radio" name="sim-outcome" value="success" checked class="text-ledger-navy" disabled>
+                      <span>Simulate Approval</span>
+                    </label>
+                    <label class="flex items-center gap-1.5 cursor-pointer">
+                      <input type="radio" name="sim-outcome" value="decline" class="text-ledger-red" disabled>
+                      <span class="text-ledger-red">Simulate Decline</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="checkout-submit-btn" class="w-full py-3 bg-ledger-navy hover:bg-ledger-ink text-parchment-100 font-mono text-xs uppercase font-bold tracking-wider rounded border border-ledger-borderDark transition shadow-sm flex items-center justify-center gap-2">
+                  <span>Complete Secure Authorization</span>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </button>
+
+              </form>
+            </div>
+
+            <!-- STATE 2: Processing Spinner -->
+            <div id="checkout-processing-state" class="hidden py-12 text-center">
+              <div class="inline-block w-12 h-12 border-4 border-ledger-border border-t-ledger-brass rounded-full animate-spin"></div>
+              <h4 class="font-serif font-bold text-lg text-ledger-ink mt-4">Contacting Payment Gateway...</h4>
+              <p class="text-xs font-mono text-ledger-muted mt-1">Verifying tokenized ledger access credentials.</p>
+            </div>
+
+            <!-- STATE 3: Success Screen -->
+            <div id="checkout-success-state" class="hidden py-8 text-center space-y-4">
+              <div class="w-14 h-14 rounded-full bg-ledger-greenLight border border-green-200 text-ledger-green flex items-center justify-center mx-auto text-2xl font-bold">
+                ✓
+              </div>
+              <h4 class="font-serif font-bold text-2xl text-ledger-ink">Order Authenticated (Simulated)</h4>
+              <p class="text-xs sm:text-sm text-ledger-slate max-w-md mx-auto font-sans leading-relaxed">
+                Your sandbox close monitor seat has been initialized. A confirmation dispatch has been logged to <span id="success-email-display" class="font-semibold text-ledger-ink font-mono">finance@apex.com</span>.
+              </p>
+              
+              <div class="bg-parchment-50 p-4 rounded border border-ledger-border text-xs font-mono text-left max-w-sm mx-auto space-y-1.5">
+                <div class="flex justify-between">
+                  <span class="text-ledger-muted">Confirmation Ref:</span>
+                  <span class="text-ledger-ink font-bold">#CLS-2025-9831</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-ledger-muted">Next Renewal:</span>
+                  <span class="text-ledger-ink font-semibold">In 30 days</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-ledger-muted">Gateway Mode:</span>
+                  <span class="text-ledger-green font-semibold">Test Sandbox Passed</span>
+                </div>
+              </div>
+
+              <div class="pt-4 flex justify-center gap-3">
+                <a href="#demo" class="px-4 py-2 bg-ledger-navy text-parchment-100 rounded text-xs font-mono uppercase font-semibold">Go to Monitor Demo</a>
+                <button onclick="resetCheckoutForm()" class="px-4 py-2 border border-ledger-border bg-white text-ledger-slate rounded text-xs font-mono uppercase hover:bg-parchment-100">Test Another Plan</button>
+              </div>
+            </div>
+
+            <!-- STATE 4: Failure/Declined Screen -->
+            <div id="checkout-failure-state" class="hidden py-8 text-center space-y-4">
+              <div class="w-14 h-14 rounded-full bg-ledger-redLight border border-red-200 text-ledger-red flex items-center justify-center mx-auto text-2xl font-bold">
+                ✕
+              </div>
+              <h4 class="font-serif font-bold text-2xl text-ledger-red">Payment Simulation Declined</h4>
+              <p class="text-xs sm:text-sm text-ledger-slate max-w-md mx-auto font-sans leading-relaxed">
+                Simulated response: <code>DO_NOT_HONOR_TEST_MODE</code>. No funds were debited. This confirms your frontend error validation handling.
+              </p>
+              <div class="pt-2">
+                <button onclick="retryCheckout()" class="px-5 py-2.5 bg-ledger-navy text-white rounded text-xs font-mono uppercase font-semibold hover:bg-ledger-ink">
+                  Return to Form & Retry
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 12. FREQUENTLY ASKED QUESTIONS (FAQ) -->
+  <section id="faq" class="py-20 bg-white border-b border-ledger-border">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-mono font-semibold uppercase tracking-widest text-ledger-brass">Inquiries & Clarifications</span>
+        <h2 class="text-2xl sm:text-4xl font-serif font-semibold text-ledger-ink mt-2">
+          Frequently Answered Questions
+        </h2>
+        <p class="text-ledger-slate mt-2 text-sm sm:text-base">
+          Direct answers regarding file compatibility, accounting assumptions, data safety, and commercial terms.
+        </p>
+      </div>
+
+      <!-- Accordion Items -->
+      <div class="space-y-4">
+        
+        <!-- Q1 -->
+        <div class="border border-ledger-border rounded-lg bg-parchment-50 overflow-hidden">
+          <button onclick="toggleFaq(1)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-serif font-semibold text-base sm:text-lg text-ledger-ink hover:text-ledger-navy">
+            <span>What CSV ledger formats are officially supported?</span>
+            <span id="faq-icon-1" class="font-mono text-sm text-ledger-muted font-normal">+</span>
+          </button>
+          <div id="faq-content-1" class="hidden px-4 sm:px-5 pb-5 text-xs sm:text-sm text-ledger-slate font-sans leading-relaxed border-t border-parchment-200 pt-3">
+            CLOSELINE natively maps standard column headers from QuickBooks Online (General Ledger and Transaction Detail by Account reports), Xero (Account Transactions export), NetSuite (Transaction saved searches), and generic double-entry CSVs containing Date, Account, Description, Debit, Credit, and Reference/Doc numbers.
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="border border-ledger-border rounded-lg bg-parchment-50 overflow-hidden">
+          <button onclick="toggleFaq(2)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-serif font-semibold text-base sm:text-lg text-ledger-ink hover:text-ledger-navy">
+            <span>Does CLOSELINE modify or write back to my accounting software?</span>
+            <span id="faq-icon-2" class="font-mono text-sm text-ledger-muted font-normal">+</span>
+          </button>
+          <div id="faq-content-2" class="hidden px-4 sm:px-5 pb-5 text-xs sm:text-sm text-ledger-slate font-sans leading-relaxed border-t border-parchment-200 pt-3">
+            No. CLOSELINE is intentionally a read-only monitoring and audit-evidence engine. We do not maintain two-way write access or automatically edit your General Ledger. All adjustments must be made by an authorized bookkeeper or controller inside your ERP, preserving proper segregation of duties.
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="border border-ledger-border rounded-lg bg-parchment-50 overflow-hidden">
+          <button onclick="toggleFaq(3)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-serif font-semibold text-base sm:text-lg text-ledger-ink hover:text-ledger-navy">
+            <span>How does the system distinguish legitimate recurring payments from duplicates?</span>
+            <span id="faq-icon-3" class="font-mono text-sm text-ledger-muted font-normal">+</span>
+          </button>
+          <div id="faq-content-3" class="hidden px-4 sm:px-5 pb-5 text-xs sm:text-sm text-ledger-slate font-sans leading-relaxed border-t border-parchment-200 pt-3">
+            Our duplicate detection engine accounts for transaction periodicity. Identical payments spaced ~30 days apart for recognized vendors (like monthly software subscriptions) are categorized as recurring baseline transactions. Duplicate alerts fire when payments occur within 72 hours of one another, share identical invoice reference numbers, or match fuzzy disbursement amounts.
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="border border-ledger-border rounded-lg bg-parchment-50 overflow-hidden">
+          <button onclick="toggleFaq(4)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-serif font-semibold text-base sm:text-lg text-ledger-ink hover:text-ledger-navy">
+            <span>Can I cancel or pause my subscription at any time?</span>
+            <span id="faq-icon-4" class="font-mono text-sm text-ledger-muted font-normal">+</span>
+          </button>
+          <div id="faq-content-4" class="hidden px-4 sm:px-5 pb-5 text-xs sm:text-sm text-ledger-slate font-sans leading-relaxed border-t border-parchment-200 pt-3">
+            Yes. All subscriptions are month-to-month by default with no long-term contractual commitment. You can cancel with a single button in your billing settings. Your access remains active until the conclusion of your current paid billing period.
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="border border-ledger-border rounded-lg bg-parchment-50 overflow-hidden">
+          <button onclick="toggleFaq(5)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between font-serif font-semibold text-base sm:text-lg text-ledger-ink hover:text-ledger-navy">
+            <span>Is my financial transaction data stored permanently?</span>
+            <span id="faq-icon-5" class="font-mono text-sm text-ledger-muted font-normal">+</span>
+          </button>
+          <div id="faq-content-5" class="hidden px-4 sm:px-5 pb-5 text-xs sm:text-sm text-ledger-slate font-sans leading-relaxed border-t border-parchment-200 pt-3">
+            By default, transaction data uploaded during an audit run is evaluated in temporary memory and flushed immediately after the exception report is generated. If you elect to store persistent historical close binders for multi-year audit trails, data is stored in encrypted, isolated client tenants.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 13. FINAL CALL TO ACTION SECTION -->
+  <section class="py-20 bg-ledger-navy text-parchment-100 border-b border-ledger-borderDark relative overflow-hidden">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      
+      <span class="inline-block px-3 py-1 rounded bg-ledger-slate/40 border border-ledger-borderDark text-parchment-300 font-mono text-xs uppercase tracking-widest mb-4">
+        Lock Your Books With Verified Evidence
+      </span>
+      
+      <h2 class="text-3xl sm:text-5xl font-serif font-bold text-white tracking-tight">
+        Never let an undetected duplicate escape into the board deck.
+      </h2>
+      
+      <p class="mt-6 text-sm sm:text-base text-parchment-300 max-w-2xl mx-auto font-sans leading-relaxed">
+        Run your first month-end anomaly scan in under three minutes. Review rule assertions, generate your signed exception report, and close with confidence.
+      </p>
+
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#demo" class="w-full sm:w-auto px-8 py-3.5 bg-ledger-brass hover:bg-ledger-brassLight text-ledger-dark font-mono text-xs uppercase font-bold tracking-wider rounded transition shadow-md">
+          Open Working Ledger Demo
+        </a>
+        <a href="#checkout" onclick="selectPlanForCheckout('starter', 'Starter Monthly', 39, 'month')" class="w-full sm:w-auto px-8 py-3.5 bg-ledger-dark hover:bg-black text-parchment-100 border border-ledger-borderDark font-mono text-xs uppercase font-semibold tracking-wider rounded transition">
+          Test Order Desk Simulator
+        </a>
+      </div>
+
+      <div class="mt-8 text-xs font-mono text-parchment-400">
+        Deterministic rules • No LLM hallucinations • Full CSV support
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 14. FOOTER -->
+  <footer class="bg-ledger-dark text-parchment-300 py-16 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-10 pb-12 border-b border-ledger-borderDark">
+        
+        <!-- Brand & Mission -->
+        <div class="md:col-span-2 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded bg-ledger-navy border border-ledger-borderDark flex items-center justify-center text-parchment-100">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14" />
+                <path d="M4 9h16" />
+                <line x1="16" y1="3" x2="16" y2="21" stroke="#B88636" stroke-width="2.5" />
+              </svg>
+            </div>
+            <span class="font-display font-bold text-lg text-white tracking-wider">CLOSELINE</span>
+          </div>
+          <p class="text-xs text-parchment-400 font-sans leading-relaxed max-w-sm">
+            Deterministic accounting close surveillance software. Identifying duplicate payments, out-of-period postings, and clearing account anomalies before month-end lock.
+          </p>
+          <div class="font-mono text-[11px] text-parchment-400">
+            System Engine Build: 2025.03-STABLE
+          </div>
+        </div>
+
+        <!-- Col 1: Product -->
+        <div>
+          <div class="font-mono uppercase text-white font-semibold mb-3 tracking-wider text-[11px]">Product & Engine</div>
+          <ul class="space-y-2 text-parchment-400">
+            <li><a href="#features" class="hover:text-white transition">Detection Engine</a></li>
+            <li><a href="#demo" class="hover:text-white transition">Reconciliation Sandbox</a></li>
+            <li><a href="#methodology" class="hover:text-white transition">Assertion Rules Spec</a></li>
+            <li><a href="#report-example" class="hover:text-white transition">Audit Evidence Binder</a></li>
+            <li><a href="#security" class="hover:text-white transition">Data Retention Architecture</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 2: Pricing & Terms -->
+        <div>
+          <div class="font-mono uppercase text-white font-semibold mb-3 tracking-wider text-[11px]">Commercial</div>
+          <ul class="space-y-2 text-parchment-400">
+            <li><a href="#pricing" class="hover:text-white transition">Plans & Hypotheses</a></li>
+            <li><a href="#checkout" class="hover:text-white transition">Checkout Simulator</a></li>
+            <li><a href="#pricing" class="hover:text-white transition">Usage Quotas</a></li>
+            <li><a href="#faq" class="hover:text-white transition">Cancellation Policy</a></li>
+            <li><a href="#faq" class="hover:text-white transition">Dispute Guidelines</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Legal & Support -->
+        <div>
+          <div class="font-mono uppercase text-white font-semibold mb-3 tracking-wider text-[11px]">Governance & Trust</div>
+          <ul class="space-y-2 text-parchment-400">
+            <li><span class="text-parchment-400">SOC 2 status: not certified or independently verified</span></li>
+            <li><span class="text-parchment-400">No Model Training Policy</span></li>
+            <li><span class="text-parchment-400">Terms of Service</span></li>
+            <li><span class="text-parchment-400">Privacy Notice</span></li>
+            <li><span class="text-parchment-400">Support contact not configured</span></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] font-mono text-parchment-400">
+        <div>
+          CLOSELINE · Product concept. Sample transactions and report details are illustrative.
+        </div>
+        <div class="flex items-center gap-4">
+          <span>Deterministic Close Monitor</span>
+          <span>•</span>
+          <span>Ledger Control v2.4</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT: DATA STRUCTURES & INTERACTIONS -->
+  <!-- ========================================== -->
+  <script>
+    /* =======================================================
+       1. DATASETS FOR INTERACTIVE DEMO (Standard vs High-Risk)
+       ======================================================= */
+    const datasets = {
+      standard: [
+        {
+          id: 'TRX-9482',
+          date: '2025-03-28',
+          account: '2000 AP / Stripe Inc',
+          category: 'Payment Processing',
+          amount: '$12,450.00',
+          type: 'debit',
+          severity: 'critical',
+          rule: 'CRITICAL: DUPLICATE_INVOICE_HASH',
+          reason: 'Identical amount and invoice reference (#INV-9902) to wire posted 48 hours prior.',
+          remedy: 'Void second journal posting or issue bank stop payment immediately.',
+          glAccount: '2000 Accounts Payable / 1010 Operating Cash',
+          status: 'unresolved'
+        },
+        {
+          id: 'TRX-9511',
+          date: '2025-03-31',
+          account: '6010 Travel / Delta Air',
+          category: 'Executive Travel',
+          amount: '$4,890.00',
+          type: 'debit',
+          severity: 'warning',
+          rule: 'WARNING: OUTLIER_STD_DEV_3X',
+          reason: '3.4x higher than 90-day moving median for flight expenses without PO attachment.',
+          remedy: 'Request executive travel authorization memo before month-end lock.',
+          glAccount: '6010 Travel & Entertainment',
+          status: 'unresolved'
+        },
+        {
+          id: 'TRX-9540',
+          date: '2025-03-15',
+          account: '1090 Payroll Clearing',
+          category: 'Clearing Suspense',
+          amount: '$0.00',
+          type: 'wash',
+          severity: 'resolved',
+          rule: 'CLEARED: ZERO_BALANCE_NET',
+          reason: 'Payroll transfer matches net direct deposit disbursement exactly.',
+          remedy: 'Reconciliation verified. Ready for close binder archive.',
+          glAccount: '1090 Payroll Clearing',
+          status: 'resolved'
+        },
+        {
+          id: 'TRX-9577',
+          date: '2025-02-12',
+          account: '4010 Subscriptions / Acme Corp',
+          category: 'Software Revenue',
+          amount: '$7,500.00',
+          type: 'credit',
+          severity: 'critical',
+          rule: 'CRITICAL: PERIOD_POSTING_DRIFT',
+          reason: 'Transaction dated February 12 posted into closed March ledger without prior period adjustment marker.',
+          remedy: 'Reassign to prior-period adjustment journal or re-open February close file.',
+          glAccount: '4010 Revenue / 1200 Accounts Receivable',
+          status: 'unresolved'
+        },
+        {
+          id: 'TRX-9602',
+          date: '2025-03-30',
+          account: '6500 Contractor / CodeLab UG',
+          category: 'Engineering R&D',
+          amount: '$3,800.00',
+          type: 'debit',
+          severity: 'warning',
+          rule: 'WARNING: MISSING_TAX_IDENTIFIER',
+          reason: 'International contractor voucher lacking valid W-8BEN or VAT registration code.',
+          remedy: 'Collect Form W-8BEN before executing fiscal payment voucher.',
+          glAccount: '6500 Outside Services',
+          status: 'unresolved'
+        },
+        {
+          id: 'TRX-9633',
+          date: '2025-03-29',
+          account: '1010 Operating Cash / SVB Transfer',
+          category: 'Intercompany Wire',
+          amount: '$25,000.00',
+          type: 'wash',
+          severity: 'resolved',
+          rule: 'CLEARED: INTERCOMPANY_BALANCED',
+          reason: 'Matching debit and credit posted to Parent and Subsidiary ledgers simultaneously.',
+          remedy: 'Documented with wire swift advice receipt.',
+          glAccount: '1010 Cash / 1800 Due from Subsidiary',
+          status: 'resolved'
+        },
+        {
+          id: 'TRX-9689',
+          date: '2025-03-31',
+          account: '2100 Sales Tax Payable',
+          category: 'Tax Remittance',
+          amount: '$1,340.50',
+          type: 'debit',
+          severity: 'critical',
+          rule: 'CRITICAL: UNMAPPED_TAX_JURISDICTION',
+          reason: 'Tax collected in state without registered nexus account mapping.',
+          remedy: 'Route to tax advisor and assign to state clearing liability code.',
+          glAccount: '2100 Sales Tax Payable',
+          status: 'unresolved'
+        }
+      ],
+      highrisk: [
+        {
+          id: 'TRX-8101',
+          date: '2025-03-31',
+          account: '1099 Suspense Transit',
+          category: 'Unreconciled Cash',
+          amount: '$34,100.00',
+          type: 'debit',
+          severity: 'critical',
+          rule: 'CRITICAL: PERSISTENT_SUSPENSE_RESIDUE',
+          reason: 'Net suspense balance remaining open across 4 consecutive calendar days.',
+          remedy: 'Identify source bank deposit and apply to open trade invoices.',
+          glAccount: '1099 General Suspense',
+          status: 'unresolved'
+        },
+        {
+          id: 'TRX-8144',
+          date: '2025-03-29',
+          account: '2000 AP / Cloudhost EU',
+          category: 'Infrastructure',
+          amount: '$18,920.00',
+          type: 'debit',
+          severity: 'critical',
+          rule: 'CRITICAL: DUP_SPLIT_PAYMENT_HASH',
+          reason: 'Two payments of $9,460.00 each generated with staggered minutes on same card.',
+          remedy: 'Halt duplicate charge on corporate card portal.',
+          glAccount: '2000 Accounts Payable',
+          status: 'unresolved'
+        },
+        {
+          id: 'TRX-8190',
+          date: '2025-03-30',
+          account: '5000 Cost of Goods Sold',
+          category: 'Hosting & Datacenter',
+          amount: '$2,200.00',
+          type: 'debit',
+          severity: 'warning',
+          rule: 'WARNING: NEGATIVE_EXPENSE_OFFSET',
+          reason: 'Credit posting to expense ledger without vendor credit memo number.',
+          remedy: 'Attach credit note from vendor or reclassify to contra-expense.',
+          glAccount: '5000 Cost of Goods Sold',
+          status: 'unresolved'
+        },
+        {
+          id: 'TRX-8211',
+          date: '2025-03-27',
+          account: '1010 Operating Checking',
+          category: 'Direct Deposit',
+          amount: '$112,500.00',
+          type: 'debit',
+          severity: 'resolved',
+          rule: 'CLEARED: PAYROLL_BATCH_VERIFIED',
+          reason: 'Bi-weekly payroll cleared against third-party payroll provider invoice.',
+          remedy: 'Automatic reconciliation cleared.',
+          glAccount: '1010 Cash / 6100 Salaries',
+          status: 'resolved'
+        }
+      ]
+    };
+
+    let activeDatasetKey = 'standard';
+    let currentFilter = 'all';
+    let activeItem = null;
+
+    /* Render Ledger Table */
+    function renderLedgerTable() {
+      const tbody = document.getElementById('ledger-table-body');
+      tbody.innerHTML = '';
+      
+      const items = datasets[activeDatasetKey].filter(item => {
+        if (currentFilter === 'all') return true;
+        if (currentFilter === 'critical') return item.severity === 'critical';
+        if (currentFilter === 'warning') return item.severity === 'warning';
+        if (currentFilter === 'resolved') return item.severity === 'resolved';
+        return true;
+      });
+
+      if (items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-ledger-muted font-sans text-xs">No transactions match the selected filter.</td></tr>`;
+        return;
+      }
+
+      items.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-parchment-100 transition cursor-pointer';
+        tr.onclick = () => selectItemDetail(item);
+
+        let badgeClass = 'badge-critical';
+        if (item.severity === 'warning') badgeClass = 'badge-warning';
+        if (item.severity === 'resolved') badgeClass = 'badge-resolved';
+
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-semibold text-ledger-navy">${item.id}</td>
+          <td class="py-3 px-3 text-ledger-muted">${item.date}</td>
+          <td class="py-3 px-4 font-sans font-medium text-ledger-ink">${item.account}</td>
+          <td class="py-3 px-3 text-ledger-slate font-sans">${item.category}</td>
+          <td class="py-3 px-4 text-right font-semibold ${item.type === 'credit' ? 'text-ledger-green' : 'text-ledger-ink'}">${item.amount}</td>
+          <td class="py-3 px-4">
+            <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold ${badgeClass}">
+              ${item.rule}
+            </span>
+          </td>
+          <td class="py-3 px-4 text-center">
+            <button class="px-2 py-1 text-[11px] font-sans rounded border border-ledger-border bg-white hover:bg-parchment-200 text-ledger-ink">
+              Inspect
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    /* Select item for drawer inspection */
+    function selectItemDetail(item) {
+      activeItem = item;
+      const panel = document.getElementById('item-detail-panel');
+      panel.classList.remove('hidden');
+
+      document.getElementById('detail-title').innerText = item.rule;
+      document.getElementById('detail-desc').innerText = item.reason;
+      document.getElementById('detail-remedy').innerText = item.remedy;
+      document.getElementById('detail-account').innerText = item.glAccount;
+      
+      const badge = document.getElementById('detail-badge');
+      const signoff = document.getElementById('detail-signoff');
+
+      if (item.status === 'resolved') {
+        badge.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider badge-resolved';
+        badge.innerText = 'CLEARED EXCEPTION';
+        signoff.innerText = 'Signed Off (Verified)';
+        signoff.className = 'text-ledger-green font-semibold';
+      } else if (item.severity === 'critical') {
+        badge.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider badge-critical';
+        badge.innerText = 'CRITICAL EXCEPTION';
+        signoff.innerText = 'Pending Controller Review';
+        signoff.className = 'text-ledger-red font-semibold';
+      } else {
+        badge.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider badge-warning';
+        badge.innerText = 'WARNING EXCEPTION';
+        signoff.innerText = 'Pending Review';
+        signoff.className = 'text-ledger-amber font-semibold';
+      }
+
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function closeDetailPanel() {
+      document.getElementById('item-detail-panel').classList.add('hidden');
+    }
+
+    function toggleSignoffCurrent() {
+      if (!activeItem) return;
+      if (activeItem.status === 'resolved') {
+        activeItem.status = 'unresolved';
+      } else {
+        activeItem.status = 'resolved';
+        activeItem.severity = 'resolved';
+        activeItem.rule = 'CLEARED: CONTROLLER_SIGN_OFF';
+      }
+      selectItemDetail(activeItem);
+      renderLedgerTable();
+    }
+
+    function filterExceptions(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-chip').forEach(btn => {
+        btn.classList.remove('bg-ledger-navy', 'text-white');
+      });
+      event?.target?.classList?.add('bg-ledger-navy', 'text-white');
+      renderLedgerTable();
+    }
+
+    function loadLedgerDataset(key) {
+      activeDatasetKey = key;
+      closeDetailPanel();
+      
+      document.getElementById('load-standard-btn').classList.toggle('active', key === 'standard');
+      document.getElementById('load-highrisk-btn').classList.toggle('active', key === 'highrisk');
+      
+      const label = document.getElementById('demo-dataset-label');
+      if (key === 'standard') {
+        label.innerText = 'Mid-Market SaaS Close (March 2025)';
+      } else {
+        label.innerText = 'Multi-Entity Agency Consolidated (March 2025)';
+      }
+      renderLedgerTable();
+    }
+
+    function simulateUploadClick() {
+      document.getElementById('demo-csv-file').click();
+    }
+
+    function handleSimulatedUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      alert("Demo only. The selected file was not read or uploaded. Real CSV processing is disabled until payment verification and data-handling controls are implemented.");
+      event.target.value = "";
+    }
+
+    /* =======================================================
+       2. PRICING FREQUENCY TOGGLE
+       ======================================================= */
+    let currentBillingCycle = 'monthly';
+
+    function setBillingCycle(cycle) {
+      currentBillingCycle = cycle;
+      const monthlyBtn = document.getElementById('billing-monthly-btn');
+      const annualBtn = document.getElementById('billing-annual-btn');
+
+      if (cycle === 'monthly') {
+        monthlyBtn.className = 'px-4 py-1.5 text-xs font-mono font-semibold rounded bg-ledger-navy text-white shadow-sm transition';
+        annualBtn.className = 'px-4 py-1.5 text-xs font-mono font-semibold rounded text-ledger-slate hover:text-ledger-ink transition flex items-center gap-1.5';
+      } else {
+        annualBtn.className = 'px-4 py-1.5 text-xs font-mono font-semibold rounded bg-ledger-navy text-white shadow-sm transition flex items-center gap-1.5';
+        monthlyBtn.className = 'px-4 py-1.5 text-xs font-mono font-semibold rounded text-ledger-slate hover:text-ledger-ink transition';
+      }
+
+      document.querySelectorAll('.plan-price').forEach(el => {
+        const m = el.getAttribute('data-monthly');
+        const a = el.getAttribute('data-annual');
+        el.innerText = `$${cycle === 'monthly' ? m : a}`;
+      });
+
+      document.querySelectorAll('.plan-period').forEach(el => {
+        el.innerText = cycle === 'monthly' ? '/ month' : '/ mo (billed yearly)';
+      });
+    }
+
+    /* =======================================================
+       3. CHECKOUT SIMULATOR & STATE MANAGEMENT
+       ======================================================= */
+    let selectedPlan = {
+      id: 'starter',
+      name: 'Starter Subscription',
+      price: 39,
+      unit: 'month'
+    };
+
+    function selectPlanForCheckout(id, name, price, unit) {
+      selectedPlan = { id, name, price, unit };
+      
+      document.getElementById('checkout-plan-name').innerText = name;
+      document.getElementById('checkout-base-price').innerText = `$${price}.00`;
+      document.getElementById('checkout-frequency').innerText = unit === 'month' ? 'Monthly Billing' : 'One-time Payment';
+      document.getElementById('checkout-total-price').innerText = `$${price}.00`;
+
+      // Smooth scroll to checkout desk
+      const checkoutElem = document.getElementById('checkout');
+      checkoutElem.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function handleCheckoutSubmit(e) {
+      e.preventDefault();
+      alert("Checkout is a visual prototype only. No payment was processed and no subscription was created. Please do not enter real payment details.");
+      return false;
+    }
+
+    function resetCheckoutForm() {
+      document.getElementById('checkout-success-state').classList.add('hidden');
+      document.getElementById('checkout-failure-state').classList.add('hidden');
+      document.getElementById('checkout-form-state').classList.remove('hidden');
+    }
+
+    function retryCheckout() {
+      document.getElementById('checkout-failure-state').classList.add('hidden');
+      document.getElementById('checkout-form-state').classList.remove('hidden');
+    }
+
+    /* =======================================================
+       4. FAQ ACCORDION HANDLERS
+       ======================================================= */
+    function toggleFaq(index) {
+      const content = document.getElementById(`faq-content-${index}`);
+      const icon = document.getElementById(`faq-icon-${index}`);
+      
+      if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        icon.innerText = '−';
+      } else {
+        content.classList.add('hidden');
+        icon.innerText = '+';
+      }
+    }
+
+    /* =======================================================
+       5. MOBILE NAVIGATION TOGGLE
+       ======================================================= */
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+
+    /* Initial Render */
+    document.addEventListener('DOMContentLoaded', () => {
+      renderLedgerTable();
+    });
+  </script>
+</body>
+</html>
