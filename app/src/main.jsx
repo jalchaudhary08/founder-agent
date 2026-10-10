@@ -467,27 +467,21 @@ function App() {
 if ("serviceWorker" in navigator) window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));
 
 const standaloneProducts = {
-  "revenue-leak": RevenueLeakExperiment,
-  "tracking-drift": TrackingDriftExperiment,
-  "agency-report-qa": AgencyReportQAExperiment,
-  "food-label": FoodLabelExperiment,
-  "accounting-close": AccountingCloseExperiment
+  "revenue-leak": { file: "revenueleak.html", title: "REVENUELEAK — Independent Web Audit Desk" },
+  "tracking-drift": { file: "driftcheck.html", title: "DRIFTCHECK — Forensic Conversion Reconciliation Desk" },
+  "agency-report-qa": { file: "reportcheck.html", title: "REPORTCHECK — Agency Report QA Desk" },
+  "food-label": { file: "labelkit.html", title: "LABELKIT — Food Label & Nutrition Pack" },
+  "accounting-close": { file: "closeline.html", title: "CLOSELINE — Month-End Exception Desk" }
 };
 const standaloneProduct = standaloneProducts[import.meta.env.VITE_PRODUCT];
-if (standaloneProduct) {
-  const titles = {
-    "revenue-leak": "REVENUELEAK — Website Revenue-Leak Watchdog",
-    "tracking-drift": "DRIFTCHECK — Shopify Ads Tracking Drift",
-    "agency-report-qa": "REPORTCHECK — Agency Client-Report QA",
-    "food-label": "LABELKIT — Food Label & Nutrition Pack",
-    "accounting-close": "CLOSELINE — Accounting Close Monitor"
-  };
-  document.title = titles[import.meta.env.VITE_PRODUCT] || "SaaS Product";
-}
+if (standaloneProduct) document.title = standaloneProduct.title;
 createRoot(document.getElementById("root")).render(
   standaloneProduct
-    ? React.createElement(standaloneProduct, {
-        onBack: () => { window.location.href = "https://founder-agent-sigma.vercel.app"; }
+    ? React.createElement("iframe", {
+        title: standaloneProduct.title,
+        src: "/stitch/" + standaloneProduct.file,
+        style: { display: "block", width: "100%", height: "100vh", border: 0, background: "#fbf9f7" },
+        allow: "clipboard-write"
       })
     : <App />
 );
