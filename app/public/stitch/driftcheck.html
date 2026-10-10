@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-secondary-fixed": "#1c1b1b", "surface-container-high": "#ebe8e0", "surface-dim": "#dcdad2", "surface-bright": "#fcf9f1", "on-tertiary": "#ffffff", "tertiary-fixed-dim": "#ffb94d", "surface-container-lowest": "#ffffff", "surface": "#fcf9f1", "on-tertiary-fixed": "#291800", "error": "#ba1a1a", "primary-fixed-dim": "#b5c4ff", "on-surface-variant": "#434654", "on-secondary": "#ffffff", "inverse-surface": "#31312b", "on-tertiary-fixed-variant": "#624000", "primary-fixed": "#dce1ff", "secondary": "#5f5e5e", "inverse-on-surface": "#f3f1e9", "tertiary": "#664200", "on-background": "#1c1c17", "on-primary-fixed": "#00164d", "surface-variant": "#e5e2da", "on-error-container": "#93000a", "primary": "#003fb3", "surface-container-highest": "#e5e2da", "on-surface": "#1c1c17", "on-error": "#ffffff", "tertiary-container": "#855800", "background": "#fcf9f1", "on-primary-fixed-variant": "#003cad", "secondary-fixed": "#e5e2e1", "surface-container": "#f1eee6", "on-secondary-container": "#636262", "on-tertiary-container": "#ffd7a1", "secondary-fixed-dim": "#c8c6c5", "secondary-container": "#e2dfde", "inverse-primary": "#b5c4ff", "on-secondary-fixed-variant": "#474646", "error-container": "#ffdad6", "outline": "#747686", "surface-tint": "#1f54d3", "on-primary": "#ffffff", "on-primary-container": "#d5dcff", "tertiary-fixed": "#ffddb2", "surface-container-low": "#f6f3eb", "primary-container": "#2457d6", "outline-variant": "#c3c5d7" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-lg": "1.5rem", "space-md": "1rem", "space-sm": "0.5rem", "space-xl": "2.5rem", "gutter-desktop": "1.5rem", "margin": "1rem", "margin-desktop": "2.5rem", "space-xs": "0.25rem", "gutter": "1rem" }, "fontFamily": { "body-md": [ "JetBrains Mono" ], "body-lg": [ "JetBrains Mono" ], "body-sm": [ "JetBrains Mono" ], "headline-md": [ "Newsreader" ], "headline-xl": [ "Newsreader" ], "headline-sm": [ "Newsreader" ], "headline-xl-mobile": [ "Newsreader" ], "label-sm": [ "JetBrains Mono" ], "headline-lg-mobile": [ "Newsreader" ], "label-lg": [ "JetBrains Mono" ], "label-md": [ "JetBrains Mono" ], "headline-lg": [ "Newsreader" ] }, "fontSize": { "body-md": [ "13px", { "lineHeight": "20px", "fontWeight": "400" } ], "body-lg": [ "15px", { "lineHeight": "24px", "fontWeight": "400" } ], "body-sm": [ "11px", { "lineHeight": "16px", "fontWeight": "400" } ], "headline-md": [ "24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" } ], "headline-xl": [ "44px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "400" } ], "headline-sm": [ "18px", { "lineHeight": "24px", "fontWeight": "500" } ], "headline-xl-mobile": [ "32px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "400" } ], "label-sm": [ "10px", { "lineHeight": "12px", "letterSpacing": "0.08em", "fontWeight": "500" } ], "headline-lg-mobile": [ "26px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "400" } ], "label-lg": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "600" } ], "label-md": [ "11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500" } ], "headline-lg": [ "32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "400" } ] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 w-full z-50 bg-surface-container-low border-b border-on-surface/15"><div class="w-full h-16 px-gutter-desktop flex items-center justify-between"><div class="flex items-center gap-space-md"><img alt="DRIFTCHECK Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VmabM1MMIZpgMnCqCI2a5IUyQWEY7XMjD4KXyIzQr_dv59QoEtY1odA2k5d6AhJ11UcOKnAWnaeU8BzPHz86PukHYYk1aS0HLqwsFrvjS-RWeiHrpI_CtdKO2en6_ug430OodPI5qXB-kN1s0z_dMIggrERdzYfmE8GBEREMvRlVde__MW6HQ3Hj4sTMQOyr3idObhkuEYudFEEdpLhS0IZVelet5Eg_TRsikOW4n96LwMQ2BuAOt6_5U"/><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-on-surface">DRIFTCHECK</span><span class="px-1.5 py-0.5 bg-surface-container-high border border-on-surface/20 text-on-surface font-label-sm text-label-sm uppercase tracking-wider">RECONCILIATION DESK</span></div><span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1"><span class="inline-block w-1.5 h-1.5 bg-primary rounded-none"></span>SYSTEM: VERIFIED LEDGER PROTOCOL v2.4</span></div></div><nav class="hidden xl:flex items-center gap-1" data-active-classes="bg-surface-container-highest text-on-surface font-semibold"><a aria-current="page" class="px-space-sm py-1 transition-colors uppercase tracking-wider bg-surface-container-highest text-on-surface font-semibold" data-path="overview" href="#">Overview</a><a class="px-space-sm py-1 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors uppercase tracking-wider" data-path="reconciliation-workflow" href="#">Reconciliation Workflow</a><a class="px-space-sm py-1 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors uppercase tracking-wider" data-path="sample-dossier" href="#">Sample Dossier</a><a class="px-space-sm py-1 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors uppercase tracking-wider" data-path="methodology-privacy" href="#">Methodology &amp; Privacy</a><a class="px-space-sm py-1 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors uppercase tracking-wider" data-path="pricing" href="#">Pricing</a><a class="px-space-sm py-1 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors uppercase tracking-wider" data-path="faq" href="#">FAQ</a></nav><div class="flex items-center gap-space-md"><span class="hidden lg:inline-block px-2 py-1 border border-on-surface/25 bg-surface-container font-label-sm text-label-sm text-on-surface uppercase tracking-widest">PAPER ARCHIVE</span><a class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-on-surface transition-colors" data-path="sign-in" href="#">Sign In</a><a class="inline-flex items-center justify-center px- space-md py-2 bg-primary-container text-on-primary font-label-md text-label-md uppercase tracking-wider border border-on-surface hover:bg-primary transition-colors" data-path="reconciliation-workflow" href="#">Run Reconciliation →</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface min-h-[calc(100vh-64px)]"><div class="flex flex-col w-full">
+<!-- SECTION 1: EDITORIAL FORENSIC HERO & DUAL-LEDGER UPLOAD -->
+<section class="w-full bg-surface px-margin-desktop py-space-xl">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<!-- Top Classification Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm bg-surface-container px-space-md py-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="inline-block w-2 h-2 bg-primary"></span>
+<span class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest">DRIFTCHECK AUDIT PROTOCOL v2.4</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">/ REGISTER 04-B</span>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+          BUILT FOR SHOPIFY OPERATORS • PERFORMANCE MEDIA BUYERS • GROWTH AUDITORS
+        </div>
+</div>
+<!-- Main Broadsheet Title -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-end">
+<div class="lg:col-span-8 flex flex-col gap-space-sm">
+<h1 class="font-headline-xl text-headline-xl text-on-surface font-normal tracking-tight leading-tight">
+            Your ad numbers say one thing.<br/>
+<span class="italic font-light text-primary">Your orders say another.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl leading-relaxed">
+            Reconcile the gap before it distorts your capital allocation. Pinpoint untracked checkouts, phantom platform attributions, and currency exchange drift between raw Shopify transaction exports and ad platform conversion tables.
+          </p>
+</div>
+<div class="lg:col-span-4 flex flex-col gap-space-xs bg-surface-container-high p-space-md">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">FORENSIC PRECISION PRINCIPLE</span>
+<div class="font-headline-sm text-headline-sm text-on-surface font-semibold">$34,420 / 30-DAY DRIFT</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Average phantom attribution identified in un-reconciled D2C ad manager accounts before deduplication.</p>
+</div>
+</div>
+<!-- Dual CSV Upload Terminal -->
+<div class="bg-surface-container-lowest p-space-lg shadow-sm">
+<div class="flex flex-wrap items-center justify-between gap-space-sm pb-space-sm bg-surface-container px-space-md py-space-xs mb-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">swap_horiz</span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-on-surface font-semibold">DUAL-LEDGER INGESTION STAGING DECK</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">LOCAL RAM PROCESSING • NO PERSISTENT SERVER PII</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-space-lg">
+<!-- Ledger A: Shopify -->
+<div class="bg-surface-container-low p-space-md flex flex-col justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md uppercase tracking-wider font-semibold text-on-surface flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 bg-primary inline-block"></span>
+                  LEDGER A: SHOPIFY ORDERS EXPORT
+                </span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-surface-container-high text-on-surface uppercase">SOURCE OF TRUTH</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Raw Shopify export from Orders &gt; Export &gt; "All orders" (.csv format).</p>
+</div>
+<!-- Dropzone A -->
+<div class="bg-surface p-space-lg flex flex-col items-center justify-center gap-space-sm cursor-pointer hover:bg-surface-container-lowest transition-colors" id="dropzone-shopify">
+<span class="material-symbols-outlined text-[32px] text-primary">receipt_long</span>
+<div class="text-center flex flex-col">
+<span class="font-label-md text-label-md uppercase tracking-wider text-on-surface font-medium">DROP SHOPIFY ORDERS .CSV HERE</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">or click to browse local files</span>
+</div>
+<div class="flex flex-wrap items-center justify-center gap-1 mt-space-xs">
+<span class="font-label-sm text-label-sm bg-surface-container px-1 text-on-surface-variant">order_id</span>
+<span class="font-label-sm text-label-sm bg-surface-container px-1 text-on-surface-variant">created_at</span>
+<span class="font-label-sm text-label-sm bg-surface-container px-1 text-on-surface-variant">total_price</span>
+<span class="font-label-sm text-label-sm bg-surface-container px-1 text-on-surface-variant">currency</span>
+<span class="font-label-sm text-label-sm bg-surface-container px-1 text-on-surface-variant">email_hash</span>
+</div>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<button class="text-primary uppercase tracking-wider hover:underline text-left" onclick="loadSampleData('shopify')" type="button">LOAD VERIFIED SAMPLE SHOPIFY LEDGER (1,428 ROWS)</button>
+<span class="text-on-surface-variant">MAX 250MB</span>
+</div>
+</div>
+<!-- Ledger B: Ad Manager -->
+<div class="bg-surface-container-low p-space-md flex flex-col justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md uppercase tracking-wider font-semibold text-on-surface flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 bg-primary-container inline-block"></span>
+                  LEDGER B: AD CONVERSIONS EXPORT
+                </span>
+<div class="flex items-center gap-1">
+<select class="bg-surface font-label-sm text-label-sm uppercase px-1 py-0.5 text-on-surface focus:outline-none" id="ad-platform-select">
+<option value="meta">Meta Ads (CAPI / Pixel)</option>
+<option value="google">Google Ads (Enhanced Conv)</option>
+<option value="tiktok">TikTok Ads Manager</option>
+</select>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Events Manager export or platform Ads Reporting raw transaction report.</p>
+</div>
+<!-- Dropzone B -->
+<div class="bg-surface p-space-lg flex flex-col items-center justify-center gap-space-sm cursor-pointer hover:bg-surface-container-lowest transition-colors" id="dropzone-ads">
+<span class="material-symbols-outlined text-[32px] text-primary-container">query_stats</span>
+<div class="text-center flex flex-col">
+<span class="font-label-md text-label-md uppercase tracking-wider text-on-surface font-medium">DROP PLATFORM CONVERSIONS .CSV HERE</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Supports Meta, Google Ads, TikTok transaction logs</span>
+</div>
+<div class="flex flex-wrap items-center justify-center gap-1 mt-space-xs">
+<span class="font-label-sm text-label-sm bg-surface-container px-1 text-on-surface-variant">event_id</span>
+<span class="font-label-sm text-label-sm bg-surface-container px-1 text-on-surface-variant">timestamp</span>
+<span class="font-label-sm text-label-sm bg-surface-container px-1 text-on-surface-variant">conversion_value</span>
+<span class="font-label-sm text-label-sm bg-surface-container px-1 text-on-surface-variant">ad_id</span>
+<span class="font-label-sm text-label-sm bg-surface-container px-1 text-on-surface-variant">order_ref</span>
+</div>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<button class="text-primary uppercase tracking-wider hover:underline text-left" onclick="loadSampleData('ads')" type="button">LOAD VERIFIED SAMPLE AD LEDGER (1,684 ROWS)</button>
+<span class="text-on-surface-variant">UTF-8 UNAGGREGATED</span>
+</div>
+</div>
+</div>
+<!-- Terminal Execution Actions -->
+<div class="mt-space-md bg-surface-container p-space-md flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">verified_user</span>
+<span class="font-label-md text-label-md uppercase font-semibold text-on-surface">Timezone &amp; Currency Auto-Alignment Enabled</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Reconciler evaluates ISO-8601 UTC offsets against store base timezone and standardizes ISO 4217 currencies.</span>
+</div>
+<div class="flex items-center gap-space-sm w-full md:w-auto">
+<button class="w-full md:w-auto px-space-lg py-2.5 bg-primary-container text-on-primary font-label-md text-label-md uppercase tracking-wider hover:bg-primary transition-all text-center" id="reconcile-btn" onclick="executeSimulationReconciliation()" type="button">
+              ANALYZE DUAL LEDGERS →
+            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 2: TECHNICAL VALIDATION MATRIX & SCHEMA MAPPING -->
+<section class="w-full bg-surface-container px-margin-desktop py-space-xl">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">SPECIFICATION SPEC-2025.A</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-normal">Canonical Field Validation Matrix</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+            Each row must align with rigorous deterministic criteria. Driftcheck flags malformed timestamps, unstripped order prefixes (e.g., "#1001"), and currency code collisions prior to dual-ledger matching.
+          </p>
+</div>
+<div class="font-label-sm text-label-sm bg-surface px-space-md py-space-xs text-on-surface-variant uppercase">
+          STRICT SCHEMATIC ENFORCEMENT • 0 NULL TOLERANCE
+        </div>
+</div>
+<div class="bg-surface overflow-x-auto shadow-sm">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead class="bg-surface-container-high text-on-surface font-label-sm text-label-sm uppercase tracking-wider">
+<tr>
+<th class="py-space-sm px-space-md">Canonical Field</th>
+<th class="py-space-sm px-space-md">Shopify Header</th>
+<th class="py-space-sm px-space-md">Meta / Google Header</th>
+<th class="py-space-sm px-space-md">Requirement</th>
+<th class="py-space-sm px-space-md">Forensic Validation Rule</th>
+<th class="py-space-sm px-space-md">Engine Normalization</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-on-surface/5">
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-space-sm px-space-md font-semibold text-primary font-label-md">ORDER_KEY</td>
+<td class="py-space-sm px-space-md font-body-sm">Name / Id</td>
+<td class="py-space-sm px-space-md font-body-sm">order_id / event_source_id</td>
+<td class="py-space-sm px-space-md"><span class="bg-primary/10 text-primary px-1.5 py-0.5 font-label-sm text-label-sm uppercase">MANDATORY</span></td>
+<td class="py-space-sm px-space-md text-on-surface-variant">Exact alphanumeric sequence regex matching.</td>
+<td class="py-space-sm px-space-md text-on-surface font-body-sm">Strips '#', leading zeroes, trailing whitespace.</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container-lowest transition-colors">
+<td class="py-space-sm px-space-md font-semibold text-primary font-label-md">TXN_TIME</td>
+<td class="py-space-sm px-space-md font-body-sm">Created at</td>
+<td class="py-space-sm px-space-md font-body-sm">timestamp / action_time</td>
+<td class="py-space-sm px-space-md"><span class="bg-primary/10 text-primary px-1.5 py-0.5 font-label-sm text-label-sm uppercase">MANDATORY</span></td>
+<td class="py-space-sm px-space-md text-on-surface-variant">ISO-8601 or UNIX Epoch epoch integer (sec/ms).</td>
+<td class="py-space-sm px-space-md text-on-surface font-body-sm">Normalized to UTC (Z-offset) microsecond scale.</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-space-sm px-space-md font-semibold text-primary font-label-md">GROSS_VALUE</td>
+<td class="py-space-sm px-space-md font-body-sm">Total</td>
+<td class="py-space-sm px-space-md font-body-sm">value / conversion_value</td>
+<td class="py-space-sm px-space-md"><span class="bg-primary/10 text-primary px-1.5 py-0.5 font-label-sm text-label-sm uppercase">MANDATORY</span></td>
+<td class="py-space-sm px-space-md text-on-surface-variant">Fixed 2-decimal arithmetic precision floating point.</td>
+<td class="py-space-sm px-space-md text-on-surface font-body-sm">Excludes tax/shipping if configured in ledger profile.</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container-lowest transition-colors">
+<td class="py-space-sm px-space-md font-semibold text-primary font-label-md">CURRENCY_CODE</td>
+<td class="py-space-sm px-space-md font-body-sm">Currency</td>
+<td class="py-space-sm px-space-md font-body-sm">currency</td>
+<td class="py-space-sm px-space-md"><span class="bg-primary/10 text-primary px-1.5 py-0.5 font-label-sm text-label-sm uppercase">MANDATORY</span></td>
+<td class="py-space-sm px-space-md text-on-surface-variant">Standard ISO 4217 three-letter sovereign currency code.</td>
+<td class="py-space-sm px-space-md text-on-surface font-body-sm">Historical ECB daily fixing conversion applied.</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-space-sm px-space-md font-semibold text-primary font-label-md">CUSTOMER_HASH</td>
+<td class="py-space-sm px-space-md font-body-sm">Email / Phone</td>
+<td class="py-space-sm px-space-md font-body-sm">em / ph / external_id</td>
+<td class="py-space-sm px-space-md"><span class="bg-surface-container-high text-on-surface-variant px-1.5 py-0.5 font-label-sm text-label-sm uppercase">OPTIONAL</span></td>
+<td class="py-space-sm px-space-md text-on-surface-variant">SHA-256 64-char hex digest strictly lowercase.</td>
+<td class="py-space-sm px-space-md text-on-surface font-body-sm">Client-side salted one-way digest validation.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md pt-space-xs font-body-sm text-body-sm text-on-surface-variant">
+<div class="bg-surface p-space-md flex flex-col gap-1">
+<span class="font-label-sm text-label-sm uppercase font-semibold text-on-surface">FILE FORMAT CRITERIA</span>
+<p>Plain text RFC 4180 CSV with standard comma delimiter. Quoted string text boundaries supported for escaped order tags.</p>
+</div>
+<div class="bg-surface p-space-md flex flex-col gap-1">
+<span class="font-label-sm text-label-sm uppercase font-semibold text-on-surface">SIZE &amp; TIME HORIZONS</span>
+<p>Files up to 250MB (approx. 450,000 transaction rows). Reconciliations recommend 30-to-90-day unbroken reporting spans.</p>
+</div>
+<div class="bg-surface p-space-md flex flex-col gap-1">
+<span class="font-label-sm text-label-sm uppercase font-semibold text-on-surface">ZERO AGGREGATION</span>
+<p>Never submit pivot tables or rolled-up daily summaries. The algorithmic matcher operates strictly on granular checkout events.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 3: SAMPLE RECONCILIATION DOSSIER & 5 CORE SUMMARY CARDS -->
+<section class="w-full bg-surface px-margin-desktop py-space-xl">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<!-- Dossier Metadata Band -->
+<div class="bg-surface-container-high p-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
+<div class="flex flex-wrap items-center gap-space-sm font-label-md text-label-md">
+<span class="px-2 py-0.5 bg-on-surface text-surface uppercase font-bold">DOSSIER #DC-8492-AUDIT</span>
+<span class="text-on-surface">PERIOD: OCT 01 — OCT 31, 2024</span>
+<span class="text-on-surface-variant">STORE: APOTHECARY NORDIC (DIRECT)</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 bg-error"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-error font-semibold">STATUS: AUDITED — 4 SYSTEMIC DRIFTS DETECTED</span>
+</div>
+</div>
+<!-- 5 Summary Ledger Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-space-sm">
+<!-- Card 1: Shopify Orders -->
+<div class="bg-surface-container-lowest p-space-md flex flex-col justify-between shadow-sm">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">1. SHOPIFY ACTUALS</span>
+<div class="font-headline-md text-headline-md text-on-surface font-semibold">1,428</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant font-medium">$184,920.00 USD</div>
+</div>
+<div class="pt-space-sm mt-space-sm bg-surface-container-low px-2 py-1 font-label-sm text-label-sm text-on-surface">
+            VERIFIED BASELINE STORE REGISTER
+          </div>
+</div>
+<!-- Card 2: Ad Conversions -->
+<div class="bg-surface-container-lowest p-space-md flex flex-col justify-between shadow-sm">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">2. PLATFORM AD CLAIMS</span>
+<div class="font-headline-md text-headline-md text-on-surface font-semibold">1,684</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant font-medium">$219,340.00 USD</div>
+</div>
+<div class="pt-space-sm mt-space-sm bg-surface-container-low px-2 py-1 font-label-sm text-label-sm text-on-surface">
+            SUMMED META + GOOGLE ADS PIXELS
+          </div>
+</div>
+<!-- Card 3: Net Drift Gap (Oxide Red) -->
+<div class="bg-error-container text-on-error-container p-space-md flex flex-col justify-between shadow-sm">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-error-container">3. NET ATTRIBUTION DRIFT</span>
+<div class="font-headline-md text-headline-md text-error font-bold">+256 EXTRA</div>
+<div class="font-body-sm text-body-sm text-error font-medium">+$34,420.00 (+18.6%)</div>
+</div>
+<div class="pt-space-sm mt-space-sm bg-surface px-2 py-1 font-label-sm text-label-sm text-error uppercase font-semibold">
+            CRITICAL CAPITAL ALLOCATION BIAS
+          </div>
+</div>
+<!-- Card 4: 1:1 Matched Rows (Forest Green tone) -->
+<div class="bg-surface-container-lowest p-space-md flex flex-col justify-between shadow-sm">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">4. 1:1 EXACT MATCHES</span>
+<div class="font-headline-md text-headline-md text-tertiary-container font-bold">1,214</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant font-medium">85.0% SHOPIFY CONFIRMATION</div>
+</div>
+<div class="pt-space-sm mt-space-sm bg-surface-container-low px-2 py-1 font-label-sm text-label-sm text-tertiary-container font-semibold uppercase">
+            RECONCILED VIA UNIQUE EVENT_ID
+          </div>
+</div>
+<!-- Card 5: Unmatched & Ghost Attributions -->
+<div class="bg-surface-container-lowest p-space-md flex flex-col justify-between shadow-sm">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">5. UNMATCHED PARTITIONS</span>
+<div class="font-headline-md text-headline-md text-tertiary font-bold">214 / 470</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant font-medium">214 Untracked | 470 Phantom</div>
+</div>
+<div class="pt-space-sm mt-space-sm bg-surface-container-low px-2 py-1 font-label-sm text-label-sm text-tertiary font-semibold uppercase">
+            REQUIRES FORENSIC RESOLUTION
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 4: DISCREPANCY COMPARISON CHART (HTML/CSS & SVG BARS) -->
+<section class="w-full bg-surface-container px-margin-desktop py-space-xl">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">CHRONO-FORENSIC TIMELINE (30 DAYS)</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-normal">Daily Attribution Divergence Tracking</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Visualizing the daily gap between Shopify actual order revenue and ad platform reported conversions. Notice intense Friday-Sunday divergence (+35% phantom revenue) during weekend campaign surges.
+          </p>
+</div>
+<!-- Chart Controls -->
+<div class="flex items-center gap-space-xs bg-surface p-1">
+<button class="px-space-sm py-1 font-label-sm text-label-sm uppercase tracking-wider bg-surface-container-highest text-on-surface font-semibold" id="metric-revenue-btn" onclick="toggleChartMetric('revenue')" type="button">
+            Gross Conversion Value ($)
+          </button>
+<button class="px-space-sm py-1 font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant hover:text-on-surface" id="metric-orders-btn" onclick="toggleChartMetric('volume')" type="button">
+            Order Volume (Count)
+          </button>
+</div>
+</div>
+<!-- Chart Canvas Container -->
+<div class="bg-surface p-space-lg shadow-sm flex flex-col gap-space-md">
+<!-- Chart Legend & Indicator -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pb-space-sm bg-surface-container px-space-md py-space-xs">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-1.5 font-label-sm text-label-sm text-on-surface">
+<span class="w-3 h-3 bg-primary inline-block"></span>
+              SHOPIFY REVENUE ACTUAL
+            </div>
+<div class="flex items-center gap-1.5 font-label-sm text-label-sm text-on-surface-variant">
+<span class="w-3 h-3 bg-error inline-block"></span>
+              AD PLATFORM REPORTED
+            </div>
+<div class="flex items-center gap-1.5 font-label-sm text-label-sm text-error">
+<span class="w-3 h-1 bg-error inline-block"></span>
+              PHANTOM GAP (+35% WEEKEND SURGE)
+            </div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">OCT 01 — OCT 30 (DAILY INTERVALS)</span>
+</div>
+<!-- Inline SVG Visualization -->
+<div class="w-full overflow-x-auto">
+<svg class="w-full min-w-[700px] h-64 text-on-surface" preserveaspectratio="none" viewbox="0 0 1000 260">
+<!-- Background Grid lines -->
+<line stroke="currentColor" stroke-dasharray="4" stroke-opacity="0.08" x1="40" x2="980" y1="20" y2="20"></line>
+<line stroke="currentColor" stroke-dasharray="4" stroke-opacity="0.08" x1="40" x2="980" y1="80" y2="80"></line>
+<line stroke="currentColor" stroke-dasharray="4" stroke-opacity="0.08" x1="40" x2="980" y1="140" y2="140"></line>
+<line stroke="currentColor" stroke-dasharray="4" stroke-opacity="0.08" x1="40" x2="980" y1="200" y2="200"></line>
+<!-- Y Axis labels -->
+<text class="font-label-sm text-[10px] fill-on-surface-variant font-mono" text-anchor="end" x="35" y="24">$12k</text>
+<text class="font-label-sm text-[10px] fill-on-surface-variant font-mono" text-anchor="end" x="35" y="84">$9k</text>
+<text class="font-label-sm text-[10px] fill-on-surface-variant font-mono" text-anchor="end" x="35" y="144">$6k</text>
+<text class="font-label-sm text-[10px] fill-on-surface-variant font-mono" text-anchor="end" x="35" y="204">$3k</text>
+<!-- Weekend 1 Callout Area (Oct 4 - Oct 6) -->
+<rect fill="#ba1a1a" fill-opacity="0.06" height="200" width="80" x="150" y="20"></rect>
+<text class="font-label-sm text-[9px] fill-error uppercase tracking-wider font-mono" text-anchor="middle" x="190" y="35">+38% META SPIKE</text>
+<!-- Weekend 2 Callout Area (Oct 11 - Oct 13) -->
+<rect fill="#ba1a1a" fill-opacity="0.06" height="200" width="80" x="350" y="20"></rect>
+<text class="font-label-sm text-[9px] fill-error uppercase tracking-wider font-mono" text-anchor="middle" x="390" y="35">+42% ATTRIBUTION DRIFT</text>
+<!-- Weekend 3 Callout Area (Oct 18 - Oct 20) -->
+<rect fill="#ba1a1a" fill-opacity="0.06" height="200" width="80" x="550" y="20"></rect>
+<!-- Weekend 4 Callout Area (Oct 25 - Oct 27) -->
+<rect fill="#ba1a1a" fill-opacity="0.06" height="200" width="80" x="750" y="20"></rect>
+<text class="font-label-sm text-[9px] fill-error uppercase tracking-wider font-mono" text-anchor="middle" x="790" y="35">+36% PHANTOM PEAK</text>
+<!-- Ad Platform Claim Curve (Dashed red curve) -->
+<path d="M 50 160 Q 90 150 130 145 T 190 60 T 250 140 T 310 150 T 390 50 T 470 140 T 530 135 T 590 55 T 670 145 T 730 130 T 790 45 T 870 135 T 950 140" fill="none" stroke="#ba1a1a" stroke-width="2.5"></path>
+<!-- Shopify Actuals Curve (Solid Cobalt Blue curve) -->
+<path d="M 50 165 Q 90 155 130 150 T 190 110 T 250 148 T 310 155 T 390 100 T 470 150 T 530 142 T 590 105 T 670 152 T 730 140 T 790 95 T 870 145 T 950 150" fill="none" stroke="#003fb3" stroke-width="2.5"></path>
+<!-- Daily Tick Marks & Labels -->
+<text class="font-label-sm text-[9px] fill-on-surface-variant font-mono" text-anchor="middle" x="50" y="235">D01</text>
+<text class="font-label-sm text-[9px] fill-on-surface-variant font-mono" text-anchor="middle" x="190" y="235">D06 (W1)</text>
+<text class="font-label-sm text-[9px] fill-on-surface-variant font-mono" text-anchor="middle" x="330" y="235">D11</text>
+<text class="font-label-sm text-[9px] fill-on-surface-variant font-mono" text-anchor="middle" x="390" y="235">D13 (W2)</text>
+<text class="font-label-sm text-[9px] fill-on-surface-variant font-mono" text-anchor="middle" x="530" y="235">D18</text>
+<text class="font-label-sm text-[9px] fill-on-surface-variant font-mono" text-anchor="middle" x="590" y="235">D20 (W3)</text>
+<text class="font-label-sm text-[9px] fill-on-surface-variant font-mono" text-anchor="middle" x="730" y="235">D25</text>
+<text class="font-label-sm text-[9px] fill-on-surface-variant font-mono" text-anchor="middle" x="790" y="235">D27 (W4)</text>
+<text class="font-label-sm text-[9px] fill-on-surface-variant font-mono" text-anchor="middle" x="950" y="235">D30</text>
+</svg>
+</div>
+<div class="flex flex-col md:flex-row items-center justify-between gap-space-sm pt-space-xs font-body-sm text-body-sm text-on-surface-variant">
+<div><strong class="text-on-surface font-label-md">KEY FORENSIC TAKEAWAY:</strong> View-through windows exaggerate Friday night impulse sales by 35-42% without associated Shopify cart confirmations.</div>
+<span class="font-label-sm text-label-sm text-primary uppercase">PEARSON CORRELATION COEFFICIENT: 0.684 (DISTORTED)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 5: FORENSIC MISMATCH TABLE (INTERACTIVE DATA EXPLORER) -->
+<section class="w-full bg-surface px-margin-desktop py-space-xl">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">TRANSACTION-BY-TRANSACTION REGISTER</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-normal">Forensic Mismatch Audit Table</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Explore deterministically linked row entries. Inspect payload hashes, currency normalizations, and individual platform event stamps.
+          </p>
+</div>
+<!-- Filter Tab Buttons -->
+<div class="flex flex-wrap items-center gap-1 bg-surface-container p-1 font-label-sm text-label-sm uppercase">
+<button class="px-space-sm py-1 bg-surface text-on-surface font-bold" onclick="filterLedger('all', this)" type="button">ALL (1,684)</button>
+<button class="px-space-sm py-1 text-on-surface-variant hover:text-on-surface" onclick="filterLedger('matched', this)" type="button">MATCHED (1,214)</button>
+<button class="px-space-sm py-1 text-on-surface-variant hover:text-on-surface" onclick="filterLedger('missing', this)" type="button">UNTRACKED PIXEL (214)</button>
+<button class="px-space-sm py-1 text-on-surface-variant hover:text-on-surface" onclick="filterLedger('ghost', this)" type="button">GHOST AD CLAIMS (470)</button>
+</div>
+</div>
+<!-- Table Container -->
+<div class="bg-surface overflow-x-auto shadow-sm">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead class="bg-surface-container-high text-on-surface font-label-sm text-label-sm uppercase tracking-wider">
+<tr>
+<th class="py-space-sm px-space-md">Match ID</th>
+<th class="py-space-sm px-space-md">Order Ref</th>
+<th class="py-space-sm px-space-md">Timestamp (UTC)</th>
+<th class="py-space-sm px-space-md text-right">Shopify Gross</th>
+<th class="py-space-sm px-space-md text-right">Ad Ledger Gross</th>
+<th class="py-space-sm px-space-md text-center">Status</th>
+<th class="py-space-sm px-space-md">Forensic Root Cause</th>
+<th class="py-space-sm px-space-md text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-on-surface/5" id="ledger-table-body">
+<!-- Row 1: Ghost Attribution (Extra) -->
+<tr class="hover:bg-surface-container-low transition-colors" data-type="ghost">
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">#MT-9812-F</td>
+<td class="py-space-sm px-space-md font-mono font-semibold text-on-surface">#10842-A</td>
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">2024-10-24 22:14:02</td>
+<td class="py-space-sm px-space-md font-mono text-right text-on-surface-variant">$0.00 (NONE)</td>
+<td class="py-space-sm px-space-md font-mono text-right font-semibold text-error">$184.50</td>
+<td class="py-space-sm px-space-md text-center">
+<span class="px-1.5 py-0.5 font-label-sm text-label-sm bg-error-container text-on-error-container uppercase">GHOST ATTRIBUTION</span>
+</td>
+<td class="py-space-sm px-space-md font-body-sm text-error">Meta 7-day View Claim / 0 Shopify checkout match</td>
+<td class="py-space-sm px-space-md text-right">
+<button class="font-label-sm text-label-sm text-primary uppercase hover:underline" onclick="inspectRow('MT-9812-F')" type="button">DIFF →</button>
+</td>
+</tr>
+<!-- Row 2: Matched -->
+<tr class="bg-surface-container-lowest hover:bg-surface-container-low transition-colors" data-type="matched">
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">#MT-9813-M</td>
+<td class="py-space-sm px-space-md font-mono font-semibold text-on-surface">#10843</td>
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">2024-10-24 22:19:40</td>
+<td class="py-space-sm px-space-md font-mono text-right text-on-surface">$92.00</td>
+<td class="py-space-sm px-space-md font-mono text-right text-on-surface">$92.00</td>
+<td class="py-space-sm px-space-md text-center">
+<span class="px-1.5 py-0.5 font-label-sm text-label-sm bg-surface-container-high text-tertiary-container uppercase">EXACT MATCH</span>
+</td>
+<td class="py-space-sm px-space-md font-body-sm text-on-surface-variant">Deterministic event_id match (CAPI + Browser Pixel)</td>
+<td class="py-space-sm px-space-md text-right">
+<button class="font-label-sm text-label-sm text-primary uppercase hover:underline" onclick="inspectRow('MT-9813-M')" type="button">DIFF →</button>
+</td>
+</tr>
+<!-- Row 3: Missing from Ads (Untracked) -->
+<tr class="hover:bg-surface-container-low transition-colors" data-type="missing">
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">#MT-9814-U</td>
+<td class="py-space-sm px-space-md font-mono font-semibold text-on-surface">#10844</td>
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">2024-10-24 22:31:18</td>
+<td class="py-space-sm px-space-md font-mono text-right font-semibold text-primary">$320.00</td>
+<td class="py-space-sm px-space-md font-mono text-right text-on-surface-variant">$0.00 (DROPPED)</td>
+<td class="py-space-sm px-space-md text-center">
+<span class="px-1.5 py-0.5 font-label-sm text-label-sm bg-surface-container-high text-tertiary uppercase">UNTRACKED PIXEL</span>
+</td>
+<td class="py-space-sm px-space-md font-body-sm text-tertiary">Safari ITP 16.4 / Apple Pay checkout webhook missing</td>
+<td class="py-space-sm px-space-md text-right">
+<button class="font-label-sm text-label-sm text-primary uppercase hover:underline" onclick="inspectRow('MT-9814-U')" type="button">DIFF →</button>
+</td>
+</tr>
+<!-- Row 4: Currency Drift Disparity -->
+<tr class="bg-surface-container-lowest hover:bg-surface-container-low transition-colors" data-type="ghost">
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">#MT-9815-C</td>
+<td class="py-space-sm px-space-md font-mono font-semibold text-on-surface">#10845</td>
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">2024-10-24 23:02:11</td>
+<td class="py-space-sm px-space-md font-mono text-right text-on-surface">£145.00 ($188.50)</td>
+<td class="py-space-sm px-space-md font-mono text-right text-error">$212.00</td>
+<td class="py-space-sm px-space-md text-center">
+<span class="px-1.5 py-0.5 font-label-sm text-label-sm bg-error-container text-on-error-container uppercase">FX VARIANCE</span>
+</td>
+<td class="py-space-sm px-space-md font-body-sm text-error">GBP to USD Weekly Fixed Peg Distortion (+$23.50 delta)</td>
+<td class="py-space-sm px-space-md text-right">
+<button class="font-label-sm text-label-sm text-primary uppercase hover:underline" onclick="inspectRow('MT-9815-C')" type="button">DIFF →</button>
+</td>
+</tr>
+<!-- Row 5: Matched -->
+<tr class="hover:bg-surface-container-low transition-colors" data-type="matched">
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">#MT-9816-M</td>
+<td class="py-space-sm px-space-md font-mono font-semibold text-on-surface">#10846</td>
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">2024-10-24 23:15:55</td>
+<td class="py-space-sm px-space-md font-mono text-right text-on-surface">$54.20</td>
+<td class="py-space-sm px-space-md font-mono text-right text-on-surface">$54.20</td>
+<td class="py-space-sm px-space-md text-center">
+<span class="px-1.5 py-0.5 font-label-sm text-label-sm bg-surface-container-high text-tertiary-container uppercase">EXACT MATCH</span>
+</td>
+<td class="py-space-sm px-space-md font-body-sm text-on-surface-variant">Verified via external_id hash and cart timestamp</td>
+<td class="py-space-sm px-space-md text-right">
+<button class="font-label-sm text-label-sm text-primary uppercase hover:underline" onclick="inspectRow('MT-9816-M')" type="button">DIFF →</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination / Ledger Row Count -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm font-label-sm text-label-sm text-on-surface-variant">
+<span>SHOWING 5 OF 1,684 NORMALIZED AUDIT ROWS (SIMULATION BENCHMARK)</span>
+<div class="flex items-center gap-1">
+<button class="px-2 py-1 bg-surface text-on-surface hover:bg-surface-container uppercase" type="button">Previous</button>
+<span class="px-2 py-1 bg-surface-container-high text-on-surface font-bold">1</span>
+<button class="px-2 py-1 bg-surface text-on-surface hover:bg-surface-container uppercase" type="button">2</button>
+<button class="px-2 py-1 bg-surface text-on-surface hover:bg-surface-container uppercase" type="button">3</button>
+<span class="px-1 text-on-surface-variant">...</span>
+<button class="px-2 py-1 bg-surface text-on-surface hover:bg-surface-container uppercase" type="button">Next</button>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 6: THREE PRIORITY INVESTIGATION CARDS -->
+<section class="w-full bg-surface-container px-margin-desktop py-space-xl">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">CRITICAL FINDINGS REGISTER</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-normal">Three Priority Forensic Investigations</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+          Automated heuristic classification isolates the specific infrastructure leaks inflating your platform ROAS or obscuring legitimate checkout volume.
+        </p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg">
+<!-- Priority Card 1: Meta View-Through Overlap -->
+<div class="bg-surface p-space-lg flex flex-col justify-between gap-space-md shadow-sm">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-error-container text-on-error-container uppercase font-bold">PRIORITY: CRITICAL</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">94% FORENSIC PROBABILITY</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-medium">Meta View-Through Overlap</h3>
+<div class="bg-surface-container p-space-sm flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold uppercase">EVIDENTIARY DATA:</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                184 conversions credited without corresponding ad click timestamps; 42 events occurred &gt;72h after last impression record.
+              </p>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold uppercase">ROOT CAUSE EXPLANATION:</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Default 7-day click / 1-day view attribution window heavily claims organic repeat customers who passively scrolled past an ad banner without engaging.
+              </p>
+</div>
+</div>
+<div class="pt-space-sm bg-surface-container-low p-space-sm flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold">RECOMMENDED REMEDIATION:</span>
+<p class="font-body-sm text-body-sm text-on-surface font-medium">
+              Switch ad set attribution setting strictly to 1-Day Click only. Deduplicate server events with deterministic order_id tokens.
+            </p>
+</div>
+</div>
+<!-- Priority Card 2: iOS Safari Checkout Dropoff -->
+<div class="bg-surface p-space-lg flex flex-col justify-between gap-space-md shadow-sm">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-error-container text-on-error-container uppercase font-bold">PRIORITY: SEVERE</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">89% FORENSIC PROBABILITY</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-medium">iOS Safari Checkout Dropoff</h3>
+<div class="bg-surface-container p-space-sm flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold uppercase">EVIDENTIARY DATA:</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                142 confirmed Shopify orders completed via Apple Pay &amp; Shop Pay showed 0 corresponding browser pixel Purchase triggers.
+              </p>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold uppercase">ROOT CAUSE EXPLANATION:</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                WebKit ITP script truncation and direct accelerated checkout redirects bypass the traditional "thank-you" page DOM execution entirely.
+              </p>
+</div>
+</div>
+<div class="pt-space-sm bg-surface-container-low p-space-sm flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold">RECOMMENDED REMEDIATION:</span>
+<p class="font-body-sm text-body-sm text-on-surface font-medium">
+              Deploy server-to-server webhook integration on Shopify orders/create to fire Conversions API events directly from back-end infrastructure.
+            </p>
+</div>
+</div>
+<!-- Priority Card 3: Multi-Currency Exchange Disparity -->
+<div class="bg-surface p-space-lg flex flex-col justify-between gap-space-md shadow-sm">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-surface-container-high text-on-surface uppercase font-bold">PRIORITY: MODERATE</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">99% CONFIRMED MATH</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-medium">Multi-Currency FX Disparity</h3>
+<div class="bg-surface-container p-space-sm flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold uppercase">EVIDENTIARY DATA:</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                $4,280 numerical variance identified across 38 international orders transacted in GBP and EUR against USD ad accounts.
+              </p>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold uppercase">ROOT CAUSE EXPLANATION:</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Shopify settles multi-currency checkouts in store payout currency, whereas Meta Ad Manager pegs FX rates to a static weekly index.
+              </p>
+</div>
+</div>
+<div class="pt-space-sm bg-surface-container-low p-space-sm flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold">RECOMMENDED REMEDIATION:</span>
+<p class="font-body-sm text-body-sm text-on-surface font-medium">
+              Activate Driftcheck ISO-4217 historical daily spot normalizer or export ad reports matching the exact Shopify billing sovereign currency.
+            </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 7: FOUR-STEP RECONCILIATION WORKFLOW -->
+<section class="w-full bg-surface px-margin-desktop py-space-xl">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<div class="flex flex-col gap-space-xs text-center items-center">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">EXECUTION PROTOCOL</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-normal">Four Steps to Forensic Ledger Balance</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">
+          Standardized, deterministic procedures designed for repeatable audit compliance across enterprise finance and performance media desks.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Step 1 -->
+<div class="bg-surface-container p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span class="font-bold">STEP 01</span>
+<span class="material-symbols-outlined text-primary text-[20px]">file_download</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-medium">Raw CSV Export</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Export granular, unaggregated transaction records directly from Shopify Admin (Orders) and your ad channel (Meta Ads Reporting / Google Ads).
+          </p>
+<div class="mt-auto pt-space-xs font-label-sm text-label-sm text-on-surface-variant uppercase">
+            • No third-party pixel wrappers required
+          </div>
+</div>
+<!-- Step 2 -->
+<div class="bg-surface-container p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span class="font-bold">STEP 02</span>
+<span class="material-symbols-outlined text-primary text-[20px]">encrypted</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-medium">Local Schema Ingestion</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Files are validated inside your browser's local sandbox memory. Field headers are hashed via SHA-256 with instantaneous timestamp sanitization.
+          </p>
+<div class="mt-auto pt-space-xs font-label-sm text-label-sm text-on-surface-variant uppercase">
+            • Zero customer PII leaves your workstation
+          </div>
+</div>
+<!-- Step 3 -->
+<div class="bg-surface-container p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span class="font-bold">STEP 03</span>
+<span class="material-symbols-outlined text-primary text-[20px]">tune</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-medium">Dual Matrix Matching</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            The engine executes 1:1 deterministic matching on order identifiers, followed by probabilistic attribution window windowing (1-day to 28-day).
+          </p>
+<div class="mt-auto pt-space-xs font-label-sm text-label-sm text-on-surface-variant uppercase">
+            • Sub-millisecond record cross-referencing
+          </div>
+</div>
+<!-- Step 4 -->
+<div class="bg-surface-container p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span class="font-bold">STEP 04</span>
+<span class="material-symbols-outlined text-primary text-[20px]">summarize</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-medium">Dossier Generation</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Download your executive audit dossier complete with verified ROAS recalibration figures, platform dispute logs, and developer patch instructions.
+          </p>
+<div class="mt-auto pt-space-xs font-label-sm text-label-sm text-on-surface-variant uppercase">
+            • CSV, PDF &amp; Accounting JSON exports
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 8: METHODOLOGY, PRIVACY & LEGAL LIMITATIONS -->
+<section class="w-full bg-surface-container px-margin-desktop py-space-xl">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">DATA GOVERNANCE ARCHITECTURE</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-normal">Methodology, Privacy &amp; Limitations</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+            Audit integrity requires unambiguous technical constraints. Here is how Driftcheck processes ledger data, protects merchant privacy, and where mathematical limits apply.
+          </p>
+</div>
+<div class="font-label-sm text-label-sm bg-surface px-space-md py-space-xs text-on-surface uppercase">
+          STRICT CLIENT-SIDE EXECUTION GUARANTEE
+        </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg">
+<div class="bg-surface p-space-md flex flex-col gap-space-sm shadow-sm">
+<span class="font-label-md text-label-md uppercase font-semibold text-primary">01. FORENSIC MATCHING LOGIC</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Matching operates in hierarchical tiers. Tier 1 matches exact deterministic tokens (e.g. `order_id` == `event_id`). Tier 2 applies cryptographic hashing against customer email and phone digests. Tier 3 calculates temporal proximity: evaluating conversions claimed within ±30 seconds of Shopify checkout creation.
+          </p>
+<div class="bg-surface-container p-2 font-mono text-[11px] text-on-surface">
+            DETERMINISTIC &gt; HASH MATCH &gt; PROXIMITY
+          </div>
+</div>
+<div class="bg-surface p-space-md flex flex-col gap-space-sm shadow-sm">
+<span class="font-label-md text-label-md uppercase font-semibold text-primary">02. ZERO PERSISTENT PII</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Uploaded CSV records are parsed ephemerally within browser WebAssembly memory buffers. Driftcheck maintains zero merchant databases containing identifiable customer names, credit card tokens, physical addresses, or unhashed email strings. Session termination immediately purges all memory states.
+          </p>
+<div class="bg-surface-container p-2 font-mono text-[11px] text-on-surface">
+            EPHEMERAL RAM BUFFER • NO PERSISTENCE
+          </div>
+</div>
+<div class="bg-surface p-space-md flex flex-col gap-space-sm shadow-sm">
+<span class="font-label-md text-label-md uppercase font-semibold text-primary">03. STATUTORY LIMITATIONS</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Driftcheck highlights discrepancy variances between independent advertising networks and e-commerce cart platforms. <em>Notice:</em> Reconciliation dossiers do not constitute statutory tax filings, certified public accountant (CPA) statements, or legal arbitration filings under GAAP/IFRS standards.
+          </p>
+<div class="bg-surface-container p-2 font-mono text-[11px] text-on-surface">
+            ANALYTICAL INSTRUMENT • NOT GAAP AUDIT
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 9: TRANSPARENT DIAGNOSTIC PRICING -->
+<section class="w-full bg-surface px-margin-desktop py-space-xl">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">TRANSPARENT SCHEDULE OF FEES</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-normal">Predictable Audit Investment</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">
+            Choose between self-serve one-time forensic dossiers or automated daily synchronization to halt ad platform over-reporting permanently.
+          </p>
+</div>
+<!-- Mode Toggle -->
+<div class="flex items-center gap-1 bg-surface-container p-1 font-label-sm text-label-sm uppercase">
+<button class="px-space-sm py-1 bg-surface text-on-surface font-bold" id="pricing-diagnostic-btn" onclick="togglePricingMode('diagnostic')" type="button">
+            One-Time Diagnostic Audit
+          </button>
+<button class="px-space-sm py-1 text-on-surface-variant hover:text-on-surface" id="pricing-monitor-btn" onclick="togglePricingMode('continuous')" type="button">
+            Automated Daily Monitor
+          </button>
+</div>
+</div>
+<!-- Pricing Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg">
+<!-- Tier 1: Single Store Audit -->
+<div class="bg-surface-container-lowest p-space-lg flex flex-col justify-between gap-space-md shadow-sm">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md uppercase font-semibold text-on-surface">SINGLE STORE AUDIT</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-surface-container text-on-surface-variant uppercase">ONE-TIME</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-xl text-headline-xl text-on-surface font-normal">$79</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">/ export pass</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Engineered for single Shopify brands experiencing ROAS uncertainty across Meta and Google campaigns.
+            </p>
+<ul class="flex flex-col gap-2 pt-space-xs font-body-sm text-body-sm text-on-surface">
+<li class="flex items-center gap-2">• Up to 10,000 order transactions</li>
+<li class="flex items-center gap-2">• Complete discrepancy ledger CSV download</li>
+<li class="flex items-center gap-2">• 3 Priority root-cause diagnostics</li>
+<li class="flex items-center gap-2">• ROAS recalibration formula sheet</li>
+<li class="flex items-center gap-2 text-on-surface-variant">• 14-day re-run validation window</li>
+</ul>
+</div>
+<button class="w-full py-2.5 bg-surface-container-highest text-on-surface font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container-high transition-colors" type="button">
+            RUN DIAGNOSTIC PASS ($79) →
+          </button>
+</div>
+<!-- Tier 2: Agency Portfolio Pass (Featured) -->
+<div class="bg-surface-container p-space-lg flex flex-col justify-between gap-space-md shadow-md">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md uppercase font-semibold text-primary">AGENCY PORTFOLIO PASS</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-primary-container text-on-primary uppercase font-bold">MOST REQUESTED</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-xl text-headline-xl text-on-surface font-normal">$199</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">/ 5-store bundle</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Designed for performance media buyers managing multiple client ad accounts needing undeniable attribution clarity.
+            </p>
+<ul class="flex flex-col gap-2 pt-space-xs font-body-sm text-body-sm text-on-surface">
+<li class="flex items-center gap-2">• Up to 5 Shopify stores (50k orders each)</li>
+<li class="flex items-center gap-2">• White-labeled client PDF export dossiers</li>
+<li class="flex items-center gap-2">• Cross-channel deduplication matrix</li>
+<li class="flex items-center gap-2">• Ad Manager spend reallocation model</li>
+<li class="flex items-center gap-2">• Priority forensic engineer support</li>
+</ul>
+</div>
+<button class="w-full py-2.5 bg-primary-container text-on-primary font-label-md text-label-md uppercase tracking-wider hover:bg-primary transition-colors" type="button">
+            UNLOCK 5-STORE DOSSIERS ($199) →
+          </button>
+</div>
+<!-- Tier 3: Continuous Drift Monitor -->
+<div class="bg-surface-container-lowest p-space-lg flex flex-col justify-between gap-space-md shadow-sm">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md uppercase font-semibold text-on-surface">CONTINUOUS MONITOR</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 bg-surface-container text-on-surface-variant uppercase">PROPOSED BETA</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-xl text-headline-xl text-on-surface font-normal">$49</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">/ month</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Automated nightly API ingestion synchronizing Shopify and Meta/Google conversion feeds with anomaly alerts.
+            </p>
+<ul class="flex flex-col gap-2 pt-space-xs font-body-sm text-body-sm text-on-surface">
+<li class="flex items-center gap-2">• Automated nightly reconciliation sync</li>
+<li class="flex items-center gap-2">• Slack &amp; Webhook alerts on &gt;10% drift</li>
+<li class="flex items-center gap-2">• Real-time pixel dropoff detection</li>
+<li class="flex items-center gap-2">• Live BI connection (Looker / Sheets)</li>
+<li class="flex items-center gap-2">• Cancel anytime with zero penalty</li>
+</ul>
+</div>
+<button class="w-full py-2.5 bg-surface-container-highest text-on-surface font-label-md text-label-md uppercase tracking-wider hover:bg-surface-container-high transition-colors" type="button">
+            JOIN MONITORING BETA ($49/MO) →
+          </button>
+</div>
+</div>
+<!-- Payment Assurance Footnote -->
+<div class="bg-surface-container p-space-md flex flex-col sm:flex-row items-center justify-between gap-space-sm font-label-sm text-label-sm text-on-surface-variant">
+<span>SECURITY VERIFICATION: 256-BIT ENCRYPTED CHECKOUT VIA INDEPENDENT ESCROW PROCESSOR</span>
+<span class="uppercase">UNCONDITIONAL RECONCILIATION INTEGRITY GUARANTEE</span>
+</div>
+</div>
+</section>
+<!-- SECTION 10: FAQ & VERIFIED TRUST ACCORDION -->
+<section class="w-full bg-surface-container px-margin-desktop py-space-xl">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">KNOWLEDGE BASE &amp; ARCHIVES</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-normal">Technical &amp; Methodological FAQ</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">
+            Exacting answers to nuanced questions regarding attribution windows, Apple iOS 14.5+ restrictions, and reconciliation tolerances.
+          </p>
+</div>
+<div class="font-label-sm text-label-sm bg-surface px-space-md py-space-xs text-on-surface-variant uppercase">
+          RECONCILIATION DESK TECHNICAL STANDARDS
+        </div>
+</div>
+<!-- FAQ Items -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- FAQ 1 -->
+<div class="bg-surface p-space-md flex flex-col gap-space-xs shadow-sm">
+<span class="font-label-md text-label-md uppercase font-semibold text-primary">Why do ad platforms show more sales than Shopify received?</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Platforms use view-through attribution (crediting purchases to users who merely viewed an ad without clicking) alongside modeled conversions (statistical estimation). If both Meta and Google claim credit for the same buyer, total platform conversions will dramatically exceed physical bank receipts.
+          </p>
+</div>
+<!-- FAQ 2 -->
+<div class="bg-surface p-space-md flex flex-col gap-space-xs shadow-sm">
+<span class="font-label-md text-label-md uppercase font-semibold text-primary">How does Driftcheck handle iOS Safari WebKit ITP blocks?</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Apple's WebKit ITP cuts first-party cookie longevity to 24 hours and blocks third-party scripts. Driftcheck identifies checkouts where order timestamps exist in Shopify but possess zero corresponding browser pixels, isolating exactly which purchases bypassed client-side tracking.
+          </p>
+</div>
+<!-- FAQ 3 -->
+<div class="bg-surface p-space-md flex flex-col gap-space-xs shadow-sm">
+<span class="font-label-md text-label-md uppercase font-semibold text-primary">Is customer data stored or shared with external parties?</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Never. Driftcheck was architected with a strict Zero-Persistence guarantee. The file parsing and 1:1 row cross-referencing run inside local ephemeral browser memory. Once your audit window closes or you hit refresh, data structures are completely zeroized.
+          </p>
+</div>
+<!-- FAQ 4 -->
+<div class="bg-surface p-space-md flex flex-col gap-space-xs shadow-sm">
+<span class="font-label-md text-label-md uppercase font-semibold text-primary">What if my Shopify store and ad accounts operate in different currencies?</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Our ingestion normalization engine detects sovereign currency differences via standard ISO-4217 tags. If you bill in GBP but run ad accounts in USD, Driftcheck recalculates transactions against verified daily European Central Bank (ECB) benchmark exchange rates.
+          </p>
+</div>
+<!-- FAQ 5 -->
+<div class="bg-surface p-space-md flex flex-col gap-space-xs shadow-sm">
+<span class="font-label-md text-label-md uppercase font-semibold text-primary">Can Driftcheck files be imported into Google Sheets or Looker Studio?</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Yes. Every reconciled output produces clean, RFC-4180 compliant CSV files with standardized discrepancy flags (`MATCHED`, `MISSING_PIXEL`, `GHOST_ATTRIBUTION`, `FX_SKEW`), allowing seamless import into your existing agency reporting pipelines.
+          </p>
+</div>
+<!-- FAQ 6 -->
+<div class="bg-surface p-space-md flex flex-col gap-space-xs shadow-sm">
+<span class="font-label-md text-label-md uppercase font-semibold text-primary">What is your refund policy if files cannot be reconciled?</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            If your CSV files comply with our published schema matrix but our deterministic matching algorithm fails to parse or generate a forensic dossier, we issue an immediate Illustrative refund upon technical review by our engineering desk.
+          </p>
+</div>
+</div>
+<!-- Trust Institutional Callout -->
+<div class="bg-surface p-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md shadow-sm">
+<div class="flex items-center gap-space-md">
+<span class="material-symbols-outlined text-[40px] text-primary">balance</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Independent Ledger Integrity Commitment</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">We sell no ad inventory, take no agency commissions, and operate purely as an objective reconciliation utility.</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm px-2 py-1 bg-surface-container text-on-surface uppercase tracking-wider font-semibold">PROTOCOL CERT: SECURITY CLAIMS NOT VERIFIED</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 11: FINAL RECONCILIATION CALL TO ACTION -->
+<section class="w-full bg-surface-container-high px-margin-desktop py-space-xl">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-space-lg">
+<div class="flex flex-col gap-space-xs max-w-2xl">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">IMMEDIATE ACTION PROTOCOL</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-normal">Ready to Reconcile Your True Conversion Ledger?</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          Upload your files in Simulation Mode right now. Observe discrepancy percentages within 30 seconds before committing to full raw ledger unlocks.
+        </p>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="px-space-lg py-3 bg-primary-container text-on-primary font-label-md text-label-md uppercase tracking-wider hover:bg-primary transition-all" onclick="executeSimulationReconciliation()" type="button">
+          RUN FREE SIMULATION AUDIT →
+        </button>
+</div>
+</div>
+</section>
+<!-- FORENSIC INSPECTION DRAWER (MODAL OVERLAY FOR SINGLE-ROW DIFFS) -->
+<div class="fixed inset-0 z-50 bg-on-surface/40 backdrop-blur-sm hidden flex justify-end" id="forensic-drawer">
+<div class="w-full max-w-xl bg-surface h-full p-space-lg shadow-xl flex flex-col justify-between overflow-y-auto">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-sm bg-surface-container px-space-md py-space-xs">
+<span class="font-label-md text-label-md uppercase tracking-wider font-bold text-on-surface" id="drawer-title">PAYLOAD DIFF: #MT-9812-F</span>
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface uppercase" onclick="closeDrawer()" type="button">CLOSE ×</button>
+</div>
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-error uppercase font-semibold">ATTRIBUTION STATUS: GHOST ATTRIBUTION DETECTED</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="drawer-desc">
+            Meta Ads Manager claimed $184.50 revenue for order reference #10842-A, but zero matching checkout records exist in the Shopify master order ledger within the ±24h UTC window.
+          </p>
+</div>
+<!-- Diff Columns -->
+<div class="grid grid-cols-2 gap-space-sm font-mono text-[11px]">
+<div class="bg-surface-container-low p-space-sm flex flex-col gap-1">
+<span class="font-label-sm text-label-sm uppercase font-bold text-primary">SHOPIFY RAW RECORD</span>
+<div class="text-on-surface-variant">order_id: null</div>
+<div class="text-on-surface-variant">gross_total: null</div>
+<div class="text-on-surface-variant">currency: null</div>
+<div class="text-on-surface-variant">status: UNREGISTERED</div>
+</div>
+<div class="bg-error-container text-on-error-container p-space-sm flex flex-col gap-1">
+<span class="font-label-sm text-label-sm uppercase font-bold text-error">META EVENT RECORD</span>
+<div>event_id: fb.1.1729808042</div>
+<div>value: 184.50 USD</div>
+<div>attribution: 7d_view</div>
+<div>status: OVER-REPORTED</div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm uppercase font-semibold text-on-surface">RECOMMENDED SYSTEM CORRECTION:</span>
+<div class="bg-surface-container p-space-sm font-mono text-body-sm text-on-surface">
+            UPDATE ad_sets SET attribution_spec = '[{"event_type":"CLICK_THROUGH","window_days":1}]';
+          </div>
+</div>
+</div>
+<div class="pt-space-md flex items-center justify-end gap-space-sm">
+<button class="px-space-md py-2 bg-surface text-on-surface font-label-sm text-label-sm uppercase" onclick="closeDrawer()" type="button">Dismiss</button>
+<button class="px-space-md py-2 bg-primary-container text-on-primary font-label-sm text-label-sm uppercase" onclick="closeDrawer()" type="button">Mark Investigated</button>
+</div>
+</div>
+</div>
+<!-- INTERACTIVE VANILLA JS CONTROLLER -->
+<script>
+    function loadSampleData(type) {
+      if (type === 'shopify') {
+        const el = document.getElementById('dropzone-shopify');
+        el.classList.add('bg-surface-container-high');
+        el.innerHTML = `
+          <span class="material-symbols-outlined text-[32px] text-tertiary-container">check_circle</span>
+          <div class="text-center flex flex-col">
+            <span class="font-label-md text-label-md uppercase tracking-wider text-on-surface font-bold">SHOPIFY_ORDERS_OCT2024.CSV LOADED</span>
+            <span class="font-body-sm text-body-sm text-on-surface-variant">1,428 valid order rows • Illustrative sample rows</span>
+          </div>
+        `;
+      } else if (type === 'ads') {
+        const el = document.getElementById('dropzone-ads');
+        el.classList.add('bg-surface-container-high');
+        el.innerHTML = `
+          <span class="material-symbols-outlined text-[32px] text-tertiary-container">check_circle</span>
+          <div class="text-center flex flex-col">
+            <span class="font-label-md text-label-md uppercase tracking-wider text-on-surface font-bold">META_CONVERSIONS_OCT2024.CSV LOADED</span>
+            <span class="font-body-sm text-body-sm text-on-surface-variant">1,684 conversion events • Timestamps Sanitized</span>
+          </div>
+        `;
+      }
+    }
+
+    function executeSimulationReconciliation() {
+      const btn = document.getElementById('reconcile-btn');
+      btn.innerText = "RECONCILING DUAL LEDGERS...";
+      btn.classList.add('opacity-80');
+      
+      setTimeout(() => {
+        btn.innerText = "RECONCILIATION COMPLETE (Illustrative)";
+        btn.classList.remove('opacity-80');
+        // Scroll smoothly to Dossier
+        window.scrollTo({
+          top: window.innerHeight * 0.85,
+          behavior: 'smooth'
+        });
+      }, 600);
+    }
+
+    function filterLedger(type, buttonElement) {
+      // Toggle button active classes
+      const container = buttonElement.parentElement;
+      const buttons = container.querySelectorAll('button');
+      buttons.forEach(b => {
+        b.classList.remove('bg-surface', 'text-on-surface', 'font-bold');
+        b.classList.add('text-on-surface-variant');
+      });
+      buttonElement.classList.add('bg-surface', 'text-on-surface', 'font-bold');
+      buttonElement.classList.remove('text-on-surface-variant');
+
+      // Filter rows
+      const rows = document.querySelectorAll('#ledger-table-body tr');
+      rows.forEach(r => {
+        if (type === 'all') {
+          r.style.display = '';
+        } else if (r.getAttribute('data-type') === type) {
+          r.style.display = '';
+        } else {
+          r.style.display = 'none';
+        }
+      });
+    }
+
+    function toggleChartMetric(metric) {
+      const btnRev = document.getElementById('metric-revenue-btn');
+      const btnVol = document.getElementById('metric-orders-btn');
+      if (metric === 'revenue') {
+        btnRev.classList.add('bg-surface-container-highest', 'text-on-surface', 'font-semibold');
+        btnRev.classList.remove('text-on-surface-variant');
+        btnVol.classList.remove('bg-surface-container-highest', 'text-on-surface', 'font-semibold');
+        btnVol.classList.add('text-on-surface-variant');
+      } else {
+        btnVol.classList.add('bg-surface-container-highest', 'text-on-surface', 'font-semibold');
+        btnVol.classList.remove('text-on-surface-variant');
+        btnRev.classList.remove('bg-surface-container-highest', 'text-on-surface', 'font-semibold');
+        btnRev.classList.add('text-on-surface-variant');
+      }
+    }
+
+    function togglePricingMode(mode) {
+      const btnDiag = document.getElementById('pricing-diagnostic-btn');
+      const btnMon = document.getElementById('pricing-monitor-btn');
+      if (mode === 'diagnostic') {
+        btnDiag.classList.add('bg-surface', 'text-on-surface', 'font-bold');
+        btnDiag.classList.remove('text-on-surface-variant');
+        btnMon.classList.remove('bg-surface', 'text-on-surface', 'font-bold');
+        btnMon.classList.add('text-on-surface-variant');
+      } else {
+        btnMon.classList.add('bg-surface', 'text-on-surface', 'font-bold');
+        btnMon.classList.remove('text-on-surface-variant');
+        btnDiag.classList.remove('bg-surface', 'text-on-surface', 'font-bold');
+        btnDiag.classList.add('text-on-surface-variant');
+      }
+    }
+
+    function inspectRow(rowId) {
+      const drawer = document.getElementById('forensic-drawer');
+      const title = document.getElementById('drawer-title');
+      title.innerText = `PAYLOAD FORENSIC DIFF: #${rowId}`;
+      drawer.classList.remove('hidden');
+    }
+
+    function closeDrawer() {
+      const drawer = document.getElementById('forensic-drawer');
+      drawer.classList.add('hidden');
+    }
+  </script>
+</div></main><footer class="w-full bg-[#151515] text-[#F5F2EA] border-t-2 border-on-surface/40 pt-space-xl pb-space-lg"><div class="w-full max-w-7xl mx-auto px-gutter-desktop"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-xl pb-space-xl border-b border-white/15"><div class="flex flex-col gap-space-sm"><div class="flex items-center gap-space-xs"><span class="font-headline-md text-headline-md font-semibold tracking-tight text-[#F5F2EA]">DRIFTCHECK</span><span class="px-1.5 py-0.5 border border-white/20 text-[#F5F2EA] font-label-sm text-label-sm uppercase">ARCHIVE</span></div><p class="font-body-sm text-body-sm text-[#F5F2EA]/75 leading-relaxed">Precision discrepancy detection between Shopify orders and ad platform conversion reporting. Reconciling attribution distortion before budget allocation.</p><div class="pt-space-xs border-t border-white/10 flex flex-col gap-1"><div class="font-label-sm text-label-sm text-[#F5F2EA]/90 tracking-wide uppercase">Protocol Compliance: SECURITY CLAIMS NOT VERIFIED</div><div class="font-label-sm text-label-sm text-[#F5F2EA]/60 uppercase">Zero-Tracking Guarantee: Review data handling terms before upload.</div></div></div><div class="flex flex-col gap-space-sm"><span class="font-label-lg text-label-lg uppercase tracking-wider text-[#F5F2EA] pb-1 border-b border-white/20">Product &amp; Diagnostics</span><ul class="flex flex-col gap-2 font-body-sm text-body-sm text-[#F5F2EA]/80"><li class="hover:text-white transition-colors cursor-pointer">• Dual-Ledger Upload</li><li class="hover:text-white transition-colors cursor-pointer">• Column Validation Matrix</li><li class="hover:text-white transition-colors cursor-pointer">• Discrepancy Breakdown</li><li class="hover:text-white transition-colors cursor-pointer">• Priority Investigation Dossier</li><li class="hover:text-white transition-colors cursor-pointer">• Automated Daily Monitoring</li></ul></div><div class="flex flex-col gap-space-sm"><span class="font-label-lg text-label-lg uppercase tracking-wider text-[#F5F2EA] pb-1 border-b border-white/20">Forensic Methodology</span><ul class="flex flex-col gap-2 font-body-sm text-body-sm text-[#F5F2EA]/80"><li class="hover:text-white transition-colors cursor-pointer">• Attribution Window Drift</li><li class="hover:text-white transition-colors cursor-pointer">• Currency &amp; Timezone Alignment</li><li class="hover:text-white transition-colors cursor-pointer">• Server-side Event Drops</li><li class="hover:text-white transition-colors cursor-pointer">• Deduplication Logic</li><li class="hover:text-white transition-colors cursor-pointer">• Limitation Disclosures</li></ul></div><div class="flex flex-col gap-space-sm"><span class="font-label-lg text-label-lg uppercase tracking-wider text-[#F5F2EA] pb-1 border-b border-white/20">Governance &amp; Trust</span><ul class="flex flex-col gap-2 font-body-sm text-body-sm text-[#F5F2EA]/80"><li class="hover:text-white transition-colors cursor-pointer">• Data Handling Policy</li><li class="hover:text-white transition-colors cursor-pointer">• Ephemeral In-Memory Processing</li><li class="hover:text-white transition-colors cursor-pointer">• Third-party services may be used; verify current data handling terms</li><li class="hover:text-white transition-colors cursor-pointer">• Independent Payment Verification</li><li class="hover:text-white transition-colors cursor-pointer">• Terms of Audit</li></ul></div></div><div class="pt-space-md flex flex-col md:flex-row items-start md:items-center justify-between gap-space-sm font-label-sm text-label-sm text-[#F5F2EA]/60"><div class="tracking-wider uppercase">© 2026 DRIFTCHECK RECONCILIATION DESK. ALL AUDIT RIGHTS RESERVED.</div><div class="text-right max-w-xl">All comparative metrics and audit logs subject to independent verified ledger protocol. Demo states labeled SAMPLE DATA.</div></div></div></footer>
+<script>
+(function(){
+  const blocked = /get my report|begin \$1 diagnostic|unlock full diagnostic|run (?:the )?\$1|run paid check|build \$15 product pack|run \$15 close check|execute real-time scan|launch product builder|real-time anomaly scan|run the drift check/i;
+  document.addEventListener('click', function(e){
+    const el=e.target.closest('button,a,input[type="submit"]');
+    if(!el) return;
+    const label=(el.innerText||el.value||el.getAttribute('aria-label')||'').replace(/\s+/g,' ').trim();
+    if(blocked.test(label)){
+      e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+      alert('Checkout is not connected yet. No payment was taken and no real scan or product processing occurred.');
+    }
+  }, true);
+  document.addEventListener('submit',function(e){
+    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+    alert('Checkout is not connected yet. No payment was taken and no real scan or product processing occurred.');
+  },true);
+  document.addEventListener('change',function(e){
+    if(e.target && e.target.matches('input[type=file]')){
+      e.target.value='';
+      alert('Real file processing is currently disabled until verified checkout and secure processing are connected.');
+    }
+  },true);
+  document.querySelectorAll('a[href="#"]').forEach(function(a){
+    if(!a.dataset.path && !a.closest('nav')) a.addEventListener('click',function(e){e.preventDefault()});
+  });
+})();
+</script>
+</body></html>
