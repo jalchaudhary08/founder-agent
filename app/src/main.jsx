@@ -465,4 +465,29 @@ function App() {
 }
 
 if ("serviceWorker" in navigator) window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));
-createRoot(document.getElementById("root")).render(<App />);
+
+const standaloneProducts = {
+  "revenue-leak": RevenueLeakExperiment,
+  "tracking-drift": TrackingDriftExperiment,
+  "agency-report-qa": AgencyReportQAExperiment,
+  "food-label": FoodLabelExperiment,
+  "accounting-close": AccountingCloseExperiment
+};
+const standaloneProduct = standaloneProducts[import.meta.env.VITE_PRODUCT];
+if (standaloneProduct) {
+  const titles = {
+    "revenue-leak": "REVENUELEAK — Website Revenue-Leak Watchdog",
+    "tracking-drift": "DRIFTCHECK — Shopify Ads Tracking Drift",
+    "agency-report-qa": "REPORTCHECK — Agency Client-Report QA",
+    "food-label": "LABELKIT — Food Label & Nutrition Pack",
+    "accounting-close": "CLOSELINE — Accounting Close Monitor"
+  };
+  document.title = titles[import.meta.env.VITE_PRODUCT] || "SaaS Product";
+}
+createRoot(document.getElementById("root")).render(
+  standaloneProduct
+    ? React.createElement(standaloneProduct, {
+        onBack: () => { window.location.href = "https://founder-agent-sigma.vercel.app"; }
+      })
+    : <App />
+);
