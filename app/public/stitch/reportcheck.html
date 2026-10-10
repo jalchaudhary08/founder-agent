@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>REPORTCHECK — Editorial Pre-Flight Quality Desk</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"surface-dim":"#dcd9d9","on-surface-variant":"#3e494a","tertiary-container":"#76736a","surface-container-high":"#eae7e7","on-surface":"#1c1b1b","surface-container-highest":"#e5e2e1","on-primary":"#ffffff","on-primary-fixed-variant":"#004f57","on-secondary-container":"#606361","on-tertiary":"#ffffff","primary-container":"#087f8c","surface":"#fcf9f8","on-error-container":"#93000a","surface-variant":"#e5e2e1","surface-container-low":"#f6f3f2","surface-tint":"#006874","on-tertiary-container":"#fff9f1","tertiary-fixed-dim":"#cbc6bc","primary-fixed":"#95f1ff","background":"#fcf9f8","on-tertiary-fixed":"#1d1c15","on-tertiary-fixed-variant":"#49473f","secondary-fixed-dim":"#c4c7c4","on-secondary":"#ffffff","on-secondary-fixed-variant":"#444845","surface-bright":"#fcf9f8","error-container":"#ffdad6","on-error":"#ffffff","inverse-on-surface":"#f3f0ef","tertiary":"#5d5a52","secondary":"#5b5f5d","error":"#ba1a1a","surface-container":"#f0eded","primary":"#00646f","on-secondary-fixed":"#181c1b","surface-container-lowest":"#ffffff","outline-variant":"#bdc9ca","on-primary-fixed":"#001f24","secondary-container":"#dde0dd","on-background":"#1c1b1b","outline":"#6e797b","secondary-fixed":"#e0e3e0","on-primary-container":"#effdff","inverse-surface":"#313030","tertiary-fixed":"#e7e2d7","inverse-primary":"#79d4e2","primary-fixed-dim":"#79d4e2"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-md":"1rem","space-xl":"2.5rem","margin":"2rem","gutter":"1.5rem","space-2xl":"4rem","space-lg":"1.5rem","space-xxs":"0.125rem","space-sm":"0.5rem","gutter-mobile":"0.75rem","space-xs":"0.25rem","margin-mobile":"1rem"},"fontFamily":{"mono-metric":["JetBrains Mono"],"mono-micro":["JetBrains Mono"],"label-caps":["Inter"],"display-xl":["Newsreader"],"body-sm":["Inter"],"headline-md":["Newsreader"],"display-xl-mobile":["Newsreader"],"title-sm":["Inter"],"headline-sm":["Newsreader"],"headline-lg-mobile":["Newsreader"],"headline-lg":["Newsreader"],"title-md":["Inter"],"mono-code":["JetBrains Mono"],"body-lg":["Inter"],"body-md":["Inter"]},"fontSize":{"mono-metric":["14px",{"lineHeight":"20px","letterSpacing":"-0.02em","fontWeight":"500"}],"mono-micro":["10px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"500"}],"label-caps":["11px",{"lineHeight":"16px","letterSpacing":"0.06em","fontWeight":"600"}],"display-xl":["56px",{"lineHeight":"64px","letterSpacing":"-0.02em","fontWeight":"400"}],"body-sm":["12px",{"lineHeight":"18px","letterSpacing":"0.01em","fontWeight":"400"}],"headline-md":["26px",{"lineHeight":"34px","letterSpacing":"-0.01em","fontWeight":"400"}],"display-xl-mobile":["36px",{"lineHeight":"44px","letterSpacing":"-0.01em","fontWeight":"400"}],"title-sm":["14px",{"lineHeight":"20px","letterSpacing":"0","fontWeight":"600"}],"headline-sm":["20px",{"lineHeight":"28px","letterSpacing":"0","fontWeight":"500"}],"headline-lg-mobile":["28px",{"lineHeight":"36px","letterSpacing":"-0.01em","fontWeight":"400"}],"headline-lg":["36px",{"lineHeight":"44px","letterSpacing":"-0.015em","fontWeight":"400"}],"title-md":["16px",{"lineHeight":"24px","letterSpacing":"-0.005em","fontWeight":"600"}],"mono-code":["12px",{"lineHeight":"16px","letterSpacing":"0","fontWeight":"400"}],"body-lg":["16px",{"lineHeight":"26px","letterSpacing":"0","fontWeight":"400"}],"body-md":["14px",{"lineHeight":"22px","letterSpacing":"0","fontWeight":"400"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary selection:text-on-primary"><header class="fixed top-0 left-0 w-full z-50 bg-surface/95 backdrop-blur-md"><div class="h-20 w-full px-margin flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md min-w-max"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1XlK7eRQG3MOytmHGKLMtsT_U-3m-KFQxo_rejUrPtMig3d-Z-n5J4GEPtKRYbSTbMX9WdrcFKaQe0-F5CFAxTMsFMa4VF0iJqM_6dacmmGF01kIsn2H18YIxxKYSiEhpPr7YwN8_uwz9y_URzwkDwfCQIkVqhsUNf5DBFi_u3e4k4OJkpj9Elast3Kqi1jQwGhH78Ehsr8ZoykjsPWQYzyGjZQmH-m2p1J5IUjFjxT-7CH9rhwWOqmtw"/><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-on-surface">REPORTCHECK</span><span class="font-label-caps text-label-caps uppercase text-tertiary bg-tertiary-fixed px-space-xs py-space-xxs rounded">Desk</span></div><span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Pre-Flight Audit Desk</span></div></div><div class="hidden xl:flex items-center gap-space-xs pl-space-md"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span><span class="font-mono-micro text-mono-micro text-on-surface-variant uppercase">System Operational — Ruleset v2.4</span></div></div><nav class="hidden lg:flex items-center gap-space-sm" data-active-classes="bg-surface-container-high text-on-surface font-semibold rounded-lg"><a aria-current="page" class="px-space-sm py-space-xs transition-colors bg-surface-container-high text-on-surface font-semibold rounded-lg" data-path="overview" href="#">Overview</a><a class="px-space-sm py-space-xs font-title-sm text-title-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors rounded" data-path="report-checker" href="#">Report Checker</a><a class="px-space-sm py-space-xs font-title-sm text-title-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors rounded" data-path="sample-dossier" href="#">Sample Dossier</a><a class="px-space-sm py-space-xs font-title-sm text-title-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors rounded" data-path="methodology" href="#">Methodology</a><a class="px-space-sm py-space-xs font-title-sm text-title-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors rounded" data-path="pricing" href="#">Pricing</a><a class="px-space-sm py-space-xs font-title-sm text-title-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors rounded" data-path="faq" href="#">FAQ</a><a class="px-space-sm py-space-xs font-title-sm text-title-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors rounded" data-path="client-portal" href="#">Client Portal</a></nav><div class="flex items-center gap-space-sm"><div class="hidden md:flex items-center px-space-sm py-space-xs bg-surface-container-low rounded"><span class="font-mono-micro text-mono-micro text-on-surface-variant uppercase">Audit Rules (42 Active)</span></div><a class="hidden sm:inline-flex px-space-sm py-space-xs font-title-sm text-title-sm text-on-surface hover:bg-surface-container-high hover:text-on-surface rounded transition-colors" data-path="client-portal" href="#">Sign In</a><a class="inline-flex items-center justify-center px-space-md py-space-xs bg-inverse-surface text-inverse-on-surface font-title-sm text-title-sm font-semibold rounded hover:bg-primary hover:text-on-primary transition-colors" data-path="report-checker" href="#"><span class="font-title-sm text-title-sm">Run Report Check</span></a></div></div><div class="w-full bg-surface-container-low px-margin py-space-xs flex items-center justify-between text-on-surface-variant"><div class="flex items-center gap-space-sm overflow-hidden text-ellipsis whitespace-nowrap"><span class="font-label-caps text-label-caps uppercase text-primary font-semibold">Auditing Protocol</span><span class="text-tertiary-fixed-dim">•</span><span class="font-mono-micro text-mono-micro text-on-surface-variant">Standard: Pre-flight Verification • Zero hallucinated data • Deterministic CSV parser active</span></div><div class="hidden md:flex items-center gap-space-md"><span class="font-mono-micro text-mono-micro text-tertiary">LATENCY: 18ms</span><span class="font-mono-micro text-mono-micro text-tertiary">INTEGRITY: Illustrative SHA-256</span></div></div></header><main class="w-full pt-20 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Top Forensic Desk Identification Header -->
+<section class="w-full px-margin pt-space-xl pb-space-lg bg-surface">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<div class="flex flex-wrap items-center justify-between gap-space-md pb-space-sm bg-surface-container-low p-space-md rounded">
+<div class="flex items-center gap-space-sm">
+<div class="w-7 h-7 bg-inverse-surface rounded flex items-center justify-center text-inverse-on-surface">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+</div>
+<div class="flex flex-col">
+<span class="font-mono-micro text-mono-micro text-on-surface-variant uppercase tracking-widest">EDITORIAL PROOFING FOR AGENCY DELIVERABLES • SPEC v2.4</span>
+<span class="font-title-sm text-title-sm font-semibold text-on-surface">REPORTCHECK AUDIT BENCH</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs font-mono-micro text-mono-micro text-tertiary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+<span>ENGINE: DETERMINISTIC IN-MEMORY RECONCILER</span>
+</div>
+<div class="h-4 w-[1px] bg-outline-variant"></div>
+<span class="font-mono-micro text-mono-micro px-space-xs py-space-xxs bg-surface-container-highest text-on-surface rounded font-semibold uppercase">ZERO-RETENTION VAULT</span>
+</div>
+</div>
+<!-- Main Headline Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-end">
+<div class="lg:col-span-8 flex flex-col gap-space-sm">
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">Independent Deliverable Quality Control</span>
+<h1 class="font-display-xl text-display-xl text-on-surface font-normal tracking-tight">
+            Catch the number before the client does.
+          </h1>
+<p class="font-headline-sm text-headline-sm text-on-surface-variant font-normal">
+            Check the report. Fix the inconsistencies. Send with confidence.
+          </p>
+</div>
+<div class="lg:col-span-4 bg-surface-container-low p-space-md rounded flex flex-col gap-space-xs">
+<span class="font-label-caps text-label-caps text-tertiary uppercase">Target Agency Persona</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Engineered exclusively for performance marketing agencies, media buying directors, and reporting analysts verifying weekly and monthly multi-million dollar client decks across Meta, Google Ads, and TikTok.
+          </p>
+<div class="flex items-center gap-space-sm mt-space-xs pt-space-xs">
+<span class="font-mono-micro text-mono-micro text-primary font-semibold">1,420 VALIDATIONS/SEC</span>
+<span class="text-outline-variant">•</span>
+<span class="font-mono-micro text-mono-micro text-on-surface-variant">42 SCHEMA CHECKS</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 1: Working Interactive CSV Terminal -->
+<section class="w-full px-margin py-space-lg bg-surface">
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Upload Drop Target -->
+<div class="lg:col-span-8 bg-surface-container-lowest p-space-lg rounded shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">terminal</span>
+<span class="font-title-md text-title-md text-on-surface">Pre-Flight File Ingestion Terminal</span>
+</div>
+<span class="font-mono-micro text-mono-micro px-space-sm py-space-xxs bg-surface-container text-on-surface-variant rounded">PARSER: RFC 4180 COMPLIANT</span>
+</div>
+<!-- Drag & Drop Container -->
+<div class="relative bg-surface-container-low/70 rounded p-space-xl flex flex-col items-center justify-center text-center transition-all cursor-pointer group hover:bg-surface-container-high/60" id="dropZone">
+<input accept=".csv,.tsv,.txt" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" id="fileInput" type="file"/>
+<div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center text-primary mb-space-sm group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[28px]">upload_file</span>
+</div>
+<div class="flex flex-col items-center gap-space-xxs">
+<span class="font-title-md text-title-md text-on-surface font-semibold">Drop Client Spend CSV Here, or Click to Browse</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Deterministic memory-only execution. No storage. No model training.</span>
+</div>
+<!-- Staged File Status Badge -->
+<div class="mt-space-md w-full max-w-lg bg-surface-container-lowest p-space-sm rounded flex items-center justify-between shadow-sm" id="stagedFile">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">description</span>
+<div class="flex flex-col text-left">
+<span class="font-mono-metric text-[12px] font-semibold text-on-surface leading-tight">Q3_Acquisition_Report_Final_v3.csv</span>
+<span class="font-mono-micro text-mono-micro text-tertiary">842 KB • 1,420 rows • UTF-8 Delimited (,)</span>
+</div>
+</div>
+<span class="font-mono-micro text-mono-micro px-space-xs py-space-xxs bg-error-container text-on-error-container font-semibold rounded uppercase">Pre-Flight Audit Pending</span>
+</div>
+</div>
+<!-- Pre-Flight Quick Action Buttons -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs">
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="px-space-md py-space-xs bg-inverse-surface text-inverse-on-surface hover:bg-primary font-title-sm text-title-sm font-semibold rounded transition-colors flex items-center gap-space-xs" id="btnLoadDefective">
+<span class="material-symbols-outlined text-[16px]">bug_report</span>
+<span>Load Sample Defective CSV (Default)</span>
+</button>
+<button class="px-space-md py-space-xs bg-surface-container text-on-surface hover:bg-surface-container-highest font-title-sm text-title-sm font-semibold rounded transition-colors flex items-center gap-space-xs" id="btnLoadClean">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Analyze Clean Sample</span>
+</button>
+</div>
+<button class="px-space-sm py-space-xs text-on-surface-variant hover:text-error font-mono-micro text-mono-micro uppercase transition-colors" id="btnResetUpload">
+            Clear Buffer
+          </button>
+</div>
+<!-- Ephemeral Security Callout -->
+<div class="flex items-center gap-space-sm p-space-sm bg-surface-container-low rounded text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] text-primary">security</span>
+<span class="font-mono-micro text-mono-micro leading-relaxed">
+            ZERO DATA RETENTION GUARANTEE: Ingested records exist strictly within RAM during analysis and are immediately purged from browser state upon session teardown. SHA-256 hash calculated client-side.
+          </span>
+</div>
+</div>
+<!-- Required Field Schema Guide -->
+<div class="lg:col-span-4 bg-surface-container-low p-space-lg rounded flex flex-col justify-between gap-space-md">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-tertiary uppercase">Specification Guide</span>
+<span class="font-mono-micro text-mono-micro px-space-xs py-space-xxs bg-surface-container-highest text-on-surface rounded">STANDARD RC-09</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Required Column Schema</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            To ensure zero false-positives, client deliverable files must contain standard performance media dimensions.
+          </p>
+<div class="space-y-space-xs mt-space-xs font-mono-micro text-mono-micro">
+<div class="flex items-center justify-between p-space-xs bg-surface-container-lowest rounded">
+<span class="text-on-surface font-semibold">Date</span>
+<span class="text-tertiary">ISO 8601 (YYYY-MM-DD)</span>
+</div>
+<div class="flex items-center justify-between p-space-xs bg-surface-container-lowest rounded">
+<span class="text-on-surface font-semibold">Campaign_Name</span>
+<span class="text-tertiary">String (Alphanumeric)</span>
+</div>
+<div class="flex items-center justify-between p-space-xs bg-surface-container-lowest rounded">
+<span class="text-on-surface font-semibold">Platform</span>
+<span class="text-tertiary">Meta | Google | TikTok</span>
+</div>
+<div class="flex items-center justify-between p-space-xs bg-surface-container-lowest rounded">
+<span class="text-on-surface font-semibold">Spend</span>
+<span class="text-tertiary">Numeric (Currency Cleaned)</span>
+</div>
+<div class="flex items-center justify-between p-space-xs bg-surface-container-lowest rounded">
+<span class="text-on-surface font-semibold">Impressions / Clicks</span>
+<span class="text-tertiary">Non-negative Integer</span>
+</div>
+<div class="flex items-center justify-between p-space-xs bg-surface-container-lowest rounded">
+<span class="text-on-surface font-semibold">Conversions</span>
+<span class="text-tertiary">Integer or Decimal (≥ 0)</span>
+</div>
+<div class="flex items-center justify-between p-space-xs bg-surface-container-lowest rounded">
+<span class="text-on-surface font-semibold">Revenue / ROAS</span>
+<span class="text-tertiary">Formula-verified Metric</span>
+</div>
+</div>
+</div>
+<div class="pt-space-sm bg-surface-container-highest p-space-sm rounded flex flex-col gap-space-xxs">
+<span class="font-label-caps text-label-caps text-on-surface font-semibold uppercase">Supported Delimiters</span>
+<span class="font-mono-micro text-mono-micro text-on-surface-variant">Comma (,), Tab (\t), Semicolon (;), Pipe (|). Auto-detected on byte sniff.</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Pre-Send Dispatch Banner & Executive Metrics -->
+<section class="w-full px-margin py-space-lg bg-surface">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<!-- Pre-Send Traffic Light Stamp Banner -->
+<div class="bg-surface-container-lowest rounded p-space-md shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md bg-gradient-to-r from-error-container/40 via-surface-container-lowest to-surface-container-lowest" id="dispatchBanner">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded bg-error text-on-error flex items-center justify-center shrink-0" id="dispatchIconBadge">
+<span class="material-symbols-outlined text-[28px]">gavel</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-micro text-mono-micro text-on-surface-variant uppercase tracking-wider">AUDIT DISPATCH DETERMINATION</span>
+<span class="font-mono-micro text-mono-micro font-semibold px-space-xs py-space-xxs bg-error text-on-error rounded uppercase" id="dispatchCode">STAMP: HOLD</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-normal" id="dispatchHeading">
+              HOLD — 4 Critical Conflicts Detected in Client Deliverable
+            </h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="dispatchNotice">
+              Delivery blocked. Unreconciled mathematical discrepancy of -$14,280.50 exists between platform rows and deck summary slide.
+            </span>
+</div>
+</div>
+<!-- Interactive Stamp Mode Selector for Demo -->
+<div class="flex items-center gap-space-xs bg-surface-container p-space-xs rounded shrink-0">
+<button class="px-space-sm py-space-xs rounded font-mono-micro text-mono-micro font-semibold bg-error text-on-error shadow-sm transition-all" id="btnStateHold">
+            HOLD (4 CRIT)
+          </button>
+<button class="px-space-sm py-space-xs rounded font-mono-micro text-mono-micro text-on-surface-variant hover:text-on-surface transition-all" id="btnStateReview">
+            REVIEW (3 WARN)
+          </button>
+<button class="px-space-sm py-space-xs rounded font-mono-micro text-mono-micro text-on-surface-variant hover:text-on-surface transition-all" id="btnStateSend">
+            SEND (CLEARED)
+          </button>
+</div>
+</div>
+<!-- 4 Executive Audit Summary Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between pb-space-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Rows Evaluated</span>
+<span class="material-symbols-outlined text-primary text-[18px]">table_rows</span>
+</div>
+<div class="flex flex-col">
+<span class="font-display-xl text-[42px] leading-tight text-on-surface font-normal">1,420</span>
+<span class="font-mono-micro text-mono-micro text-tertiary mt-space-xxs">Google Ads • Meta • TikTok (3 Channels)</span>
+</div>
+<div class="mt-space-md pt-space-xs bg-surface-container-low p-space-xs rounded">
+<span class="font-mono-micro text-mono-micro text-on-surface font-semibold">Illustrative PARSE SUCCESS</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between pb-space-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Issues Flagged</span>
+<span class="material-symbols-outlined text-error text-[18px]">flag</span>
+</div>
+<div class="flex flex-col">
+<span class="font-display-xl text-[42px] leading-tight text-error font-normal">7 Items</span>
+<span class="font-mono-micro text-mono-micro text-tertiary mt-space-xxs">4 Critical Errors • 3 Advisory Warnings</span>
+</div>
+<div class="mt-space-md pt-space-xs bg-error-container p-space-xs rounded">
+<span class="font-mono-micro text-mono-micro text-on-error-container font-semibold">IMMEDIATE ACTION REQUIRED</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between pb-space-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">High-Severity Findings</span>
+<span class="material-symbols-outlined text-error text-[18px]">warning</span>
+</div>
+<div class="flex flex-col">
+<span class="font-display-xl text-[42px] leading-tight text-on-surface font-normal">4 Fatal</span>
+<span class="font-mono-micro text-mono-micro text-tertiary mt-space-xxs">Sum mismatches, severed dates, dups</span>
+</div>
+<div class="mt-space-md pt-space-xs bg-surface-container-low p-space-xs rounded">
+<span class="font-mono-micro text-mono-micro text-on-surface-variant">DECK ACCURACY: COMPROMISED</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between pb-space-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Total Discrepancy Value</span>
+<span class="material-symbols-outlined text-primary text-[18px]">monetization_on</span>
+</div>
+<div class="flex flex-col">
+<span class="font-display-xl text-[42px] leading-tight text-primary font-normal">$14,280.50</span>
+<span class="font-mono-micro text-mono-micro text-tertiary mt-space-xxs">Unaccounted media spend drift</span>
+</div>
+<div class="mt-space-md pt-space-xs bg-surface-container-low p-space-xs rounded">
+<span class="font-mono-micro text-mono-micro text-on-surface-variant">BILLING RECONCILIATION RISK</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Detailed Finding Cards & Side-by-Side Evidence Panels -->
+<section class="w-full px-margin py-space-xl bg-surface">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div>
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">Forensic Line Inspections</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-normal">Detailed Exception Dossier</h2>
+</div>
+<div class="flex items-center gap-space-sm font-mono-micro text-mono-micro text-tertiary">
+<span class="px-space-xs py-space-xxs bg-error text-on-error rounded font-semibold">4 CRITICAL</span>
+<span class="px-space-xs py-space-xxs bg-surface-container-highest text-on-surface font-semibold rounded">3 WARNING</span>
+<span class="px-space-xs py-space-xxs bg-surface-container-low text-on-surface-variant rounded">35 PASSED</span>
+</div>
+</div>
+<!-- 5 Rich Finding Cards -->
+<div class="space-y-space-md">
+<!-- Finding 01 -->
+<div class="bg-surface-container-lowest rounded p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-wrap items-center justify-between gap-space-sm pb-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-metric text-mono-metric font-semibold px-space-xs py-space-xxs bg-error text-on-error rounded">FINDING 01</span>
+<span class="font-title-md text-title-md font-semibold text-on-surface">Mismatched Total: Platform Spend vs Deck Summary</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-micro text-mono-micro px-space-xs py-space-xxs bg-surface-container text-on-surface font-semibold rounded">VARIANCE: -$9,080.00</span>
+<span class="font-mono-micro text-mono-micro text-tertiary">CSV COORD: ROWS 14-88 vs ROW 104</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Meta Ads reported spend on executive slide Table 1 ($48,200.00) does not match the bottom-up sum of active campaign rows ($39,120.00). An unexplained negative variance of $9,080 exists in the deliverable.
+          </p>
+<!-- Evidence Diff Side-by-Side Panel -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter bg-surface-container-low p-space-md rounded font-mono-micro text-mono-micro">
+<div class="flex flex-col gap-space-xs bg-surface-container-lowest p-space-sm rounded">
+<div class="flex items-center justify-between text-tertiary">
+<span class="font-semibold text-on-surface">RAW CSV ROW DATA (Meta Ads Extract)</span>
+<span>Illustrative sample rows</span>
+</div>
+<div class="space-y-1 text-on-surface-variant">
+<div class="p-1 bg-surface-container-low rounded">Row 14-87: 74 Campaigns aggregated sum: <strong class="text-on-surface font-semibold">$39,120.00</strong></div>
+<div class="p-1 bg-surface-container-low rounded">Row 88: Retargeting_Prospecting_Q3: <strong class="text-on-surface font-semibold">$1,450.00</strong></div>
+<div class="p-1 text-primary">Calculated True Platform Sum: <strong class="text-primary font-semibold">$39,120.00</strong></div>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs bg-error-container/30 p-space-sm rounded">
+<div class="flex items-center justify-between text-on-error-container">
+<span class="font-semibold text-error">CLIENT DECK REPORTED NUMBER (Deck Slide 4)</span>
+<span>CRITICAL MISMATCH</span>
+</div>
+<div class="space-y-1 text-on-surface-variant">
+<div class="p-1 bg-surface-container-lowest rounded">Row 104 (Deck Summary Cell C12): <strong class="text-error font-semibold">$48,200.00</strong></div>
+<div class="p-1 bg-surface-container-lowest rounded">Root Cause: Ghost formula override in Looker Studio data blend.</div>
+<div class="p-1 text-error font-semibold">Net Discrepancy to Client: +$9,080.00 over-reported spend.</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Finding 02 -->
+<div class="bg-surface-container-lowest rounded p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-wrap items-center justify-between gap-space-sm pb-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-metric text-mono-metric font-semibold px-space-xs py-space-xxs bg-error text-on-error rounded">FINDING 02</span>
+<span class="font-title-md text-title-md font-semibold text-on-surface">Inconsistent Attribution Date Window</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-micro text-mono-micro px-space-xs py-space-xxs bg-surface-container text-on-surface font-semibold rounded">UNCOUNTED DAYS: 6 DAYS</span>
+<span class="font-mono-micro text-mono-micro text-tertiary">CAMPAIGN: US_SEARCH_NONBRAND</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Google Ads campaign 'US_Search_NonBrand' covers full calendar month (Sep 01 - Sep 30), but conversions column abruptly terminates after Sep 24. Spend continues through Sep 30, suppressing perceived campaign ROAS by 28.4%.
+          </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter bg-surface-container-low p-space-md rounded font-mono-micro text-mono-micro">
+<div class="flex flex-col gap-space-xs bg-surface-container-lowest p-space-sm rounded">
+<span class="font-semibold text-on-surface">DATE BOUNDARY CHECK</span>
+<div class="space-y-1 text-on-surface-variant">
+<div>Row 210: 2024-09-23 | Spend: $1,140.00 | Conversions: 48</div>
+<div>Row 211: 2024-09-24 | Spend: $1,210.00 | Conversions: 52</div>
+<div class="text-error">Row 212: 2024-09-25 | Spend: $1,180.00 | Conversions: 0 [TRUNCATED]</div>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs bg-surface-container-lowest p-space-sm rounded">
+<span class="font-semibold text-on-surface">RECOMMENDED REMEDIATION</span>
+<div class="space-y-1 text-on-surface-variant">
+<div>Missing period: 2024-09-25 through 2024-09-30 (6 missing intervals).</div>
+<div>Estimated uncounted conversions: ~312 actions based on rolling 14d baseline.</div>
+<div class="text-primary font-semibold">Action: Refresh Supermetrics Google Ads pipeline with full lookback.</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Finding 03 -->
+<div class="bg-surface-container-lowest rounded p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-wrap items-center justify-between gap-space-sm pb-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-metric text-mono-metric font-semibold px-space-xs py-space-xxs bg-error text-on-error rounded">FINDING 03</span>
+<span class="font-title-md text-title-md font-semibold text-on-surface">Identical Duplicate Records (TikTok Media Import)</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-micro text-mono-micro px-space-xs py-space-xxs bg-surface-container text-on-surface font-semibold rounded">DUPLICATE ROWS: 412 &amp; 413</span>
+<span class="font-mono-micro text-mono-micro text-tertiary">FINGERPRINT MATCH: Illustrative</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Row 412 and Row 413 have identical timestamp, campaign hash ('TT_Spark_UGC_Scale'), adgroup ID, and spend ($1,240.00). Artificially doubles conversions (184 recorded vs 92 real) and doubles reported spend by $1,240.
+          </p>
+<div class="bg-surface-container-low p-space-sm rounded font-mono-micro text-mono-micro overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="text-tertiary">
+<th class="py-1">ROW</th>
+<th class="py-1">DATE</th>
+<th class="py-1">CAMPAIGN_ID</th>
+<th class="py-1">SPEND</th>
+<th class="py-1">CONVERSIONS</th>
+<th class="py-1">STATUS</th>
+</tr>
+</thead>
+<tbody class="text-on-surface">
+<tr class="bg-surface-container-lowest">
+<td class="py-1 text-primary">#412</td>
+<td class="py-1">2024-09-18</td>
+<td class="py-1">TT-984210</td>
+<td class="py-1">$1,240.00</td>
+<td class="py-1">92</td>
+<td class="py-1 text-on-surface-variant">Primary Entry</td>
+</tr>
+<tr class="bg-error-container/40 text-on-error-container">
+<td class="py-1 text-error font-semibold">#413</td>
+<td class="py-1">2024-09-18</td>
+<td class="py-1">TT-984210</td>
+<td class="py-1">$1,240.00</td>
+<td class="py-1">92</td>
+<td class="py-1 text-error font-semibold">DUPLICATE REMOVE</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Finding 04 -->
+<div class="bg-surface-container-lowest rounded p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-wrap items-center justify-between gap-space-sm pb-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-metric text-mono-metric font-semibold px-space-xs py-space-xxs bg-tertiary text-on-tertiary rounded">FINDING 04</span>
+<span class="font-title-md text-title-md font-semibold text-on-surface">Formula Inversion Anomaly (TikTok Ads ROAS)</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-micro text-mono-micro px-space-xs py-space-xxs bg-surface-container text-on-surface font-semibold rounded">FLAG: SUSPICIOUS METRIC</span>
+<span class="font-mono-micro text-mono-micro text-tertiary">TABLE 4.2 CELL E18</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            TikTok ROAS reported on summary slide as 420.0x ($420 return per $1 spent). Forensic syntax audit indicates formula dividend was inverted: Cost / Revenue computed instead of Revenue / Cost. True ROAS is 2.38x.
+          </p>
+<div class="flex flex-col sm:flex-row items-center gap-space-md bg-surface-container-low p-space-md rounded">
+<div class="flex-1 font-mono-micro text-mono-micro">
+<span class="text-tertiary">REPORTED IN DECK:</span>
+<div class="p-space-xs bg-error-container text-on-error-container font-semibold rounded mt-1">
+                = Spend ($5,000) / Revenue ($11,900) × 1000 = 420.0x [FATAL PRESENTATION ERROR]
+              </div>
+</div>
+<div class="flex-1 font-mono-micro text-mono-micro">
+<span class="text-tertiary">CORRECT FORMULA:</span>
+<div class="p-space-xs bg-surface-container-lowest text-on-surface font-semibold rounded mt-1">
+                = Revenue ($11,900) / Spend ($5,000) = 2.38x True ROAS
+              </div>
+</div>
+</div>
+</div>
+<!-- Finding 05 -->
+<div class="bg-surface-container-lowest rounded p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-wrap items-center justify-between gap-space-sm pb-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-metric text-mono-metric font-semibold px-space-xs py-space-xxs bg-tertiary text-on-tertiary rounded">FINDING 05</span>
+<span class="font-title-md text-title-md font-semibold text-on-surface">Null / Blank Conversion Cells with Material Spend</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-micro text-mono-micro px-space-xs py-space-xxs bg-surface-container text-on-surface font-semibold rounded">18 ROWS AFFECTED</span>
+<span class="font-mono-micro text-mono-micro text-tertiary">CAMPAIGN: RETARGETING_CATALOG</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            18 distinct day-records in 'Retargeting_Catalog' contain NULL or blank conversion values while logging a combined $4,520.00 in ad expenditure. This produces #VALUE! division errors in agency automated Google Sheets exports.
+          </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Recommended Correction Checklist -->
+<section class="w-full px-margin py-space-lg bg-surface">
+<div class="max-w-7xl mx-auto bg-surface-container-lowest p-space-xl rounded shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-wrap items-center justify-between gap-space-md pb-space-xs">
+<div>
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">Agency Analyst Protocol</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Pre-Send Correction Checklist</h2>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-mono-metric text-mono-metric text-primary font-semibold" id="checklistCounter">1 OF 4 COMPLETED</span>
+</div>
+</div>
+<div class="space-y-space-xs" id="checklistContainer">
+<!-- Checklist Item 1 -->
+<label class="flex items-start gap-space-sm p-space-md bg-surface-container-low rounded cursor-pointer transition-colors hover:bg-surface-container">
+<input checked="" class="mt-1 w-4 h-4 text-primary rounded focus:ring-primary accent-primary" onchange="updateChecklist(this)" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold line-through text-on-surface-variant">Deduplicate TikTok import batch</span>
+<span class="font-body-sm text-body-sm text-tertiary">Removes duplicate row #413 from the raw CSV export to eliminate double-counted $1,240.00 spend.</span>
+</div>
+</label>
+<!-- Checklist Item 2 -->
+<label class="flex items-start gap-space-sm p-space-md bg-surface-container-low rounded cursor-pointer transition-colors hover:bg-surface-container">
+<input class="mt-1 w-4 h-4 text-primary rounded focus:ring-primary accent-primary" onchange="updateChecklist(this)" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Re-sync Google Ads attribution window back to Sep 30</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Re-query Supermetrics or Google Ads API to recover missing conversions between Sep 25-30.</span>
+</div>
+</label>
+<!-- Checklist Item 3 -->
+<label class="flex items-start gap-space-sm p-space-md bg-surface-container-low rounded cursor-pointer transition-colors hover:bg-surface-container">
+<input class="mt-1 w-4 h-4 text-primary rounded focus:ring-primary accent-primary" onchange="updateChecklist(this)" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Correct inverted ROAS formula syntax in Table 4.2</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Switch dividend and divisor in client deck cell E18 (Revenue / Cost) to restore genuine 2.38x ROAS.</span>
+</div>
+</label>
+<!-- Checklist Item 4 -->
+<label class="flex items-start gap-space-sm p-space-md bg-surface-container-low rounded cursor-pointer transition-colors hover:bg-surface-container">
+<input class="mt-1 w-4 h-4 text-primary rounded focus:ring-primary accent-primary" onchange="updateChecklist(this)" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Validate discrepancy note with client account lead</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Attach pre-flight diff confirmation before sending client monthly Q3 acquisition deck.</span>
+</div>
+</label>
+</div>
+<div class="flex items-center justify-between pt-space-sm">
+<span class="font-mono-micro text-mono-micro text-tertiary">All checkboxes state-stored locally. No sync to remote servers.</span>
+<button class="font-mono-micro text-mono-micro text-on-surface-variant hover:text-error uppercase" onclick="clearAllChecks()">Reset Checklist</button>
+</div>
+</div>
+</section>
+<!-- Section 5: Four-Step Report Quality Workflow -->
+<section class="w-full px-margin py-space-xl bg-surface">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<div class="flex flex-col gap-space-xs text-center max-w-2xl mx-auto">
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">Deterministic Protocol</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-normal">Four Steps to Zero Client Churn on Reporting Errors</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          Eliminate embarrassing boardroom math corrections through automated pre-flight deliverable inspection.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Step 1 -->
+<div class="bg-surface-container-lowest p-space-lg rounded shadow-sm flex flex-col justify-between gap-space-md">
+<div class="flex flex-col gap-space-sm">
+<span class="font-mono-metric text-mono-metric text-primary font-semibold">01 / STAGE</span>
+<h3 class="font-title-md text-title-md text-on-surface font-semibold">Pre-Export Sanity Check</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Export raw multi-channel CSV from Looker Studio, Supermetrics, Funnel.io, or Dashthis prior to compiling slides.
+            </p>
+</div>
+<div class="pt-space-xs bg-surface-container-low p-space-xs rounded font-mono-micro text-mono-micro text-tertiary">
+            IN: RAW METRIC FEEDS
+          </div>
+</div>
+<!-- Step 2 -->
+<div class="bg-surface-container-lowest p-space-lg rounded shadow-sm flex flex-col justify-between gap-space-md">
+<div class="flex flex-col gap-space-sm">
+<span class="font-mono-metric text-mono-metric text-primary font-semibold">02 / PARSE</span>
+<h3 class="font-title-md text-title-md text-on-surface font-semibold">Deterministic Memory Audit</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              42 hardcoded deterministic mathematical rules run directly in browser RAM in under 1.2 seconds. Zero LLM hallucinations.
+            </p>
+</div>
+<div class="pt-space-xs bg-surface-container-low p-space-xs rounded font-mono-micro text-mono-micro text-tertiary">
+            EXEC: &lt;1.2 SEC / 10K ROWS
+          </div>
+</div>
+<!-- Step 3 -->
+<div class="bg-surface-container-lowest p-space-lg rounded shadow-sm flex flex-col justify-between gap-space-md">
+<div class="flex flex-col gap-space-sm">
+<span class="font-mono-metric text-mono-metric text-primary font-semibold">03 / RESOLVE</span>
+<h3 class="font-title-md text-title-md text-on-surface font-semibold">Forensic Exception Resolution</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Review pinpoint line coordinates, broken formulas, and severed date ranges with clear, human remediation prompts.
+            </p>
+</div>
+<div class="pt-space-xs bg-surface-container-low p-space-xs rounded font-mono-micro text-mono-micro text-tertiary">
+            OUT: LINE-BY-LINE EVIDENCE
+          </div>
+</div>
+<!-- Step 4 -->
+<div class="bg-surface-container-lowest p-space-lg rounded shadow-sm flex flex-col justify-between gap-space-md">
+<div class="flex flex-col gap-space-sm">
+<span class="font-mono-metric text-mono-metric text-primary font-semibold">04 / DISPATCH</span>
+<h3 class="font-title-md text-title-md text-on-surface font-semibold">Stamped Dispatch &amp; Seal</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Generate stamped internal pre-flight certificate to attach to the client deck signoff thread. Confident client transmission.
+            </p>
+</div>
+<div class="pt-space-xs bg-surface-container-low p-space-xs rounded font-mono-micro text-mono-micro text-tertiary">
+            SEAL: SHA-256 PRE-SEND PASS
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 6: Methodology & Explicit Technical Limitations -->
+<section class="w-full px-margin py-space-xl bg-surface">
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- 42 Verification Checks Table Overview -->
+<div class="lg:col-span-7 bg-surface-container-lowest p-space-xl rounded shadow-sm flex flex-col gap-space-md">
+<div>
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">Methodology Specification</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">The 42 Ruleset Architecture</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Our rule matrix is organized into five deterministic forensic testing clusters designed to catch the exact errors that cost agencies retention.
+        </p>
+<div class="space-y-space-sm mt-space-xs font-mono-micro text-mono-micro">
+<div class="p-space-sm bg-surface-container-low rounded flex items-center justify-between">
+<div>
+<span class="font-semibold text-on-surface">Cluster A: Mathematical &amp; Relational Sums</span>
+<p class="font-body-sm text-[12px] text-tertiary mt-0.5">Validates row aggregations against summary totals, subtotal parity, and currency normalization.</p>
+</div>
+<span class="px-space-xs py-space-xxs bg-surface-container-highest text-on-surface rounded font-semibold shrink-0">12 CHECKS</span>
+</div>
+<div class="p-space-sm bg-surface-container-low rounded flex items-center justify-between">
+<div>
+<span class="font-semibold text-on-surface">Cluster B: Temporal &amp; Calendar Integrity</span>
+<p class="font-body-sm text-[12px] text-tertiary mt-0.5">Identifies severed attribution windows, missing daily timestamps, leap year anomalies, and time-zone boundary slips.</p>
+</div>
+<span class="px-space-xs py-space-xxs bg-surface-container-highest text-on-surface rounded font-semibold shrink-0">8 CHECKS</span>
+</div>
+<div class="p-space-sm bg-surface-container-low rounded flex items-center justify-between">
+<div>
+<span class="font-semibold text-on-surface">Cluster C: Delimiter, Encoding &amp; Null Guards</span>
+<p class="font-body-sm text-[12px] text-tertiary mt-0.5">Flags rogue commas inside numeric fields, trailing whitespace, non-breaking UTF-8 spaces, and blank conversion cells.</p>
+</div>
+<span class="px-space-xs py-space-xxs bg-surface-container-highest text-on-surface rounded font-semibold shrink-0">9 CHECKS</span>
+</div>
+<div class="p-space-sm bg-surface-container-low rounded flex items-center justify-between">
+<div>
+<span class="font-semibold text-on-surface">Cluster D: Duplicate Fingerprinting</span>
+<p class="font-body-sm text-[12px] text-tertiary mt-0.5">Detects dual-logged campaign lines, copy-paste duplicate batches, and overlapping Supermetrics sync windows.</p>
+</div>
+<span class="px-space-xs py-space-xxs bg-surface-container-highest text-on-surface rounded font-semibold shrink-0">6 CHECKS</span>
+</div>
+<div class="p-space-sm bg-surface-container-low rounded flex items-center justify-between">
+<div>
+<span class="font-semibold text-on-surface">Cluster E: Metric Benchmark Outlier Bounds</span>
+<p class="font-body-sm text-[12px] text-tertiary mt-0.5">Validates inverted ROAS formulas, impossible CPCs (&gt;$999 or &lt;$0.001), and CTR &gt; Illustrative logical violations.</p>
+</div>
+<span class="px-space-xs py-space-xxs bg-surface-container-highest text-on-surface rounded font-semibold shrink-0">7 CHECKS</span>
+</div>
+</div>
+</div>
+<!-- Explicit Truth in Audit Limitation Notice -->
+<div class="lg:col-span-5 bg-surface-container-low p-space-xl rounded flex flex-col justify-between gap-space-lg">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center gap-space-xs text-tertiary">
+<span class="material-symbols-outlined text-[20px]">policy</span>
+<span class="font-label-caps text-label-caps uppercase">Forensic Disclaimer</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Explicit Scope &amp; Limitation Notice</h3>
+<div class="p-space-md bg-surface-container-lowest rounded space-y-space-xs text-on-surface-variant font-body-sm text-body-sm">
+<p>
+<strong class="text-on-surface">What REPORTCHECK guarantees:</strong> Absolute deterministic consistency. We ensure that <em>Column A + Column B = Column C</em>, that dates do not omit days silently, that duplicates do not artificially inflate spend, and that presentation decks match raw exported data files.
+            </p>
+<p class="pt-space-xs">
+<strong class="text-on-surface">What REPORTCHECK cannot verify:</strong> External source fidelity. If Google Ads or Meta Ads experienced a server-side tracking outage or misreported raw click events at the platform level, REPORTCHECK will accurately audit the numbers you supply, but cannot confirm ad network upstream reality.
+            </p>
+</div>
+</div>
+<div class="bg-surface-container-highest p-space-sm rounded flex items-center justify-between">
+<span class="font-mono-micro text-mono-micro text-on-surface font-semibold uppercase">LEGAL STATUS: PRE-FLIGHT SYNTAX VALIDATION</span>
+<span class="font-mono-micro text-mono-micro text-tertiary">NON-STATUTORY</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 7: Pricing Desk (One-Time & Recurring Agency Plans) -->
+<section class="w-full px-margin py-space-xl bg-surface">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<div class="flex flex-col gap-space-xs text-center max-w-xl mx-auto">
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">Agency Pricing Schedule</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-normal">Predictable Audit Cost. Zero Retention Risk.</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          Select per-report pay-as-you-go or outfit your entire agency analytics desk with unlimited pre-flight clearance.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter items-stretch">
+<!-- Plan 1: Single Pre-Flight Pass -->
+<div class="bg-surface-container-lowest p-space-xl rounded shadow-sm flex flex-col justify-between gap-space-lg">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase font-semibold">Pay-As-You-Go</span>
+<span class="font-mono-micro text-mono-micro px-space-xs py-space-xxs bg-surface-container text-on-surface rounded">INDIVIDUAL</span>
+</div>
+<div>
+<div class="flex items-baseline gap-space-xxs">
+<span class="font-display-xl text-display-xl text-on-surface font-normal">$19</span>
+<span class="font-body-sm text-body-sm text-tertiary">/ single report check</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs">
+                Ideal for solo media buyers and freelancers auditing a pivotal quarterly deliverable.
+              </p>
+</div>
+<div class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant pt-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>1 Complete 42-rule CSV pre-flight pass</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Full Exception Dossier &amp; line coordinates</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Downloadable SHA-256 verification token</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Up to 25,000 rows per single audit</span>
+</div>
+</div>
+</div>
+<button class="w-full py-space-xs bg-surface-container hover:bg-surface-container-high text-on-surface font-title-sm text-title-sm font-semibold rounded transition-colors">
+            Run Single Audit Pass
+          </button>
+</div>
+<!-- Plan 2: Agency Proofing Desk (Featured) -->
+<div class="bg-surface-container-lowest p-space-xl rounded shadow-md flex flex-col justify-between gap-space-lg relative bg-gradient-to-b from-primary/5 to-surface-container-lowest">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-primary uppercase font-semibold">Agency Standard</span>
+<span class="font-mono-micro text-mono-micro px-space-xs py-space-xxs bg-primary text-on-primary rounded font-semibold uppercase">MOST POPULAR</span>
+</div>
+<div>
+<div class="flex items-baseline gap-space-xxs">
+<span class="font-display-xl text-display-xl text-on-surface font-normal">$149</span>
+<span class="font-body-sm text-body-sm text-tertiary">/ month recurring</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs">
+                For growth agencies managing 5-30 client accounts needing weekly reporting confidence.
+              </p>
+</div>
+<div class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant pt-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span class="font-semibold text-on-surface">Unlimited report audits every month</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Up to 10 media buyer seats &amp; analyst logins</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Custom client schema rulesets &amp; column maps</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Slack &amp; Microsoft Teams alert webhook</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>PDF Stamped Dispatch Seals for client decks</span>
+</div>
+</div>
+</div>
+<button class="w-full py-space-xs bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-title-sm text-title-sm font-semibold rounded transition-colors shadow-sm">
+            Deploy Agency Proofing Desk
+          </button>
+</div>
+<!-- Plan 3: High-Volume / White-Label Partner -->
+<div class="bg-surface-container-lowest p-space-xl rounded shadow-sm flex flex-col justify-between gap-space-lg">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase font-semibold">White-Label Partner</span>
+<span class="font-mono-micro text-mono-micro px-space-xs py-space-xxs bg-surface-container text-on-surface rounded">ENTERPRISE</span>
+</div>
+<div>
+<div class="flex items-baseline gap-space-xxs">
+<span class="font-display-xl text-display-xl text-on-surface font-normal">$399</span>
+<span class="font-body-sm text-body-sm text-tertiary">/ month recurring</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs">
+                For major holdings, network agencies, and reporting tool vendors requiring white-labeled QA seals.
+              </p>
+</div>
+<div class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant pt-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Unlimited seats &amp; sub-agency workspaces</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Client portal co-branding &amp; custom domain</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Custom client SLA audit seals &amp; certificates</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Direct API ingestion (Looker/Sheets pipelines)</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Dedicated desk engineer &amp; custom rule authoring</span>
+</div>
+</div>
+</div>
+<button class="w-full py-space-xs bg-inverse-surface hover:bg-primary text-inverse-on-surface hover:text-on-primary font-title-sm text-title-sm font-semibold rounded transition-colors">
+            Request White-Label Access
+          </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 8: Agency Operations FAQ & Security Architecture -->
+<section class="w-full px-margin py-space-xl bg-surface">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">Technical Assurance</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-normal">Agency Operations &amp; Privacy FAQ</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- FAQ 1 -->
+<div class="bg-surface-container-lowest p-space-lg rounded shadow-sm flex flex-col gap-space-xs">
+<span class="font-title-md text-title-md font-semibold text-on-surface">Does REPORTCHECK store our clients' media spend figures?</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            No. The audit engine operates exclusively in volatile browser memory (client-side DOM &amp; Web Workers). The moment your browser tab or session closes, all row records, campaign titles, and expenditure totals are eradicated. We maintain zero database storage of your client data.
+          </p>
+</div>
+<!-- FAQ 2 -->
+<div class="bg-surface-container-lowest p-space-lg rounded shadow-sm flex flex-col gap-space-xs">
+<span class="font-title-md text-title-md font-semibold text-on-surface">Is our proprietary client data fed into any AI training model?</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Never. REPORTCHECK is Illustrative deterministic code written in mathematical logic algorithms and strict relational parsers. We do not utilize Large Language Models (LLMs) or generative models for audit processing, eliminating hallucination risks and ensuring zero IP leaks.
+          </p>
+</div>
+<!-- FAQ 3 -->
+<div class="bg-surface-container-lowest p-space-lg rounded shadow-sm flex flex-col gap-space-xs">
+<span class="font-title-md text-title-md font-semibold text-on-surface">How does this integrate with Looker Studio or Supermetrics?</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            You can drop raw CSV exports directly from any reporting tool prior to pasting into client presentation decks. On Agency and Partner plans, our Google Sheets extension and webhook APIs automatically validate tables upon sheet generation before external sharing.
+          </p>
+</div>
+<!-- FAQ 4 -->
+<div class="bg-surface-container-lowest p-space-lg rounded shadow-sm flex flex-col gap-space-xs">
+<span class="font-title-md text-title-md font-semibold text-on-surface">What file sizes and row counts are supported?</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            The browser parser effortlessly processes files up to 100 MB and over 250,000 rows without interface latency. High-volume media campaigns with granular hourly breakdown files run within seconds without server throttling.
+          </p>
+</div>
+<!-- FAQ 5 -->
+<div class="bg-surface-container-lowest p-space-lg rounded shadow-sm flex flex-col gap-space-xs">
+<span class="font-title-md text-title-md font-semibold text-on-surface">Can we customize the 42 rules for specific enterprise clients?</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Yes. Agency subscribers can define custom thresholds, such as requiring ROAS to be calculated gross-of-fees, enforcing mandatory brand taxonomy naming conventions, or flagging spend deviations exceeding custom tolerance percentages (±2%).
+          </p>
+</div>
+<!-- FAQ 6 -->
+<div class="bg-surface-container-lowest p-space-lg rounded shadow-sm flex flex-col gap-space-xs">
+<span class="font-title-md text-title-md font-semibold text-on-surface">Can we share the Pre-Flight Dispatch Seal with our clients?</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Yes. Once all 42 rules pass cleanly, the desk generates an encrypted SHA-256 Pre-Flight Certificate. Top agencies append this single-page proofing badge directly to the appendix of their executive decks to demonstrate forensic quality rigor.
+          </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 9: Final Executive CTA -->
+<section class="w-full px-margin py-space-2xl bg-surface-container-low">
+<div class="max-w-5xl mx-auto bg-surface-container-lowest p-space-xl rounded shadow-md flex flex-col md:flex-row items-center justify-between gap-space-xl">
+<div class="flex flex-col gap-space-sm max-w-xl">
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">Zero Error Tolerance</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-normal">Audit Your Next Client Deliverable in 90 Seconds</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          Never explain an accidental negative variance or duplicated row in a client meeting again. Run an instant pre-flight pass before sending.
+        </p>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-space-sm w-full md:w-auto shrink-0">
+<button class="w-full sm:w-auto px-space-lg py-space-sm bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-title-sm text-title-sm font-semibold rounded transition-colors shadow-sm text-center" onclick="document.getElementById('dropZone').scrollIntoView({behavior: 'smooth'})">
+          Upload Deliverable CSV
+        </button>
+<button class="w-full sm:w-auto px-space-md py-space-sm bg-surface-container hover:bg-surface-container-high text-on-surface font-title-sm text-title-sm font-semibold rounded transition-colors text-center">
+          Schedule Agency Demo
+        </button>
+</div>
+</div>
+</section>
+<!-- Interactive Logic Script -->
+<script>
+    // Pre-Send State Switcher Micro-Interactions
+    const banner = document.getElementById('dispatchBanner');
+    const badge = document.getElementById('dispatchCode');
+    const heading = document.getElementById('dispatchHeading');
+    const notice = document.getElementById('dispatchNotice');
+    const iconBadge = document.getElementById('dispatchIconBadge');
+
+    const btnHold = document.getElementById('btnStateHold');
+    const btnReview = document.getElementById('btnStateReview');
+    const btnSend = document.getElementById('btnStateSend');
+
+    function resetBtnStyles() {
+      [btnHold, btnReview, btnSend].forEach(btn => {
+        btn.className = "px-space-sm py-space-xs rounded font-mono-micro text-mono-micro text-on-surface-variant hover:text-on-surface transition-all";
+      });
+    }
+
+    btnHold.addEventListener('click', () => {
+      resetBtnStyles();
+      btnHold.className = "px-space-sm py-space-xs rounded font-mono-micro text-mono-micro font-semibold bg-error text-on-error shadow-sm transition-all";
+      badge.textContent = "STAMP: HOLD";
+      badge.className = "font-mono-micro text-mono-micro font-semibold px-space-xs py-space-xxs bg-error text-on-error rounded uppercase";
+      heading.textContent = "HOLD — 4 Critical Conflicts Detected in Client Deliverable";
+      notice.textContent = "Delivery blocked. Unreconciled mathematical discrepancy of -$14,280.50 exists between platform rows and deck summary slide.";
+      iconBadge.className = "w-12 h-12 rounded bg-error text-on-error flex items-center justify-center shrink-0";
+      iconBadge.innerHTML = '<span class="material-symbols-outlined text-[28px]">gavel</span>';
+    });
+
+    btnReview.addEventListener('click', () => {
+      resetBtnStyles();
+      btnReview.className = "px-space-sm py-space-xs rounded font-mono-micro text-mono-micro font-semibold bg-tertiary text-on-tertiary shadow-sm transition-all";
+      badge.textContent = "STAMP: REVIEW";
+      badge.className = "font-mono-micro text-mono-micro font-semibold px-space-xs py-space-xxs bg-tertiary text-on-tertiary rounded uppercase";
+      heading.textContent = "REVIEW — 3 Advisory Discrepancies Require Analyst Attention";
+      notice.textContent = "No mathematical fatal errors detected, but formula inversion warnings and blank conversion cells exist.";
+      iconBadge.className = "w-12 h-12 rounded bg-tertiary text-on-tertiary flex items-center justify-center shrink-0";
+      iconBadge.innerHTML = '<span class="material-symbols-outlined text-[28px]">warning</span>';
+    });
+
+    btnSend.addEventListener('click', () => {
+      resetBtnStyles();
+      btnSend.className = "px-space-sm py-space-xs rounded font-mono-micro text-mono-micro font-semibold bg-primary text-on-primary shadow-sm transition-all";
+      badge.textContent = "STAMP: SEND CLEARED";
+      badge.className = "font-mono-micro text-mono-micro font-semibold px-space-xs py-space-xxs bg-primary text-on-primary rounded uppercase";
+      heading.textContent = "SEND — Illustrative sample checks only";
+      notice.textContent = "Automated rules passed. Deterministic mathematical integrity sample only. Ready for client submission.";
+      iconBadge.className = "w-12 h-12 rounded bg-primary text-on-primary flex items-center justify-center shrink-0";
+      iconBadge.innerHTML = '<span class="material-symbols-outlined text-[28px]">verified</span>';
+    });
+
+    // Sample File Load Interactivity
+    const stagedFile = document.getElementById('stagedFile');
+    const btnLoadDefective = document.getElementById('btnLoadDefective');
+    const btnLoadClean = document.getElementById('btnLoadClean');
+    const btnResetUpload = document.getElementById('btnResetUpload');
+
+    btnLoadDefective.addEventListener('click', () => {
+      stagedFile.classList.remove('hidden');
+      stagedFile.innerHTML = `
+        <div class="flex items-center gap-space-sm">
+          <span class="material-symbols-outlined text-error text-[18px]">bug_report</span>
+          <div class="flex flex-col text-left">
+            <span class="font-mono-metric text-[12px] font-semibold text-on-surface leading-tight">Q3_Acquisition_Report_Final_v3.csv</span>
+            <span class="font-mono-micro text-mono-micro text-tertiary">842 KB • 1,420 rows • UTF-8 Delimited (,)</span>
+          </div>
+        </div>
+        <span class="font-mono-micro text-mono-micro px-space-xs py-space-xxs bg-error-container text-on-error-container font-semibold rounded uppercase">4 Critical Issues</span>
+      `;
+      btnHold.click();
+    });
+
+    btnLoadClean.addEventListener('click', () => {
+      stagedFile.classList.remove('hidden');
+      stagedFile.innerHTML = `
+        <div class="flex items-center gap-space-sm">
+          <span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+          <div class="flex flex-col text-left">
+            <span class="font-mono-metric text-[12px] font-semibold text-on-surface leading-tight">Q3_Reconciled_Deliverable_Clean.csv</span>
+            <span class="font-mono-micro text-mono-micro text-tertiary">836 KB • 1,419 rows • UTF-8 Delimited (,)</span>
+          </div>
+        </div>
+        <span class="font-mono-micro text-mono-micro px-space-xs py-space-xxs bg-surface-container text-primary font-semibold rounded uppercase">Clean Baseline (42 Passed)</span>
+      `;
+      btnSend.click();
+    });
+
+    btnResetUpload.addEventListener('click', () => {
+      stagedFile.classList.add('hidden');
+    });
+
+    // Checklist Counter Interactivity
+    function updateChecklist(el) {
+      const parentLabel = el.closest('label');
+      const textSpan = parentLabel.querySelector('.font-title-sm');
+      if (el.checked) {
+        textSpan.classList.add('line-through', 'text-on-surface-variant');
+      } else {
+        textSpan.classList.remove('line-through', 'text-on-surface-variant');
+      }
+      refreshChecklistCount();
+    }
+
+    function refreshChecklistCount() {
+      const inputs = document.querySelectorAll('#checklistContainer input[type="checkbox"]');
+      const checked = Array.from(inputs).filter(i => i.checked).length;
+      document.getElementById('checklistCounter').textContent = `${checked} OF ${inputs.length} COMPLETED`;
+    }
+
+    function clearAllChecks() {
+      const inputs = document.querySelectorAll('#checklistContainer input[type="checkbox"]');
+      inputs.forEach(i => {
+        i.checked = false;
+        const textSpan = i.closest('label').querySelector('.font-title-sm');
+        textSpan.classList.remove('line-through', 'text-on-surface-variant');
+      });
+      refreshChecklistCount();
+    }
+  </script>
+</div></main><footer class="w-full bg-surface-container-low py-space-2xl"><div class="w-full px-margin"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-gutter mb-space-xl"><div class="flex flex-col gap-space-sm"><span class="font-headline-sm text-headline-sm text-on-surface font-semibold">REPORTCHECK</span><span class="font-label-caps text-label-caps uppercase text-on-surface-variant">Audit Desk Operations</span><p class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs">Deterministic pre-flight verification system engineered for performance marketing audits, agency billing integrity, and forensic media expenditure proofing.</p><span class="font-mono-micro text-mono-micro text-tertiary mt-space-sm">Desk Reference: RC-AUD-2025-01</span></div><div class="flex flex-col gap-space-xs"><span class="font-label-caps text-label-caps uppercase text-on-surface font-semibold mb-space-xs">Verification Rules</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="methodology" href="#">Rule Engine Reference v2.4</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="methodology" href="#">Cross-Platform Attribution Check</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="methodology" href="#">Formula Anomaly Detection</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="methodology" href="#">Currency Exchange Drift Guard</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="methodology" href="#">UTM Matrix Reconciliation</a></div><div class="flex flex-col gap-space-xs"><span class="font-label-caps text-label-caps uppercase text-on-surface font-semibold mb-space-xs">Formats &amp; Schema</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="methodology" href="#">Deterministic CSV Parsers</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="methodology" href="#">XLSX Formula Validations</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="sample-dossier" href="#">Looker Studio Schema Bounds</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="sample-dossier" href="#">Amazon Ads Raw Export Map</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="sample-dossier" href="#">Meta Attribution Raw Ledger</a></div><div class="flex flex-col gap-space-xs"><span class="font-label-caps text-label-caps uppercase text-on-surface font-semibold mb-space-xs">Security &amp; Ephemeral</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="methodology" href="#">Zero Data Retention Vault</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="methodology" href="#">In-Memory Execution Only</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="methodology" href="#">Security controls disclosure</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="methodology" href="#">Client Ephemeral Keys</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="methodology" href="#">HIPAA / GDPR Safe Handling</a></div><div class="flex flex-col gap-space-xs"><span class="font-label-caps text-label-caps uppercase text-on-surface font-semibold mb-space-xs">Legal &amp; Limitations</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="faq" href="#">Scope of Pre-Flight Verification</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="faq" href="#">Limitation of Liability</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="faq" href="#">Agency Partner Terms</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="faq" href="#">RSS / Feed Changelog</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="faq" href="#">Contact Desk Master</a></div></div><div class="bg-surface-container p-space-md rounded flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md mb-space-lg"><div class="flex flex-col"><span class="font-label-caps text-label-caps uppercase text-on-surface font-semibold">Editorial Scope &amp; Legal Disclaimer</span><p class="font-body-sm text-body-sm text-on-surface-variant max-w-4xl mt-space-xxs">REPORTCHECK is a forensic syntax, integrity, and arithmetic rule validator. Audits are generated deterministically based on provided schemas and logs without LLM hallucination risk. Results do not constitute certified statutory financial accounting advice.</p></div><div class="flex items-center gap-space-sm min-w-max"><span class="font-mono-micro text-mono-micro px-space-sm py-space-xs bg-surface text-on-surface rounded uppercase">RSS Feed v2.4</span><span class="font-mono-micro text-mono-micro px-space-sm py-space-xs bg-surface text-on-surface rounded uppercase">Pre-Flight P-882</span></div></div><div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm text-on-surface-variant"><span class="font-mono-micro text-mono-micro uppercase text-tertiary">Timestamped Pre-Flight Protocol Active • SHA: e9b4f02a • Build 248.9</span><span class="font-body-sm text-body-sm text-tertiary">© 2026 REPORTCHECK Systems Inc. All agency verification rights reserved.</span></div></div></footer>
+<script>
+(function(){
+  const blocked = /get my report|begin \$1 diagnostic|unlock full diagnostic|run (?:the )?\$1|run paid check|build \$15 product pack|run \$15 close check|execute real-time scan|launch product builder|real-time anomaly scan|run the drift check/i;
+  document.addEventListener('click', function(e){
+    const el=e.target.closest('button,a,input[type="submit"]');
+    if(!el) return;
+    const label=(el.innerText||el.value||el.getAttribute('aria-label')||'').replace(/\s+/g,' ').trim();
+    if(blocked.test(label)){
+      e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+      alert('Checkout is not connected yet. No payment was taken and no real scan or product processing occurred.');
+    }
+  }, true);
+  document.addEventListener('submit',function(e){
+    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+    alert('Checkout is not connected yet. No payment was taken and no real scan or product processing occurred.');
+  },true);
+  document.addEventListener('change',function(e){
+    if(e.target && e.target.matches('input[type=file]')){
+      e.target.value='';
+      alert('Real file processing is currently disabled until verified checkout and secure processing are connected.');
+    }
+  },true);
+  document.querySelectorAll('a[href="#"]').forEach(function(a){
+    if(!a.dataset.path && !a.closest('nav')) a.addEventListener('click',function(e){e.preventDefault()});
+  });
+})();
+</script>
+</body></html>
