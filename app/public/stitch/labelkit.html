@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..900;1,300..900&amp;family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"tertiary-container":"#480400","error":"#ba1a1a","primary":"#070906","secondary":"#58633b","primary-container":"#1e211d","background":"#fef9ef","on-secondary-fixed-variant":"#414b25","on-tertiary-fixed-variant":"#891e0e","primary-fixed":"#e1e3dd","secondary-fixed":"#dce8b6","tertiary-fixed-dim":"#ffb4a6","inverse-on-surface":"#f5f0e6","surface":"#fef9ef","surface-container":"#f2ede3","tertiary-fixed":"#ffdad4","surface-container-highest":"#e7e2d8","on-error-container":"#93000a","surface-dim":"#dedad0","on-tertiary":"#ffffff","surface-tint":"#5c5f5a","secondary-fixed-dim":"#c0cc9b","on-primary-fixed":"#191c18","tertiary":"#1c0100","primary-fixed-dim":"#c5c7c1","on-tertiary-container":"#e25e47","surface-container-high":"#ece8de","surface-container-lowest":"#ffffff","on-error":"#ffffff","surface-container-low":"#f8f3e9","on-surface":"#1d1c16","on-background":"#1d1c16","on-secondary":"#ffffff","on-primary":"#ffffff","secondary-container":"#d9e5b3","inverse-primary":"#c5c7c1","surface-variant":"#e7e2d8","outline-variant":"#c5c7c1","error-container":"#ffdad6","on-tertiary-fixed":"#3f0300","inverse-surface":"#32302a","on-secondary-container":"#5c673f","on-surface-variant":"#454843","surface-bright":"#fef9ef","on-secondary-fixed":"#161e01","on-primary-fixed-variant":"#454843","on-primary-container":"#868883","outline":"#757872"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-sm":"0.5rem","margin-tablet":"1.5rem","margin-desktop":"2.5rem","gutter-desktop":"1.5rem","space-xs":"0.25rem","space-md":"1rem","space-2xl":"4rem","space-xl":"2.5rem","gutter":"1rem","margin":"1rem","space-lg":"1.5rem"},fontFamily:{"headline-md":["Libre Caslon Text"],"headline-sm":["Libre Caslon Text"],"headline-lg":["Libre Caslon Text"],"display-hero":["Libre Caslon Text"],"label-stamp":["Hanken Grotesk"],"label-ledger":["Hanken Grotesk"],"body-sm":["Hanken Grotesk"],"body-lg":["Hanken Grotesk"],"headline-lg-mobile":["Libre Caslon Text"],"display-hero-mobile":["Libre Caslon Text"],"body-md":["Hanken Grotesk"]},fontSize:{"headline-md":["24px",{"lineHeight":"32px","letterSpacing":"0em","fontWeight":"400"}],"headline-sm":["19px",{"lineHeight":"26px","letterSpacing":"0.01em","fontWeight":"700"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.01em","fontWeight":"700"}],"display-hero":["48px",{"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"400"}],"label-stamp":["10px",{"lineHeight":"12px","letterSpacing":"0.12em","fontWeight":"600"}],"label-ledger":["11px",{"lineHeight":"14px","letterSpacing":"0.08em","fontWeight":"700"}],"body-sm":["12px",{"lineHeight":"18px","letterSpacing":"0.015em","fontWeight":"400"}],"body-lg":["16px",{"lineHeight":"24px","letterSpacing":"0em","fontWeight":"400"}],"headline-lg-mobile":["26px",{"lineHeight":"32px","letterSpacing":"0em","fontWeight":"700"}],"display-hero-mobile":["32px",{"lineHeight":"38px","letterSpacing":"-0.01em","fontWeight":"400"}],"body-md":["14px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"400"}]}}}};</script></head><body class="bg-background text-on-surface font-body-md text-body-md"><header class="fixed top-0 w-full z-50 bg-surface/95 backdrop-blur-md"><div class="h-20 w-full px-margin-desktop flex items-center justify-between"><div class="flex items-center gap-space-md"><img alt="LABELKIT Brand Mark" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VPEaEBk0T9HS313AIvaOliZYO7aGZO0hwcXWX99QgkjdDs8skbGmBWQThcTRPPPDGe-hX0imr5w7Q7ve7AaWwGWGHhJM7Kiv5r2yt01zkrZEdp0XUepoLy6VZnUt6P5SShh7yIeB_nAJxgEsRi1PN2huPFmsartNVBPdoDB3PwQgM-EmYw92EfY-vV48h7HLeljHLGGu2bJRVdvJNHzk_CNraEgtBZ0ZZoUPZvQcYpgdqECGEdfsFT1ao"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight">LABELKIT</span><span class="font-label-stamp text-label-stamp uppercase text-on-surface-variant">Food &amp; Product Pack Studio</span></div><span class="hidden lg:inline-flex items-center px-space-sm py-space-xs bg-surface-container font-label-stamp text-label-stamp uppercase text-secondary tracking-widest">[PROOFING ENGINE • DRAFT v2.4]</span></div><nav class="hidden xl:flex items-center gap-space-xs font-label-ledger text-label-ledger uppercase tracking-wider" data-active-classes="bg-primary text-on-primary"><a aria-current="page" class="px-space-sm py-space-xs transition-colors bg-primary text-on-primary" data-path="overview" href="#">Overview</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-path="product-builder" href="#">Product Builder</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-path="sample-pack" href="#">Sample Pack</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-path="workflow" href="#">Workflow</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-path="label-review" href="#">Label Review</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-path="pricing" href="#">Pricing</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-path="saved-library" href="#">Saved Library</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-path="faq" href="#">FAQ</a></nav><div class="flex items-center gap-space-md"><button class="hidden sm:flex flex-col items-start px-space-md py-space-xs bg-primary text-on-primary hover:bg-secondary transition-colors" type="button"><span class="font-label-ledger text-label-ledger uppercase">Create Product Pack</span><span class="font-label-stamp text-label-stamp text-primary-fixed">$15 / Single Draft</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5veAdQ6NugcPOwYH3YNDOjGxTWYd4B-6Un3eGvkyNAcXrbaUI8twbNCwXVOyViVuj4fxH9J5MtjEKAK7Ik45g2U2BJKCucyTbn9T2MIobJxmj18t4vE1qtBdt_4PAxnOniqxEO9kPWCekeDi5CKzBaI6j3xVhiWGwgwaLbvt8b2xwfVhNeJ13YS9ZtLrCkU-gFpaHCJSHBnBaUHhX5B0GSSe-6gGSDdKs23McIXbQQbN-UkP8zIlp"/></div></div><div class="h-7 w-full px-margin-desktop bg-surface-container-low flex items-center justify-between font-label-stamp text-label-stamp uppercase text-on-surface-variant tracking-wider"><div class="flex items-center gap-space-lg"><span>Grid: 3-Column Proof Sheet</span><span class="hidden sm:inline">Allergen Heuristics: Preliminary Screening</span></div><div class="flex items-center gap-space-md"><span class="text-secondary font-bold">Status: Ready for Human Audit</span><span class="hidden md:inline text-on-surface-variant">ISO-216 / REG-FD</span></div></div></header><main class="w-full pt-20 bg-background"><div class="flex flex-col w-full">
+<!-- Top Registration & Calibration Tape Bar -->
+<section class="w-full bg-surface-container-high px-margin-desktop py-space-xs flex items-center justify-between text-on-surface-variant font-label-stamp text-label-stamp uppercase tracking-widest">
+<div class="flex items-center gap-space-md">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-secondary inline-block"></span>CALIBRATION TAPE: 0.125 IN BLEED SAFE</span>
+<span class="hidden md:inline text-outline">• REGISTRATION: 4-COLOR DENSITY MATRIX</span>
+<span class="hidden lg:inline text-secondary">• ARCHIVE ID: LK-2025-BATCH-49</span>
+</div>
+<div class="flex items-center gap-space-sm font-label-stamp text-label-stamp">
+<span class="bg-surface px-space-xs py-0.5 text-primary">PRE-PRESS PROOF SUITE</span>
+<span class="hidden sm:inline text-on-surface">SPEC: FDA 21 CFR §101 / FSSAI COMPAT</span>
+</div>
+</section>
+<!-- Editorial Hero Section -->
+<section class="w-full bg-surface px-margin-desktop py-space-2xl relative overflow-hidden">
+<!-- Subtle architectural guide overlay -->
+<div class="absolute inset-0 pointer-events-none opacity-40 bg-[radial-gradient(#58633b_1px,transparent_1px)] [background-size:24px_24px]"></div>
+<div class="relative z-10 max-w-7xl mx-auto flex flex-col gap-space-xl">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md pb-space-md">
+<div class="inline-flex items-center gap-space-xs bg-surface-container px-space-md py-space-xs text-secondary font-label-stamp text-label-stamp uppercase tracking-widest">
+<span class="w-2 h-2 bg-secondary inline-block"></span>
+          STUDIO PROTOCOL v2.4 • PACKAGING PRE-FLIGHT FOR INDIE BRANDS
+        </div>
+<div class="flex items-center gap-space-sm font-label-stamp text-label-stamp text-on-surface-variant">
+<span>PLATE REF: PLT-904-FD</span>
+<span>•</span>
+<span class="text-secondary font-bold">VERIFIED REVISION 04</span>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-ledger text-label-ledger uppercase tracking-wider text-secondary">Pre-Flight Packaging Engine</span>
+<h1 class="font-display-hero text-display-hero text-primary tracking-tight">
+              Turn product data into a label-ready first draft.
+            </h1>
+</div>
+<p class="font-headline-md text-headline-md text-on-surface-variant leading-relaxed">
+            Your ingredients in. A reviewable product pack out.
+          </p>
+<p class="font-body-lg text-body-lg text-on-surface max-w-3xl leading-relaxed">
+            Craft food makers, micro-bakers, spice blenders, and freelance packaging designers waste weeks wrestling mismatched Excel formulas, illegible typography, and allergen omission risks. LABELKIT ingests raw ingredient weights, calculates mandatory QUID breakdowns, compiles standardized FDA/FSSAI nutritional galleys, and delivers a transparent, print-bed proof sheet ready for your food compliance auditor.
+          </p>
+<div class="flex flex-wrap items-center gap-space-md pt-space-sm">
+<button class="px-space-xl py-space-md bg-primary text-on-primary hover:bg-secondary transition-colors font-label-ledger text-label-ledger uppercase tracking-wider shadow-sm flex items-center gap-space-sm" type="button">
+<span>Launch Product Builder</span>
+<span class="text-primary-fixed bg-primary-container px-space-xs py-0.5 font-label-stamp text-label-stamp">$15 Single Pack</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+<a class="px-space-xl py-space-md bg-surface-container text-primary hover:bg-surface-container-high transition-colors font-label-ledger text-label-ledger uppercase tracking-wider shadow-sm flex items-center gap-space-xs" href="#interactive-proof-sheet">
+<span class="material-symbols-outlined text-sm">search</span>
+<span>Inspect Sample Proof Sheet</span>
+</a>
+</div>
+</div>
+<div class="lg:col-span-4 flex flex-col gap-space-md bg-surface-container-low p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-sm">
+<span class="font-label-stamp text-label-stamp uppercase tracking-widest text-primary font-bold">SPECIMEN PREVIEW SPEC</span>
+<span class="bg-secondary-container text-on-secondary-container px-space-xs py-0.5 font-label-stamp text-label-stamp font-bold">REGULATORY REVIEW REQUIRED</span>
+</div>
+<div class="relative w-full aspect-[4/3] bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up artisanal glass food jar with pristine matte cream label and crisp black typographic proof sheet on wooden studio workbench with natural morning sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGXfKV8ltg4OjR1QgngAqidaB5FbGlcy3BfPQwj-zlH9tlbiCLkt6dOlbKoUx_-DRNi7WQIeFZo4KE8TS9e31IR33huCZTJRkhAA2PxhYO156Ul1q2lxpWQVx8FHmS-BjXUYItPf264XHyL3KBbF6gzVY82L9e3u-rnotRJnj7mDdUS-H_mTM2Aw3fqFdcjb1sblIFybg3zkO2uVR6g_Fe-OGfX18AcwDxdKBP0qGQp7lMyt6ACbFL"/>
+<div class="absolute bottom-2 left-2 right-2 bg-surface/90 backdrop-blur-sm p-space-xs flex items-center justify-between font-label-stamp text-label-stamp text-primary">
+<span>SPECIMEN: HEIRLOOM CHILI CRISP</span>
+<span>NET WT. 240g</span>
+</div>
+</div>
+<div class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex justify-between py-1 bg-surface px-space-sm">
+<span class="font-label-ledger text-label-ledger text-secondary uppercase">Ingestion Mode</span>
+<span class="font-mono text-primary">Mass Metric (g)</span>
+</div>
+<div class="flex justify-between py-1 bg-surface px-space-sm">
+<span class="font-label-ledger text-label-ledger text-secondary uppercase">Allergen Logic</span>
+<span class="text-secondary font-bold">FALCPA 9-Item Screen</span>
+</div>
+<div class="flex justify-between py-1 bg-surface px-space-sm">
+<span class="font-label-ledger text-label-ledger text-secondary uppercase">Vector Vectorization</span>
+<span class="font-mono text-primary">PDF/X-1a + SVGs</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Trust Badges Strip -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-sm pt-space-lg bg-surface-container p-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary">verified_user</span>
+<div class="flex flex-col">
+<span class="font-label-ledger text-label-ledger uppercase text-primary">Missing data is not inferred</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Strict user input math only</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary">receipt_long</span>
+<div class="flex flex-col">
+<span class="font-label-ledger text-label-ledger uppercase text-primary">Traceable User Data</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Full audit ledger history</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary">security</span>
+<div class="flex flex-col">
+<span class="font-label-ledger text-label-ledger uppercase text-primary">Preliminary Allergen Check</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Deterministic keyword engine</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary">print</span>
+<div class="flex flex-col">
+<span class="font-label-ledger text-label-ledger uppercase text-primary">Print-Ready Vector Exports</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Press-ready 300DPI dielines</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Live Interactive Proof-Sheet Showcase -->
+<section class="w-full bg-surface-container py-space-2xl px-margin-desktop" id="interactive-proof-sheet">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-xl">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md pb-space-md">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-ledger text-label-ledger uppercase text-secondary tracking-widest">[LIVE WORKBENCH MODULE]</span>
+<h2 class="font-headline-lg text-headline-lg text-primary">Interactive 3-Column Studio Proof Sheet</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+            Simulate our pre-press engine with a live artisanal formulation. Toggle serving ratios or inspect the exact rule-bound nutrition box with zero fabricated placeholders.
+          </p>
+</div>
+<div class="flex items-center gap-space-xs bg-surface p-space-xs shadow-sm font-label-stamp text-label-stamp uppercase">
+<button class="px-space-md py-space-xs bg-primary text-on-primary" id="specimen-btn-chili">Batch A: Chili Crisp (240g)</button>
+<button class="px-space-md py-space-xs bg-surface-container-high text-on-surface hover:bg-surface-container" id="specimen-btn-granola">Batch B: Sprouted Granola (350g)</button>
+</div>
+</div>
+<!-- The 3-Column Proof Canvas -->
+<div class="w-full bg-surface-container-lowest p-space-lg shadow-md grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Column 1: Ingredient Ledger -->
+<div class="lg:col-span-4 flex flex-col gap-space-md bg-surface-container-low p-space-md">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex flex-col">
+<span class="font-label-stamp text-label-stamp uppercase text-secondary">COLUMN 01 • INGESTION LEDGER</span>
+<h3 class="font-headline-sm text-headline-sm text-primary">Descending Mass Deck</h3>
+</div>
+<span class="font-label-stamp text-label-stamp bg-surface px-space-xs py-0.5 text-on-surface-variant font-mono">DESC: WEIGHT (g)</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Under 21 CFR §101.4, ingredients must be declared in descending order of predominance by weight. Raw inputs automatically sort and calculate QUID percentages.
+          </p>
+<!-- Interactive Ingredient Table -->
+<div class="flex flex-col gap-1 w-full font-body-sm text-body-sm">
+<div class="flex items-center justify-between font-label-ledger text-label-ledger uppercase text-secondary py-1 bg-surface-container-high px-space-sm">
+<span>Ingredient Name</span>
+<span class="font-mono">Weight / %</span>
+</div>
+<div class="flex flex-col gap-1" id="ingredient-rows-container">
+<div class="flex items-center justify-between bg-surface p-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 bg-secondary inline-block"></span>
+<span class="text-primary font-bold">Non-GMO Canola Oil</span>
+<span class="text-secondary font-label-stamp text-label-stamp">[EXPELLER]</span>
+</div>
+<span class="font-mono font-bold text-primary">115.0g (47.9%)</span>
+</div>
+<div class="flex items-center justify-between bg-surface p-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 bg-secondary inline-block"></span>
+<span class="text-primary font-bold">Shallots, Crisped</span>
+</div>
+<span class="font-mono font-bold text-primary">36.0g (15.0%)</span>
+</div>
+<div class="flex items-center justify-between bg-surface p-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 bg-secondary inline-block"></span>
+<span class="text-primary font-bold">Garlic, Roasted Slices</span>
+</div>
+<span class="font-mono font-bold text-primary">28.0g (11.6%)</span>
+</div>
+<div class="flex items-center justify-between bg-surface p-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 bg-secondary inline-block"></span>
+<span class="text-primary font-bold">Crushed Chili Flakes</span>
+<span class="text-secondary font-label-stamp text-label-stamp">[ORGANIC]</span>
+</div>
+<span class="font-mono font-bold text-primary">24.0g (10.0%)</span>
+</div>
+<div class="flex items-center justify-between bg-surface p-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 bg-secondary inline-block"></span>
+<span class="text-primary font-bold">Toasted Sesame Seeds</span>
+<span class="bg-error-container text-on-error-container font-label-stamp text-label-stamp px-1">[ALLERGEN]</span>
+</div>
+<span class="font-mono font-bold text-primary">18.0g (7.5%)</span>
+</div>
+<div class="flex items-center justify-between bg-surface p-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 bg-secondary inline-block"></span>
+<span class="text-primary font-bold">Fermented Black Beans</span>
+<span class="bg-error-container text-on-error-container font-label-stamp text-label-stamp px-1">[SOY]</span>
+</div>
+<span class="font-mono font-bold text-primary">12.0g (5.0%)</span>
+</div>
+<div class="flex items-center justify-between bg-surface p-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 bg-secondary inline-block"></span>
+<span class="text-primary font-bold">Sea Salt</span>
+</div>
+<span class="font-mono font-bold text-primary">7.0g (3.0%)</span>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-space-sm bg-surface p-space-sm">
+<div class="flex justify-between items-center font-label-ledger text-label-ledger">
+<span class="uppercase text-secondary">Batch Formulation Total</span>
+<span class="font-mono text-primary font-bold" id="total-batch-weight">240.0g (100.0%)</span>
+</div>
+<div class="flex justify-between items-center font-label-stamp text-label-stamp text-on-surface-variant pt-1">
+<span>QUID COMPLIANCE: Illustrative BALANCED</span>
+<span class="text-secondary font-bold">[READY FOR ASSEMBLY]</span>
+</div>
+</div>
+</div>
+<!-- Column 2: Standardized Nutrition Facts Panel -->
+<div class="lg:col-span-4 flex flex-col gap-space-sm bg-surface p-space-md shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-stamp text-label-stamp uppercase text-secondary">COLUMN 02 • PROOF GALLEY</span>
+<span class="font-label-stamp text-label-stamp bg-surface-container-high px-space-xs py-0.5 text-primary">FDA 21 CFR §101.9</span>
+</div>
+<!-- Exact Physical Nutrition Facts Box Layout -->
+<div class="bg-surface-container-lowest p-space-md flex flex-col font-body-sm text-body-sm shadow-inner text-primary">
+<h4 class="font-headline-lg text-headline-lg font-bold leading-tight uppercase tracking-tight">Nutrition Facts</h4>
+<div class="flex justify-between font-body-sm text-body-sm pb-1">
+<span>16 servings per container</span>
+</div>
+<div class="flex justify-between items-baseline font-bold pb-2 bg-surface-container-high px-1 mb-2">
+<span class="font-headline-sm text-headline-sm">Serving size</span>
+<span class="font-mono font-bold">1 Tbsp (15g)</span>
+</div>
+<!-- Calories Header -->
+<div class="flex justify-between items-baseline py-2 bg-surface-container px-1">
+<div class="flex flex-col">
+<span class="font-label-stamp text-label-stamp uppercase font-bold text-secondary">Amount Per Serving</span>
+<span class="font-headline-md text-headline-md font-bold">Calories</span>
+</div>
+<span class="font-display-hero text-headline-lg font-bold font-mono">110</span>
+</div>
+<div class="text-right font-label-stamp text-label-stamp uppercase font-bold py-1">
+              % Daily Value*
+            </div>
+<!-- Nutrient Ledger -->
+<div class="flex flex-col divide-y divide-surface-container-high">
+<div class="flex justify-between py-1">
+<span><strong class="font-bold">Total Fat</strong> 12g</span>
+<span class="font-mono font-bold">15%</span>
+</div>
+<div class="flex justify-between py-1 pl-4 text-on-surface-variant">
+<span>Saturated Fat 1g</span>
+<span class="font-mono font-bold">5%</span>
+</div>
+<div class="flex justify-between py-1 pl-4 text-on-surface-variant">
+<span><em>Trans</em> Fat 0g</span>
+<span class="font-mono">-</span>
+</div>
+<div class="flex justify-between py-1">
+<span><strong class="font-bold">Cholesterol</strong> 0mg</span>
+<span class="font-mono font-bold">0%</span>
+</div>
+<div class="flex justify-between py-1">
+<span><strong class="font-bold">Sodium</strong> 135mg</span>
+<span class="font-mono font-bold">6%</span>
+</div>
+<div class="flex justify-between py-1">
+<span><strong class="font-bold">Total Carbohydrate</strong> 2g</span>
+<span class="font-mono font-bold">1%</span>
+</div>
+<div class="flex justify-between py-1 pl-4 text-on-surface-variant">
+<span>Dietary Fiber 0.5g</span>
+<span class="font-mono font-bold">2%</span>
+</div>
+<div class="flex justify-between py-1 pl-4 text-on-surface-variant">
+<span>Total Sugars 0g</span>
+<span class="font-mono">-</span>
+</div>
+<div class="flex justify-between py-1">
+<span><strong class="font-bold">Protein</strong> 0.5g</span>
+<span class="font-mono font-bold">1%</span>
+</div>
+<!-- Uncalculated/Missing Nutrient Example -->
+<div class="flex justify-between items-center py-1 bg-tertiary-container/10 px-1">
+<span class="text-on-surface">Vitamin D <span class="text-on-tertiary-container font-mono text-label-stamp font-bold">[NOT PROVIDED — USER SUPPLIED ONLY]</span></span>
+<span class="font-mono text-on-tertiary-container font-bold">--%</span>
+</div>
+<div class="flex justify-between items-center py-1 bg-tertiary-container/10 px-1">
+<span class="text-on-surface">Potassium <span class="text-on-tertiary-container font-mono text-label-stamp font-bold">[NOT PROVIDED — USER SUPPLIED ONLY]</span></span>
+<span class="font-mono text-on-tertiary-container font-bold">--%</span>
+</div>
+</div>
+<p class="font-label-stamp text-label-stamp text-on-surface-variant mt-2 pt-1 leading-snug">
+              * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.
+            </p>
+</div>
+<div class="bg-surface-container p-space-sm flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-sm">info</span>
+<span class="font-label-stamp text-label-stamp text-on-surface-variant">
+              NON-FABRICATION GUARANTEE: LABELKIT never guesses missing micronutrients. Values remain unpopulated until certified lab assays or USDA SRP numbers are uploaded.
+            </span>
+</div>
+</div>
+<!-- Column 3: Review & Quality Rail -->
+<div class="lg:col-span-4 flex flex-col gap-space-md bg-surface-container-low p-space-md">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex flex-col">
+<span class="font-label-stamp text-label-stamp uppercase text-secondary">COLUMN 03 • PRE-FLIGHT AUDIT</span>
+<h3 class="font-headline-sm text-headline-sm text-primary">Compliance Rail</h3>
+</div>
+<span class="bg-error-container text-on-error-container px-space-xs py-0.5 font-label-stamp text-label-stamp font-bold">2 FLAGS FOUND</span>
+</div>
+<!-- Allergen Detection Chips -->
+<div class="flex flex-col gap-space-xs bg-surface p-space-sm">
+<span class="font-label-ledger text-label-ledger uppercase text-secondary">Preliminary Allergen Screening (FALCPA / FASTER)</span>
+<div class="flex flex-wrap gap-space-xs pt-1">
+<span class="bg-surface-container px-space-sm py-1 font-label-stamp text-label-stamp text-on-surface font-bold">[CONTAINS: SESAME]</span>
+<span class="bg-surface-container px-space-sm py-1 font-label-stamp text-label-stamp text-on-surface font-bold">[CONTAINS: SOY]</span>
+<span class="bg-secondary-container text-on-secondary-container px-space-sm py-1 font-label-stamp text-label-stamp font-bold">[GLUTEN: FREE (DERIVED)]</span>
+<span class="bg-surface-container-high px-space-sm py-1 font-label-stamp text-label-stamp text-on-surface-variant line-through">[DAIRY: NEGATIVE]</span>
+</div>
+<span class="font-label-stamp text-label-stamp text-on-tertiary-container pt-1">
+              [!] Advisory: Sesame recognized as 9th major food allergen per FASTER Act effective Jan 1, 2023.
+            </span>
+</div>
+<!-- Mandatory Packaging Text Draft -->
+<div class="flex flex-col gap-space-xs bg-surface p-space-sm">
+<span class="font-label-ledger text-label-ledger uppercase text-secondary">Computed Mandatory Statement Deck</span>
+<div class="font-body-sm text-body-sm p-space-xs bg-surface-container-low leading-relaxed">
+<strong class="font-bold">INGREDIENTS:</strong> CANOLA OIL, CRISPED SHALLOTS, ROASTED GARLIC, CHILI FLAKES, TOASTED <span class="font-bold underline decoration-tertiary">SESAME SEEDS</span>, FERMENTED BLACK BEANS (<span class="font-bold underline decoration-tertiary">SOYBEANS</span>, SALT), SEA SALT.
+            </div>
+<div class="font-body-sm text-body-sm p-space-xs bg-surface-container-low">
+<strong class="font-bold">ALLERGEN DECLARATION:</strong> CONTAINS SESAME, SOY.
+            </div>
+<div class="font-body-sm text-body-sm p-space-xs bg-surface-container-low flex justify-between">
+<span><strong class="font-bold">NET QUANTITY:</strong> 8.46 OZ (240g)</span>
+<span class="text-secondary font-label-stamp text-label-stamp">[DUAL DECLARATION]</span>
+</div>
+</div>
+<!-- Audit Checklist Summary -->
+<div class="flex flex-col gap-1 bg-surface p-space-sm font-label-stamp text-label-stamp uppercase">
+<span class="text-secondary font-bold tracking-wider">PRE-FLIGHT COMPLIANCE SCORE: 88/100</span>
+<div class="w-full bg-surface-container h-2 mt-1">
+<div class="bg-secondary h-2" style="width: 88%;"></div>
+</div>
+<div class="flex justify-between pt-1 text-on-surface-variant">
+<span>7 PASSED RULES</span>
+<span class="text-error font-bold">2 MANUAL AUDITS REQUIRED</span>
+</div>
+</div>
+<div class="mt-auto">
+<button class="w-full py-space-sm bg-primary text-on-primary hover:bg-secondary transition-colors font-label-ledger text-label-ledger uppercase tracking-wider flex items-center justify-center gap-space-xs" type="button">
+<span class="material-symbols-outlined text-sm">download</span>
+<span>Generate PDF Press Specimen</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Four-Step Proofing Workflow -->
+<section class="w-full bg-surface py-space-2xl px-margin-desktop">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-xl">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-ledger text-label-ledger uppercase text-secondary tracking-widest">[SYSTEM ARCHITECTURE]</span>
+<h2 class="font-headline-lg text-headline-lg text-primary">Deterministic Pre-Flight Pipeline</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+          From unorganized recipe notebooks to vector-accurate packaging mechanicals. Every calculation is reproducible and auditable.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Step 1 -->
+<div class="bg-surface-container p-space-lg flex flex-col gap-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-xs">
+<span class="font-headline-md text-headline-md font-bold text-secondary">01</span>
+<span class="bg-surface px-space-xs py-0.5 font-label-stamp text-label-stamp text-on-surface-variant font-mono">INPUT</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Structured Ingestion</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Upload raw formulation weights (grams or ounces), sub-ingredient specs, supplier COAs, and raw allergen declarations via simplified spreadsheet or ledger form.
+          </p>
+<div class="mt-auto pt-space-md font-label-stamp text-label-stamp text-secondary uppercase">
+            [SUPPORTS: CSV, JSON, FORM DECK]
+          </div>
+</div>
+<!-- Step 2 -->
+<div class="bg-surface-container p-space-lg flex flex-col gap-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-xs">
+<span class="font-headline-md text-headline-md font-bold text-secondary">02</span>
+<span class="bg-surface px-space-xs py-0.5 font-label-stamp text-label-stamp text-on-surface-variant font-mono">ALGORITHM</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Deterministic Assembly</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Our engine sorts ingredients by strict cooked/raw mass loss ratios, resolves nested sub-ingredients, and parses allergen keywords without creative guesses.
+          </p>
+<div class="mt-auto pt-space-md font-label-stamp text-label-stamp text-secondary uppercase">
+            [CFR §101.4 ORDER VERIFIER]
+          </div>
+</div>
+<!-- Step 3 -->
+<div class="bg-surface-container p-space-lg flex flex-col gap-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-xs">
+<span class="font-headline-md text-headline-md font-bold text-secondary">03</span>
+<span class="bg-surface px-space-xs py-0.5 font-label-stamp text-label-stamp text-on-surface-variant font-mono">AUDIT</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Human Pre-Flight</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            A 12-point interactive verification pass highlights unconfirmed micronutrients, calculates net quantity placement, and checks type size scale against PDP dimensions.
+          </p>
+<div class="mt-auto pt-space-md font-label-stamp text-label-stamp text-secondary uppercase">
+            [12-POINT PRE-PRINT PROOF SHEET]
+          </div>
+</div>
+<!-- Step 4 -->
+<div class="bg-surface-container p-space-lg flex flex-col gap-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-xs">
+<span class="font-headline-md text-headline-md font-bold text-secondary">04</span>
+<span class="bg-surface px-space-xs py-0.5 font-label-stamp text-label-stamp text-on-surface-variant font-mono">DELIVERY</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Pack Export</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Export a high-resolution PDF proof sheet, an editable vector nutrition galley (SVG), and an immutable CSV ledger to hand directly to your printer or lawyer.
+          </p>
+<div class="mt-auto pt-space-md font-label-stamp text-label-stamp text-secondary uppercase">
+            [PDF/X + VECTOR SVG + CSV AUDIT]
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Methodology & Data Provenance Manifesto -->
+<section class="w-full bg-surface-container-high py-space-2xl px-margin-desktop">
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
+<div class="lg:col-span-7 flex flex-col gap-space-md">
+<span class="font-label-ledger text-label-ledger uppercase text-secondary tracking-widest">[DATA INTEGRITY PHILOSOPHY]</span>
+<h2 class="font-headline-lg text-headline-lg text-primary">Why We Refuse Generative AI in Food Label Math</h2>
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed">
+          In consumer food packaging, a hallucinated calcium percentage or a subtly missed peanut cross-contact alert is not an interface glitch—it is an anaphylaxis hazard and an FDA Class I product recall that bankrupts indie food brands.
+        </p>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          Large language models routinely invent plausible-sounding nutrient numbers to satisfy queries. LABELKIT takes the opposite stand: if your formulation input lacks dietary fiber or trans fat testing, our system marks it with a high-contrast watermark: <span class="bg-tertiary-container text-on-tertiary font-mono text-label-stamp px-1 py-0.5 uppercase">[NOT PROVIDED — USER SUPPLIED ONLY]</span>. We never invent figures.
+        </p>
+<!-- Regulatory Notice Banner -->
+<div class="p-space-md bg-surface text-on-surface shadow-sm flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs text-error font-label-ledger text-label-ledger uppercase font-bold">
+<span class="material-symbols-outlined text-sm">warning</span>
+<span>Mandatory Regulatory Notice</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            LABELKIT is a specialized pre-flight typesetting, verification, and proof-generation tool. It is not an accredited legal firm or regulatory compliance testing authority. Packaging regulations (FDA 21 CFR, EU FIC 1169/2011, FSSAI 2018) require ultimate verification by qualified food attorneys or certified regulatory specialists prior to commercial cylinder print runs.
+          </p>
+</div>
+</div>
+<div class="lg:col-span-5 flex flex-col gap-space-md bg-surface p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-xs">
+<span class="font-label-stamp text-label-stamp uppercase text-secondary font-bold">AUDIT COMPARISON MATRIX</span>
+<span class="font-label-stamp text-label-stamp text-on-surface-variant">STANDARD VS LABELKIT</span>
+</div>
+<div class="space-y-space-sm font-body-sm text-body-sm">
+<div class="p-space-sm bg-surface-container">
+<span class="font-label-ledger text-label-ledger text-error uppercase font-bold">Unchecked Generative Tools</span>
+<p class="text-on-surface-variant pt-1">Fills missing blanks with probabilistic averages. Silent failure modes on allergen trace detection. No provenance records.</p>
+</div>
+<div class="p-space-sm bg-surface-container-high">
+<span class="font-label-ledger text-label-ledger text-secondary uppercase font-bold">LABELKIT Studio Engine</span>
+<p class="text-primary pt-1">Deterministic arithmetic. Illustrative mass conservation checks. Explicit user-signature logs and watermarked gaps.</p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs font-label-stamp text-label-stamp text-on-surface-variant">
+<span>ALGORITHM HASH: SHA-256 #901</span>
+<span class="text-secondary font-bold">VERIFIED REPRODUCIBLE</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Transparent Commercial Offerings & Pricing -->
+<section class="w-full bg-surface py-space-2xl px-margin-desktop">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-xl">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md pb-space-md">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-ledger text-label-ledger uppercase text-secondary tracking-widest">[FAIR PRICING FOR PRODUCERS]</span>
+<h2 class="font-headline-lg text-headline-lg text-primary">Transparent Production Proofing Packs</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">
+            No enterprise gatekeeping, opaque sales calendars, or bloated retainer locks. Purchase single drafts as you release seasonal products, or retain ongoing monthly capacity.
+          </p>
+</div>
+<div class="bg-surface-container px-space-md py-space-xs font-label-stamp text-label-stamp uppercase text-secondary">
+          NO HIDDEN SETUP FEES • INSTANT ACCESS
+        </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-xl max-w-5xl mx-auto w-full">
+<!-- Card 1: One-Time Product Pack -->
+<div class="bg-surface-container-low p-space-xl flex flex-col justify-between shadow-sm relative">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-xs">
+<span class="font-label-stamp text-label-stamp uppercase text-secondary font-bold">INDIE MAKER &amp; MICROLOT EDITION</span>
+<span class="bg-surface px-space-xs py-0.5 font-label-stamp text-label-stamp text-on-surface-variant">SINGLE SKU DRAFT</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-hero text-display-hero text-primary font-bold">$15</span>
+<span class="font-body-md text-body-md text-on-surface-variant">/ one-time charge</span>
+</div>
+<span class="font-label-stamp text-label-stamp text-secondary uppercase tracking-wider">Per Complete Product Formulation</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+              Designed for individual artisanal food makers launching a hot sauce, small-batch pickle, spice blend, or craft granola.
+            </p>
+<ul class="space-y-space-sm font-body-sm text-body-sm text-on-surface-variant pt-space-sm">
+<li class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-sm">check</span>
+<span>1 Complete Product Pack Specification (FDA or FSSAI format)</span>
+</li>
+<li class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-sm">check</span>
+<span>Deterministic mass QUID descending ingredient sorter</span>
+</li>
+<li class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-sm">check</span>
+<span>Preliminary allergen detection screening flags</span>
+</li>
+<li class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-sm">check</span>
+<span>High-resolution PDF Proof Sheet &amp; Vector SVG Nutrition box</span>
+</li>
+<li class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-sm">check</span>
+<span>48-hour formula revision lock window</span>
+</li>
+</ul>
+</div>
+<div class="pt-space-xl">
+<button class="w-full py-space-md bg-primary text-on-primary hover:bg-secondary transition-colors font-label-ledger text-label-ledger uppercase tracking-wider text-center" type="button">
+              Build Single Product Pack ($15)
+            </button>
+</div>
+</div>
+<!-- Card 2: Studio Retainer -->
+<div class="bg-surface-container p-space-xl flex flex-col justify-between shadow-md relative">
+<div class="absolute -top-3 right-6 bg-secondary text-on-secondary px-space-sm py-0.5 font-label-stamp text-label-stamp uppercase tracking-widest font-bold">
+            RECOMMENDED FOR STUDIOS &amp; CO-PACKERS
+          </div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-xs">
+<span class="font-label-stamp text-label-stamp uppercase text-secondary font-bold">AGENCY &amp; CO-PACKER CAPACITY</span>
+<span class="bg-surface px-space-xs py-0.5 font-label-stamp text-label-stamp text-secondary font-bold">PROPOSED RECURRING</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-hero text-display-hero text-primary font-bold">$49</span>
+<span class="font-body-md text-body-md text-on-surface-variant">/ per month</span>
+</div>
+<span class="font-label-stamp text-label-stamp text-secondary uppercase tracking-wider">Cancel Anytime • Billed Monthly</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+              Ideal for commercial kitchens, freelance packaging designers, and co-packers handling dynamic client formulations.
+            </p>
+<ul class="space-y-space-sm font-body-sm text-body-sm text-on-surface-variant pt-space-sm">
+<li class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-sm">check</span>
+<span>Up to 10 Active SKU drafts per month</span>
+</li>
+<li class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-sm">check</span>
+<span>Multi-region toggles (FDA 21 CFR + FSSAI 2018 + EU FIC)</span>
+</li>
+<li class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-sm">check</span>
+<span>White-label client presentation review links</span>
+</li>
+<li class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-sm">check</span>
+<span>Batch CSV formulation export and ingredient matrix</span>
+</li>
+<li class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-sm">check</span>
+<span>Priority proof-bed typesetting adjustments</span>
+</li>
+</ul>
+</div>
+<div class="pt-space-xl">
+<button class="w-full py-space-md bg-secondary text-on-secondary hover:bg-primary transition-colors font-label-ledger text-label-ledger uppercase tracking-wider text-center" type="button">
+              Start Studio Retainer ($49/mo)
+            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Human-Review Checklist & FAQ Accordion -->
+<section class="w-full bg-surface-container-low py-space-2xl px-margin-desktop">
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-space-xl">
+<!-- Left: Interactive Checklist Module -->
+<div class="lg:col-span-6 flex flex-col gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-ledger text-label-ledger uppercase text-secondary tracking-widest">[HUMAN-IN-THE-LOOP VERIFICATION]</span>
+<h2 class="font-headline-lg text-headline-lg text-primary">Pre-Press Compliance Checklist</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Test the pre-flight checklist our designers run before exporting any packaging artwork. Click items to record interactive sign-off.
+          </p>
+</div>
+<div class="bg-surface p-space-md shadow-sm flex flex-col gap-space-sm" id="preflight-checklist">
+<label class="flex items-start gap-space-sm p-space-xs hover:bg-surface-container transition-colors cursor-pointer select-none">
+<input checked="" class="mt-1 w-4 h-4 rounded-none accent-primary text-primary" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-label-ledger text-label-ledger uppercase text-primary">1. Type Size Minimums (21 CFR §101.2)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">All mandatory copy exceeds 1/16th inch (4.5pt) based on lower-case 'o' baseline.</span>
+</div>
+<span class="ml-auto font-label-stamp text-label-stamp text-secondary font-bold">[VERIFIED]</span>
+</label>
+<label class="flex items-start gap-space-sm p-space-xs hover:bg-surface-container transition-colors cursor-pointer select-none">
+<input checked="" class="mt-1 w-4 h-4 rounded-none accent-primary text-primary" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-label-ledger text-label-ledger uppercase text-primary">2. Net Quantity PDP Placement</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Placed in bottom 30% of the Principal Display Panel parallel to base.</span>
+</div>
+<span class="ml-auto font-label-stamp text-label-stamp text-secondary font-bold">[VERIFIED]</span>
+</label>
+<label class="flex items-start gap-space-sm p-space-xs hover:bg-surface-container transition-colors cursor-pointer select-none">
+<input class="mt-1 w-4 h-4 rounded-none accent-primary text-primary" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-label-ledger text-label-ledger uppercase text-primary">3. Allergen Font Weight Differentiation</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Tree nuts, sesame, and dairy bolded within ingredient list and "Contains" line.</span>
+</div>
+<span class="ml-auto font-label-stamp text-label-stamp text-error font-bold">[PENDING]</span>
+</label>
+<label class="flex items-start gap-space-sm p-space-xs hover:bg-surface-container transition-colors cursor-pointer select-none">
+<input class="mt-1 w-4 h-4 rounded-none accent-primary text-primary" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-label-ledger text-label-ledger uppercase text-primary">4. Facility Cross-Contact Notice</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">May Contain warning verified against co-packing facility sanitation log.</span>
+</div>
+<span class="ml-auto font-label-stamp text-label-stamp text-error font-bold">[PENDING]</span>
+</label>
+<label class="flex items-start gap-space-sm p-space-xs hover:bg-surface-container transition-colors cursor-pointer select-none">
+<input checked="" class="mt-1 w-4 h-4 rounded-none accent-primary text-primary" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-label-ledger text-label-ledger uppercase text-primary">5. Manufacturer &amp; Distributor Address</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">City, State, and Zip code included (Street address omitted if in directory).</span>
+</div>
+<span class="ml-auto font-label-stamp text-label-stamp text-secondary font-bold">[VERIFIED]</span>
+</label>
+</div>
+<div class="bg-surface-container p-space-sm flex justify-between items-center font-label-stamp text-label-stamp">
+<span class="text-on-surface-variant uppercase">CHECKLIST AUDITOR: SIGNED OFF BY QA</span>
+<span class="text-primary font-bold">5 OF 5 LOGGED IN PROOF BATCH</span>
+</div>
+</div>
+<!-- Right: Technical FAQ Accordion -->
+<div class="lg:col-span-6 flex flex-col gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-ledger text-label-ledger uppercase text-secondary tracking-widest">[TECHNICAL INQUIRIES]</span>
+<h2 class="font-headline-lg text-headline-lg text-primary">Frequently Asked Specifications</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Answers regarding legal boundaries, uncalculated lab data, and output vector formats.
+          </p>
+</div>
+<div class="flex flex-col gap-space-xs" id="faq-accordion">
+<!-- FAQ 1 -->
+<div class="bg-surface p-space-md shadow-sm">
+<button class="faq-toggle w-full flex items-center justify-between text-left font-headline-sm text-headline-sm text-primary" type="button">
+<span>Can LABELKIT replace my food regulatory attorney?</span>
+<span class="material-symbols-outlined text-secondary transition-transform">expand_more</span>
+</button>
+<div class="faq-content hidden pt-space-sm font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              No. LABELKIT is an artisanal drafting and pre-flight typesetting suite. We automate layout math, QUID calculations, and typographic compliance so you do not waste $400/hr having a regulatory attorney format text or arrange dielines. Always have your completed LABELKIT proof sheet countersigned by your local food legal advisor.
+            </div>
+</div>
+<!-- FAQ 2 -->
+<div class="bg-surface p-space-md shadow-sm">
+<button class="faq-toggle w-full flex items-center justify-between text-left font-headline-sm text-headline-sm text-primary" type="button">
+<span>What happens if my sodium or mineral value is missing?</span>
+<span class="material-symbols-outlined text-secondary transition-transform">expand_more</span>
+</button>
+<div class="faq-content hidden pt-space-sm font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              We never guess. The missing cell is watermarked with an explicit notice: "[NOT PROVIDED — USER SUPPLIED ONLY]". This alerts both your printer and your auditor that certified lab analysis or verified supplier data is required before final plate burn.
+            </div>
+</div>
+<!-- FAQ 3 -->
+<div class="bg-surface p-space-md shadow-sm">
+<button class="faq-toggle w-full flex items-center justify-between text-left font-headline-sm text-headline-sm text-primary" type="button">
+<span>What vector formats and typography specs do you export?</span>
+<span class="material-symbols-outlined text-secondary transition-transform">expand_more</span>
+</button>
+<div class="faq-content hidden pt-space-sm font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              Every completed pack exports as a Print-Ready PDF/X-1a proof sheet at 300DPI, an editable pure SVG nutrition facts box with fonts converted to outlines, and a comprehensive CSV ledger containing raw formula weights and ingredient QUID breakdowns.
+            </div>
+</div>
+<!-- FAQ 4 -->
+<div class="bg-surface p-space-md shadow-sm">
+<button class="faq-toggle w-full flex items-center justify-between text-left font-headline-sm text-headline-sm text-primary" type="button">
+<span>Can I use this for non-US packaging standards like FSSAI or EU?</span>
+<span class="material-symbols-outlined text-secondary transition-transform">expand_more</span>
+</button>
+<div class="faq-content hidden pt-space-sm font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              Yes. You can switch between FDA 21 CFR §101, FSSAI Packaging &amp; Labelling Regulations (2018), and European Union FIC (Regulation 1169/2011). Each template dynamically changes reference intakes (RI vs %DV) and mandatory text hierarchies.
+            </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final Editorial CTA Banner -->
+<section class="w-full bg-primary text-on-primary py-space-2xl px-margin-desktop relative overflow-hidden">
+<div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-space-xl relative z-10">
+<div class="flex flex-col gap-space-sm max-w-xl">
+<span class="font-label-stamp text-label-stamp uppercase tracking-widest text-primary-fixed">
+          READY FOR YOUR NEXT PRODUCTION RUN
+        </span>
+<h2 class="font-display-hero text-headline-lg md:text-display-hero tracking-tight text-on-primary">
+          Stop guessing your dielines. Ship a pristine draft.
+        </h2>
+<p class="font-body-md text-body-md text-primary-fixed leading-relaxed">
+          Input your raw weights today. Download a professional, print-calibrated proof sheet for your co-packer in under 5 minutes.
+        </p>
+</div>
+<div class="flex flex-col items-center sm:items-start gap-space-sm w-full md:w-auto">
+<button class="w-full sm:w-auto px-space-xl py-space-md bg-background text-primary hover:bg-secondary-fixed transition-colors font-label-ledger text-label-ledger uppercase tracking-wider shadow-lg flex items-center justify-center gap-space-sm" type="button">
+<span>Create Product Pack</span>
+<span class="bg-surface-container-high px-space-xs py-0.5 font-label-stamp text-label-stamp font-bold">$15 Single Draft</span>
+</button>
+<span class="font-label-stamp text-label-stamp uppercase text-on-primary-container tracking-wider">
+          IMMUTABLE SPEC • 48-HR AUDIT WINDOW
+        </span>
+</div>
+</div>
+</section>
+<!-- Script for Micro-Interactions -->
+<script>
+    // Specimen switch interactive toggle
+    const btnChili = document.getElementById('specimen-btn-chili');
+    const btnGranola = document.getElementById('specimen-btn-granola');
+    const ingredientContainer = document.getElementById('ingredient-rows-container');
+    const totalBatchWeight = document.getElementById('total-batch-weight');
+
+    if (btnChili && btnGranola && ingredientContainer) {
+      btnChili.addEventListener('click', () => {
+        btnChili.className = 'px-space-md py-space-xs bg-primary text-on-primary';
+        btnGranola.className = 'px-space-md py-space-xs bg-surface-container-high text-on-surface hover:bg-surface-container';
+        totalBatchWeight.innerText = '240.0g (100.0%)';
+        ingredientContainer.innerHTML = `
+          <div class="flex items-center justify-between bg-surface p-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="w-2 h-2 bg-secondary inline-block"></span>
+              <span class="text-primary font-bold">Non-GMO Canola Oil</span>
+              <span class="text-secondary font-label-stamp text-label-stamp">[EXPELLER]</span>
+            </div>
+            <span class="font-mono font-bold text-primary">115.0g (47.9%)</span>
+          </div>
+          <div class="flex items-center justify-between bg-surface p-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="w-2 h-2 bg-secondary inline-block"></span>
+              <span class="text-primary font-bold">Shallots, Crisped</span>
+            </div>
+            <span class="font-mono font-bold text-primary">36.0g (15.0%)</span>
+          </div>
+          <div class="flex items-center justify-between bg-surface p-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="w-2 h-2 bg-secondary inline-block"></span>
+              <span class="text-primary font-bold">Garlic, Roasted Slices</span>
+            </div>
+            <span class="font-mono font-bold text-primary">28.0g (11.6%)</span>
+          </div>
+          <div class="flex items-center justify-between bg-surface p-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="w-2 h-2 bg-secondary inline-block"></span>
+              <span class="text-primary font-bold">Crushed Chili Flakes</span>
+              <span class="text-secondary font-label-stamp text-label-stamp">[ORGANIC]</span>
+            </div>
+            <span class="font-mono font-bold text-primary">24.0g (10.0%)</span>
+          </div>
+          <div class="flex items-center justify-between bg-surface p-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="w-2 h-2 bg-secondary inline-block"></span>
+              <span class="text-primary font-bold">Toasted Sesame Seeds</span>
+              <span class="bg-error-container text-on-error-container font-label-stamp text-label-stamp px-1">[ALLERGEN]</span>
+            </div>
+            <span class="font-mono font-bold text-primary">18.0g (7.5%)</span>
+          </div>
+          <div class="flex items-center justify-between bg-surface p-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="w-2 h-2 bg-secondary inline-block"></span>
+              <span class="text-primary font-bold">Fermented Black Beans</span>
+              <span class="bg-error-container text-on-error-container font-label-stamp text-label-stamp px-1">[SOY]</span>
+            </div>
+            <span class="font-mono font-bold text-primary">12.0g (5.0%)</span>
+          </div>
+          <div class="flex items-center justify-between bg-surface p-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="w-2 h-2 bg-secondary inline-block"></span>
+              <span class="text-primary font-bold">Sea Salt</span>
+            </div>
+            <span class="font-mono font-bold text-primary">7.0g (3.0%)</span>
+          </div>
+        `;
+      });
+
+      btnGranola.addEventListener('click', () => {
+        btnGranola.className = 'px-space-md py-space-xs bg-primary text-on-primary';
+        btnChili.className = 'px-space-md py-space-xs bg-surface-container-high text-on-surface hover:bg-surface-container';
+        totalBatchWeight.innerText = '350.0g (100.0%)';
+        ingredientContainer.innerHTML = `
+          <div class="flex items-center justify-between bg-surface p-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="w-2 h-2 bg-secondary inline-block"></span>
+              <span class="text-primary font-bold">Rolled Sprouted Oats</span>
+              <span class="text-secondary font-label-stamp text-label-stamp">[ORGANIC]</span>
+            </div>
+            <span class="font-mono font-bold text-primary">180.0g (51.4%)</span>
+          </div>
+          <div class="flex items-center justify-between bg-surface p-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="w-2 h-2 bg-secondary inline-block"></span>
+              <span class="text-primary font-bold">Grade-A Maple Syrup</span>
+            </div>
+            <span class="font-mono font-bold text-primary">65.0g (18.6%)</span>
+          </div>
+          <div class="flex items-center justify-between bg-surface p-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="w-2 h-2 bg-secondary inline-block"></span>
+              <span class="text-primary font-bold">Raw Pumpkin Seeds (Pepitas)</span>
+            </div>
+            <span class="font-mono font-bold text-primary">45.0g (12.9%)</span>
+          </div>
+          <div class="flex items-center justify-between bg-surface p-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="w-2 h-2 bg-secondary inline-block"></span>
+              <span class="text-primary font-bold">Raw Pecan Halves</span>
+              <span class="bg-error-container text-on-error-container font-label-stamp text-label-stamp px-1">[TREE NUT]</span>
+            </div>
+            <span class="font-mono font-bold text-primary">35.0g (10.0%)</span>
+          </div>
+          <div class="flex items-center justify-between bg-surface p-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="w-2 h-2 bg-secondary inline-block"></span>
+              <span class="text-primary font-bold">Extra Virgin Olive Oil</span>
+            </div>
+            <span class="font-mono font-bold text-primary">20.0g (5.7%)</span>
+          </div>
+          <div class="flex items-center justify-between bg-surface p-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="w-2 h-2 bg-secondary inline-block"></span>
+              <span class="text-primary font-bold">Ground Saigon Cinnamon</span>
+            </div>
+            <span class="font-mono font-bold text-primary">5.0g (1.4%)</span>
+          </div>
+        `;
+      });
+    }
+
+    // FAQ Accordion Interaction
+    const faqButtons = document.querySelectorAll('.faq-toggle');
+    faqButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const content = button.nextElementSibling;
+        const icon = button.querySelector('.material-symbols-outlined');
+        const isOpen = !content.classList.contains('hidden');
+        
+        // Close all other FAQs
+        document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+        document.querySelectorAll('.faq-toggle .material-symbols-outlined').forEach(i => i.style.transform = 'rotate(0deg)');
+
+        if (!isOpen) {
+          content.classList.remove('hidden');
+          if (icon) icon.style.transform = 'rotate(180deg)';
+        }
+      });
+    });
+  </script>
+</div></main><footer class="w-full bg-surface-container py-space-2xl"><div class="w-full px-margin-desktop"><div class="grid grid-cols-1 md:grid-cols-4 gap-space-xl mb-space-xl"><div class="md:col-span-1"><div class="font-headline-sm text-headline-sm text-primary mb-space-sm">LABELKIT STUDIO</div><p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">Artisanal pre-press proofing flats, nutritional panel verification, and packaging production ledgers.</p><div class="font-label-stamp text-label-stamp uppercase text-secondary">PRESS SUITE • VER. 2.4.11-HOTFIX</div></div><div><div class="font-label-ledger text-label-ledger uppercase text-primary mb-space-md tracking-wider">Specifications &amp; Code</div><ul class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant"><li><a class="hover:text-primary transition-colors" href="#">FDA 21 CFR §101 Guide</a></li><li><a class="hover:text-primary transition-colors" href="#">EU Food Info 1169/2011</a></li><li><a class="hover:text-primary transition-colors" href="#">FSSAI Packaging Std 2018</a></li><li><a class="hover:text-primary transition-colors" href="#">Dieline Preparation Rules</a></li></ul></div><div><div class="font-label-ledger text-label-ledger uppercase text-primary mb-space-md tracking-wider">Proof Engine</div><ul class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant"><li><a class="hover:text-primary transition-colors" href="#">Color Separation Matrix</a></li><li><a class="hover:text-primary transition-colors" href="#">Nutrient Rounding Rules</a></li><li><a class="hover:text-primary transition-colors" href="#">Print-Bed Bleed Margins</a></li><li><a class="hover:text-primary transition-colors" href="#">Audit Log Inscription</a></li></ul></div><div><div class="font-label-ledger text-label-ledger uppercase text-primary mb-space-md tracking-wider">Provenance &amp; Archival</div><p class="font-body-sm text-body-sm text-on-surface-variant mb-space-sm">Archival typography and calibration dies generated for verified packaging practitioners.</p><span class="inline-block px-space-xs py-space-xs bg-surface font-label-stamp text-label-stamp text-on-surface">PLATE ID: 884-LK-NYC</span></div></div><div class="pt-space-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md font-label-stamp text-label-stamp text-on-surface-variant uppercase tracking-widest"><span>Notice: Not Legal/Regulatory Certification — Review With Local FDA/FSSAI/EU Authority</span><span>© 2026 LABELKIT STUDIO • PRINT WORKSHOP DIVISION</span></div></div></footer>
+<script>
+(function(){
+  const blocked = /get my report|begin \$1 diagnostic|unlock full diagnostic|run (?:the )?\$1|run paid check|build \$15 product pack|run \$15 close check|execute real-time scan|launch product builder|real-time anomaly scan|run the drift check/i;
+  document.addEventListener('click', function(e){
+    const el=e.target.closest('button,a,input[type="submit"]');
+    if(!el) return;
+    const label=(el.innerText||el.value||el.getAttribute('aria-label')||'').replace(/\s+/g,' ').trim();
+    if(blocked.test(label)){
+      e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+      alert('Checkout is not connected yet. No payment was taken and no real scan or product processing occurred.');
+    }
+  }, true);
+  document.addEventListener('submit',function(e){
+    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+    alert('Checkout is not connected yet. No payment was taken and no real scan or product processing occurred.');
+  },true);
+  document.addEventListener('change',function(e){
+    if(e.target && e.target.matches('input[type=file]')){
+      e.target.value='';
+      alert('Real file processing is currently disabled until verified checkout and secure processing are connected.');
+    }
+  },true);
+  document.querySelectorAll('a[href="#"]').forEach(function(a){
+    if(!a.dataset.path && !a.closest('nav')) a.addEventListener('click',function(e){e.preventDefault()});
+  });
+})();
+</script>
+</body></html>
