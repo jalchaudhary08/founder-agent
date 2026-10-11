@@ -1909,25 +1909,12 @@
 
     function handleCheckoutSubmit(e) {
       e.preventDefault();
-      
-      const company = document.getElementById('cust-company').value;
-      const email = document.getElementById('cust-email').value;
-      const outcome = document.querySelector('input[name="sim-outcome"]:checked').value;
-
-      document.getElementById('checkout-form-state').classList.add('hidden');
-      document.getElementById('checkout-processing-state').classList.remove('hidden');
-
-      setTimeout(() => {
-        document.getElementById('checkout-processing-state').classList.add('hidden');
-
-        if (outcome === 'success') {
-          document.getElementById('success-email-display').innerText = email;
-          document.getElementById('checkout-success-state').classList.remove('hidden');
-        } else {
-          document.getElementById('checkout-failure-state').classList.remove('hidden');
-        }
-      }, 1400);
+      const state = document.getElementById('checkout-form-state');
+      if (state) {
+        state.innerHTML = '<div class="p-5 rounded border border-ledger-border bg-parchment-100 text-ledger-slate text-sm leading-relaxed"><strong class="block text-ledger-ink mb-2">Checkout is not connected yet.</strong>No payment has been taken and no ledger file has been processed. The prices shown are planned pricing, not an active purchase.</div>';
+      }
     }
+
 
     function resetCheckoutForm() {
       document.getElementById('checkout-success-state').classList.add('hidden');
