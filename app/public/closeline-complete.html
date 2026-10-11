@@ -116,6 +116,29 @@
       border-color: #182535;
     }
   </style>
+
+  <style id="closeline-mobile-fix">
+    /* Responsive corrections for the full CLOSELINE page */
+    @media (max-width: 640px) {
+      html { scroll-padding-top: 96px; }
+      body { overflow-x: hidden; }
+      section { scroll-margin-top: 92px; }
+      .max-w-7xl, .max-w-6xl, .max-w-5xl, .max-w-4xl, .max-w-3xl, .max-w-2xl {
+        max-width: 100% !important;
+      }
+      section.py-20 { padding-top: 2.5rem !important; padding-bottom: 2.5rem !important; }
+      section.py-16 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+      h1 { font-size: clamp(2rem, 9vw, 3rem) !important; line-height: 1.04 !important; }
+      h2 { line-height: 1.12 !important; }
+      .grid { min-width: 0; }
+      table { min-width: 560px; }
+      .overflow-x-auto { max-width: 100%; overflow-x: auto; }
+      input, select, textarea { max-width: 100%; }
+      button { overflow-wrap: anywhere; }
+      nav a, nav button { white-space: nowrap; }
+    }
+  </style>
+
 </head>
 <body class="selection:bg-ledger-brass selection:text-white">
 
@@ -1146,10 +1169,10 @@
       <div class="text-center max-w-2xl mx-auto mb-10">
         <span class="text-xs font-mono font-semibold uppercase tracking-widest text-ledger-brass">Secure Order Desk</span>
         <h2 class="text-2xl sm:text-4xl font-serif font-semibold text-ledger-ink mt-2">
-          Subscription Checkout Simulator
+          Checkout preview — payment not connected
         </h2>
         <p class="text-xs sm:text-sm text-ledger-slate mt-2">
-          Fully functioning front-end order interface. Test plan selection, billing validations, and order state handling.
+          Choose a plan and review the order summary. Live payment processing is not connected yet, so no charge or subscription will be created.
         </p>
       </div>
 
@@ -1160,7 +1183,7 @@
           <span>DEMO CHECKOUT ENVIRONMENT:</span>
         </div>
         <p class="mt-1 font-sans text-[11px] text-ledger-slate">
-          This interface demonstrates the verified payment UX prior to live merchant gateway coupling. <strong>Do not enter real credit card numbers.</strong> Standard sandbox test card inputs are accepted for interaction testing.
+          This is a design preview only. <strong>Do not enter payment details.</strong> Checkout is not connected to a payment provider; selecting a plan does not charge you or activate a subscription.
         </p>
       </div>
 
